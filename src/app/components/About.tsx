@@ -18,8 +18,59 @@ import {
   Lightbulb,
   ChevronDown,
   ChevronUp,
-  Calendar
+  Calendar,
+  LucideIcon
 } from 'lucide-react'
+
+// Type definitions
+interface StatItem {
+  label: string;
+  value: string;
+  icon: LucideIcon;
+}
+
+interface StructureItem {
+  level: string;
+  name: string;
+  value: string;
+  highlight: boolean;
+}
+
+interface TimelineItem {
+  year: string;
+  event: string;
+}
+
+interface TargetItem {
+  target: string;
+  progress: number;
+  color: string;
+}
+
+interface FutureItem {
+  aspect: string;
+  icon: LucideIcon;
+}
+
+interface Subsection {
+  title: string;
+  content: string;
+  icon: LucideIcon;
+}
+
+interface Visualization {
+  type: "stats" | "structure" | "timeline" | "targets" | "future";
+  data: StatItem[] | StructureItem[] | TimelineItem[] | TargetItem[] | FutureItem[];
+}
+
+interface Section {
+  icon: LucideIcon;
+  title: string;
+  id: string;
+  content: string;
+  visualization: Visualization;
+  subsections: Subsection[];
+}
 
 const About = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
@@ -28,7 +79,7 @@ const About = () => {
     setExpandedSection(expandedSection === title ? null : title)
   }
 
-  const sections = [
+  const sections: Section[] = [
     {
       icon: Building2,
       title: "COMPANY",
@@ -162,12 +213,12 @@ const About = () => {
     }
   ]
 
-  const renderVisualization = (viz: any) => {
+  const renderVisualization = (viz: Visualization) => {
     switch (viz.type) {
       case "stats":
         return (
           <div className="grid grid-cols-3 gap-4 mt-4">
-            {viz.data.map((item: any, index: number) => (
+            {(viz.data as StatItem[]).map((item: StatItem, index: number) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -186,7 +237,7 @@ const About = () => {
       case "structure":
         return (
           <div className="mt-4 space-y-3 flex flex-col sm:flex-row justify-between gap-2">
-            {viz.data.map((item: any, index: number) => (
+            {(viz.data as StructureItem[]).map((item: StructureItem, index: number) => (
               <motion.div
                 key={item.level}
                 initial={{ opacity: 0, x: -20 }}
@@ -209,56 +260,54 @@ const About = () => {
         )
       
       case "timeline":
-  return (
-    <div className="relative mt-12 w-full overflow-x-auto overflow-y-hidden">
-      {/* Horizontal line */}
-      <div className="absolute left-0 right-0 top-1/2 bottom-1/2 h-0.5 bg-green-200"></div>
+        return (
+          <div className="relative mt-12 w-full overflow-x-auto overflow-y-hidden">
+            {/* Horizontal line */}
+            <div className="absolute left-0 right-0 top-1/2 bottom-1/2 h-0.5 bg-green-200"></div>
 
-      <div className="flex space-x-12 sm:space-x-16 min-w-max px-8 pb-12 pt-8">
-        {viz.data.map((item: any, index: number) => {
-          const isTop = index % 2 === 0;
+            <div className="flex space-x-12 sm:space-x-16 min-w-max px-8 pb-12 pt-8">
+              {(viz.data as TimelineItem[]).map((item: TimelineItem, index: number) => {
+                const isTop = index % 2 === 0;
 
-          return (
-            <motion.div
-              key={item.year}
-              initial={{ opacity: 0, y: isTop ? -40 : 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="relative flex flex-col items-center"
-            >
-              {/* Card */}
-              <div
-                className={`${
-                  isTop ? "mt-28" : "mb-10"
-                } bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-[220px] sm:w-[260px] md:w-[300px] text-center`}
-              >
-                <div className="flex items-center justify-center">
-                  <Calendar className="h-6 w-6 text-green-500 mr-2" />
-                  <span className="text-green-600 font-bold">{item.year}</span>
-                </div>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  {item.event}
-                </p>
-              </div>
+                return (
+                  <motion.div
+                    key={item.year}
+                    initial={{ opacity: 0, y: isTop ? -40 : 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="relative flex flex-col items-center"
+                  >
+                    {/* Card */}
+                    <div
+                      className={`${
+                        isTop ? "mt-28" : "mb-10"
+                      } bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-[220px] sm:w-[260px] md:w-[300px] text-center`}
+                    >
+                      <div className="flex items-center justify-center">
+                        <Calendar className="h-6 w-6 text-green-500 mr-2" />
+                        <span className="text-green-600 font-bold">{item.year}</span>
+                      </div>
+                      <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                        {item.event}
+                      </p>
+                    </div>
 
-              {/* Timeline Dot */}
-              <div className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                <Zap className="h-4 w-4 text-white" />
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-
-
+                    {/* Timeline Dot */}
+                    <div className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+                      <Zap className="h-4 w-4 text-white" />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )
       
       case "targets":
         return (
           <div className="mt-4 space-y-3">
-            {viz.data.map((target: any, index: number) => (
+            {(viz.data as TargetItem[]).map((target: TargetItem, index: number) => (
               <motion.div
                 key={target.target}
                 initial={{ opacity: 0, width: 0 }}
@@ -286,7 +335,7 @@ const About = () => {
       case "future":
         return (
           <div className="grid grid-cols-3 gap-4 mt-4">
-            {viz.data.map((item: any, index: number) => (
+            {(viz.data as FutureItem[]).map((item: FutureItem, index: number) => (
               <motion.div
                 key={item.aspect}
                 initial={{ opacity: 0, y: 20 }}
@@ -366,7 +415,7 @@ const About = () => {
                     </div>
                   </div>
                   <motion.div
-                    animate={{ rotate: expandedSection === section.title ? 180 : 0 }}
+                    animate={{ rotate: expandedSection === section.title ? 360 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
                     {expandedSection === section.title ? (

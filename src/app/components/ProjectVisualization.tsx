@@ -191,7 +191,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                 <p className="text-xl leading-relaxed mb-6">
                   The {projectData.name} is a {projectData.capacity.toLowerCase()} {projectData.type.toLowerCase()} 
                   located in {projectData.location}. This project represents a significant step forward in 
-                  Bangladesh's renewable energy infrastructure.
+                  Bangladesh&apos;s renewable energy infrastructure.
                 </p>
                 
                 <div className="grid md:grid-cols-2 gap-6 mt-8">
