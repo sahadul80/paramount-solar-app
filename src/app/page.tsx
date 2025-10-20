@@ -1,30 +1,38 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import Header from './components/Header'
 import Banner from './components/Banner'
-import StatsCTA from './components/StatsCTA'
-import About from './components/About'
-import History from './components/History'
-import CompanyBoard from './components/CompanyBoard'
-import BusinessVerticals from './components/BusinessVerticals'
-import NationalFootprint from './components/NationalFootprint'
-import ProjectsPortfolio from './components/ProjectsPortfolio'
-import StrategicPartners from './components/StrategicPartners'
-import Contact from './components/Contact'
 import Footer from './components/Footer'
+
+const StatsCTA = dynamic(() => import('./components/StatsCTA'), { ssr: false })
+const About = dynamic(() => import('./components/About'), { ssr: false })
+const History = dynamic(() => import('./components/History'), { ssr: false })
+const CompanyBoard = dynamic(() => import('./components/CompanyBoard'), { ssr: false })
+const BusinessVerticals = dynamic(() => import('./components/BusinessVerticals'), { ssr: false })
+const NationalFootprint = dynamic(() => import('./components/NationalFootprint'), { ssr: false })
+const ProjectsPortfolio = dynamic(() => import('./components/ProjectsPortfolio'), { ssr: false })
+const StrategicPartners = dynamic(() => import('./components/StrategicPartners'), { ssr: false })
+const Contact = dynamic(() => import('./components/Contact'), { ssr: false })
 
 export default function Home() {
   return (
-    <main className="max-h-screen max-w-screen overflow-auto bg-gradient-to-br from-blue-50 to-green-50">
+    <main className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-blue-50 to-green-50">
+      {/* Fixed header */}
       <Header />
+
+      {/* Hero / Banner */}
       <Banner />
-      <StatsCTA />
+
+      {/* Smooth fade-in transition for all sections */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        className="space-y-16 md:space-y-24"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
       >
+        <StatsCTA />
         <About />
         <History />
         <CompanyBoard />
@@ -33,8 +41,10 @@ export default function Home() {
         <ProjectsPortfolio />
         <StrategicPartners />
         <Contact />
-        <Footer />
       </motion.div>
+
+      {/* Footer */}
+      <Footer />
     </main>
   )
 }
