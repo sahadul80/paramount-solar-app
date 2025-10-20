@@ -15,26 +15,38 @@ import {
   Building,
   User,
   FileText,
-  ExternalLink
+  ExternalLink,
+  LucideIcon
 } from 'lucide-react'
 
+interface ExpandedContent {
+  description: string;
+  additionalInfo?: string[];
+  hours?: string;
+  email?: string;
+  phone?: string;
+}
+
 interface ContactInfo {
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   title: string;
   details: string;
   subtitle: string;
   color: string;
-  expandedContent?: {
-    description: string;
-    additionalInfo?: string[];
-    hours?: string;
-    email?: string;
-    phone?: string;
-  };
+  expandedContent?: ExpandedContent;
+}
+
+interface FormData {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  subject: string;
+  message: string;
 }
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     company: '',
@@ -43,14 +55,15 @@ const Contact = () => {
     message: ''
   })
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [expandedCard, setExpandedCard] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,8 +89,8 @@ const Contact = () => {
     setExpandedCard(expandedCard === title ? null : title)
   }
 
-  const downloadContactPDF = () => {
-    // Create a simple PDF download functionality
+  const downloadContactInfo = () => {
+    // Create a simple contact information download
     const contactData = `
       Paramount Solar Ltd - Contact Information
       
@@ -175,7 +188,7 @@ const Contact = () => {
     }
   ]
 
-  const subjects = [
+  const subjects: string[] = [
     'Solar Project Inquiry',
     'Partnership Opportunity',
     'Career Opportunities',
@@ -221,7 +234,7 @@ const Contact = () => {
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-bold text-gray-800">Contact Information</h3>
               <motion.button
-                onClick={downloadContactPDF}
+                onClick={downloadContactInfo}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center space-x-2 bg-white text-green-600 border border-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors"
@@ -559,7 +572,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <motion.button
-                  onClick={downloadContactPDF}
+                  onClick={downloadContactInfo}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-full mt-4 bg-white text-green-600 font-semibold py-2 px-4 rounded-lg flex items-center justify-center"
