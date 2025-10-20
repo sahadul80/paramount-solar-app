@@ -1,3 +1,4 @@
+"use client"
 import { projects } from '@/app/data/projectData'
 import ProjectVisualization from '../../../components/ProjectVisualization'
 
