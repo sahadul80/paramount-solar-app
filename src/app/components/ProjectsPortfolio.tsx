@@ -276,7 +276,7 @@ const ProjectsPortfolio = () => {
 
           <div className="text-center mb-6 relative z-10">
             <h3 className="text-xl sm:text-2xl font-bold mb-2">Total Operational Portfolio</h3>
-            <p className="text-primary/80 text-sm">Powering Bangladesh's sustainable future</p>
+            <p className="text-primary/80 text-sm">Powering Bangladesh&apos;s sustainable future</p>
           </div>
 
           <motion.div
