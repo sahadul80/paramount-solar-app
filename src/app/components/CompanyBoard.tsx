@@ -1,9 +1,10 @@
 'use client'
 
 import { motion, Variants } from 'framer-motion'
-import { Award, Globe, Building, User, Zap, Leaf, Target, TrendingUp, Sparkles, CircuitBoard } from 'lucide-react'
+import { Award, Globe, Building, User, Zap, Leaf, Target, TrendingUp, Sparkles } from 'lucide-react'
 import { Photovoltaic } from './patterns/Photovoltaic'
 import { SolarInstallation } from './patterns/SolarInstallation'
+import { CircuitBoard } from './patterns/CircuitBoard'
 
 const CompanyBoard = () => {
   // Animation variants
@@ -51,15 +52,6 @@ const CompanyBoard = () => {
     }
   }
 
-  const floatingAnimation = {
-    y: [-8, 8, -8],
-    transition: {
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut" as const
-    }
-  }
-
   const shineTransition = {
     duration: 1.5,
     ease: "easeInOut" as const
@@ -73,7 +65,7 @@ const CompanyBoard = () => {
 
   return (
     <section id="board" className="section-padding bg-secondary relative overflow-hidden">
-
+      <CircuitBoard/>
       <div className="container-responsive relative z-10">
         {/* Enhanced Header */}
         <motion.div
@@ -138,6 +130,7 @@ const CompanyBoard = () => {
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       className="w-32 h-32 bg-gradient-to-br from-solar-primary/20 to-solar-accent/20 rounded-full flex items-center justify-center"
+                      animate={"active"}
                     >
                       <User className="h-16 w-16 text-solar-accent" />
                     </motion.div>
@@ -382,7 +375,7 @@ const CompanyBoard = () => {
             >
               Under visionary leadership, Paramount Solar continues to pioneer renewable energy solutions, 
               setting new standards for <span className="text-solar-primary font-semibold">sustainable development</span> and 
-              <span className="text-solar-accent font-semibold"> technological innovation</span> in Bangladesh's energy sector.
+              <span className="text-solar-accent font-semibold"> technological innovation</span> in Bangladesh&apos;s energy sector.
             </motion.p>
           </div>
         </motion.div>

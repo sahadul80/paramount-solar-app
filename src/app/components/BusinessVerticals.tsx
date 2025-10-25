@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, Variants } from 'framer-motion'
-import { Building, Settings, Home, TrendingUp, Target, Calendar, Image, Zap, Leaf, Users, ArrowRight, Sparkles } from 'lucide-react'
+import { Building, Settings, Home, TrendingUp, Target, Calendar, Image, Zap, Leaf, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { SolarPanelGrid } from './patterns/SolarPanelGrid'
 import { SunRays } from './patterns/SunRays'
@@ -182,7 +182,7 @@ const BusinessVerticals = () => {
         >
           {verticals.map((vertical, index) => (
             <motion.div
-              key={vertical.id}
+              key={index}
               id={vertical.id}
               variants={cardVariants}
               whileHover={{ y: -8 }}

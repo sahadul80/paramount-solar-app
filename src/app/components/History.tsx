@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, Variants } from 'framer-motion'
-import { Calendar, Zap, TrendingUp, Sun, Battery, Leaf } from 'lucide-react'
+import { Calendar, Zap, TrendingUp, Sun, Battery } from 'lucide-react'
 import SolarBanner from './SolarBanner'
 import Link from 'next/link'
 import { SolarInnovation } from './patterns/SolarInnovation'
@@ -258,6 +258,7 @@ const History = () => {
                         whileHover="hover"
                         className={`w-10 h-10 ${getStatusColor(milestone.status)} rounded-full flex items-center justify-center shadow-lg border-2 border-secondary relative`}
                       >
+                        {index+1}
                         <IconComponent className="h-4 w-4 text-primary" />
                         
                         {/* Smooth pulse animation for current milestone */}

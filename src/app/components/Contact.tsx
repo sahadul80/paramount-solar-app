@@ -15,7 +15,8 @@ import {
   Building,
   User,
   FileText,
-  Maximize
+  Maximize,
+  LucideIcon
 } from 'lucide-react'
 import MapModal from './MapModal';
 import { SolarPanelGrid } from './patterns/SolarPanelGrid';
@@ -29,7 +30,7 @@ interface ExpandedContent {
 }
 
 interface ContactInfo {
-  icon: any; // simplified to avoid type mismatch with lucide types
+  icon: LucideIcon;
   title: string;
   details: string;
   subtitle: string;

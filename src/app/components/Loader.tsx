@@ -6,7 +6,6 @@ import { SolarFarm } from "./patterns/SolarFarm";
 import { SolarPanelGrid } from "./patterns/SolarPanelGrid";
 import { SunRays } from "./patterns/SunRays";
 import { EnergyFlow } from "./patterns/EnergyFlow";
-import SolarBanner from "./SolarBanner";
 
 export default function ParamountLoader() {
   return (

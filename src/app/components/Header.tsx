@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
-import { Sun, Leaf, Menu, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { Sun, Leaf, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Header() {
@@ -85,7 +85,7 @@ export default function Header() {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [navItems])
 
   // Close dropdown when clicking outside
   useEffect(() => {

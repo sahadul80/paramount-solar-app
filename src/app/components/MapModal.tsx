@@ -30,12 +30,10 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
     return `https://www.google.com/maps?q=${encoded}&z=15&hl=en-GB&output=embed`
   }
 
-  // Initialize and update iframe source
   useEffect(() => {
     isOpen && !query ? (setIframeSrc(locationURL)) : (setIframeSrc(buildIframeSrc(query!, theme!)))
   }, [isOpen, modalQuery, modalTheme, iframeSrc])
 
-  // Sync props -> state
   useEffect(() => {
     if (query) setModalQuery(query)
     if (theme) setModalTheme(theme)

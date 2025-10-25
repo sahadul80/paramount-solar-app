@@ -155,7 +155,7 @@ const ProjectsPortfolio = () => {
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
             className="text-base text-tertiary max-w-2xl mx-auto px-4"
           >
-            Discover our growing portfolio of solar power projects driving Bangladesh's renewable energy transition
+            Discover our growing portfolio of solar power projects driving Bangladesh&apos;s renewable energy transition
           </motion.p>
         </motion.div>
 

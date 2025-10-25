@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Sun, Zap, Leaf, Play, Pause, Star, Sparkles } from 'lucide-react'
+import { ArrowDown, Sun, Zap, Leaf, Play, Pause, Sparkles, CircuitBoard } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 import SolarBanner from './SolarBanner'
@@ -163,7 +163,7 @@ const Banner = () => {
               height: particle.size,
             }}
           >
-            <Sparkles className="w-full h-full" />
+            <CircuitBoard/>
           </motion.div>
         ))}
       </div>
@@ -176,6 +176,7 @@ const Banner = () => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
+      <FloatingParticles count={100} color={"gray-400"} />
       {/* Background Slides with Next.js Image */}
       <div className="absolute inset-0 overflow-hidden">
         <AnimatePresence mode="wait" custom={direction} initial={false}>
