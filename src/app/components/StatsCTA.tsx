@@ -8,21 +8,24 @@ import {
   Factory,
   Award,
   ArrowRight,
-  Calendar
+  Calendar,
+  Zap,
+  Leaf,
+  TrendingUp,
+  Users
 } from 'lucide-react'
+import { SolarFarm } from './patterns/SolarFarm'
 
-/**
- * CountUp component
- * - target: numeric target to count to (e.g., 145)
- * - suffix: string appended to the number (e.g., 'K+','MW')
- * - trigger: change this value to restart the animation
- * - duration: ms for the animation
- */
-const CountUp = ({ target, suffix = '', trigger = 0, duration = 1200 }: { target: number, suffix?: string, trigger?: number, duration?: number }) => {
+const CountUp = ({ target, suffix = '', duration = 1200, isInView }: { target: number, suffix?: string, duration?: number, isInView: boolean }) => {
   const [value, setValue] = useState(0)
   const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
+    if (!isInView) {
+      setValue(0) // Reset when out of view
+      return
+    }
+
     let start: number | null = null
 
     const step = (ts: number) => {
@@ -38,7 +41,6 @@ const CountUp = ({ target, suffix = '', trigger = 0, duration = 1200 }: { target
       }
     }
 
-    // reset and start
     setValue(0)
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(step)
@@ -46,10 +48,10 @@ const CountUp = ({ target, suffix = '', trigger = 0, duration = 1200 }: { target
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [trigger, target, duration])
+  }, [target, duration, isInView])
 
   return (
-    <span className="text-3xl font-bold text-gray-800 mb-1">
+    <span className="text-2xl sm:text-3xl font-bold text-primary mb-1">
       {value}
       {suffix}
     </span>
@@ -57,41 +59,43 @@ const CountUp = ({ target, suffix = '', trigger = 0, duration = 1200 }: { target
 }
 
 const StatsCTA = () => {
-  // Use numeric targets and suffixes so we can animate reliably
   const stats = [
     {
       icon: Sun,
       target: 130,
       suffix: 'MW',
       label: 'Solar Capacity',
-      description: 'Total commissioned solar power capacity'
+      description: 'Total commissioned solar power capacity',
+      color: 'from-solar-primary/20 to-solar-primary/10'
     },
     {
       icon: Trees,
       target: 145,
       suffix: 'K+',
       label: 'CO₂ Offset',
-      description: 'Tons of carbon dioxide offset annually'
+      description: 'Tons of carbon dioxide offset annually',
+      color: 'from-solar-success/20 to-solar-success/10'
     },
     {
       icon: Factory,
       target: 3,
       suffix: '+',
       label: 'Major Projects',
-      description: 'Large-scale solar power plants'
+      description: 'Large-scale solar power plants',
+      color: 'from-solar-accent/20 to-solar-accent/10'
     },
     {
       icon: Award,
       target: 7,
       suffix: '+',
       label: 'Years Experience',
-      description: 'In renewable energy sector'
+      description: 'In renewable energy sector',
+      color: 'from-solar-secondary/20 to-solar-secondary/10'
     }
   ]
 
   const sectionRef = useRef<HTMLElement | null>(null)
-  // incrementing number used to retrigger CountUp components
-  const [triggerCount, setTriggerCount] = useState(0)
+  const [isInView, setIsInView] = useState(false)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -100,14 +104,12 @@ const StatsCTA = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // increment to retrigger child CountUp animations
-            setTriggerCount((t) => t + 1)
-          }
+          setIsInView(entry.isIntersecting)
         })
       },
       {
-        threshold: 0.25 // moderately visible before triggering
+        threshold: 0.3,
+        rootMargin: '50px'
       }
     )
 
@@ -126,129 +128,259 @@ const StatsCTA = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Smooth animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        staggerChildren: 0.15,
+        ease: "easeOut" as const
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const
+      }
+    }
+  }
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const
+      }
+    },
+    hover: {
+      scale: 1.02,
+      y: -2,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut" as const
+      }
+    }
+  }
+
   return (
-    <section id="stats" ref={sectionRef} className="py-16 bg-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-green-500 rounded-full"></div>
-        <div className="absolute top-32 right-20 w-16 h-16 bg-blue-500 rounded-full"></div>
-        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-yellow-500 rounded-full"></div>
+    <section id="stats" ref={sectionRef} className="section-padding bg-secondary relative overflow-hidden">
+      <SolarFarm/>
+      {/* Enhanced Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <motion.div
+          className="absolute top-10 left-10 w-20 h-20 rounded-full"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute top-32 right-20 w-16 h-16 bg-solar-secondary rounded-full"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.2, 0.4],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-1/4 w-24 h-24 bg-solar-accent rounded-full"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container-responsive relative z-10">
         {/* Stats Grid */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12"
         >
           {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all"
+                variants={cardVariants}
+                whileHover="hover"
+                className={`card card-interactive p-4 sm:p-6 text-center bg-gradient-to-br ${stat.color} relative overflow-hidden group border border-primary/10`}
               >
-                <div className="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon className="h-8 w-8 text-white" />
-                </div>
+                {/* Shine effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "200%" }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                />
 
-                {/* CountUp uses triggerCount so it restarts every time section intersects */}
-                <CountUp target={stat.target} suffix={stat.suffix} trigger={triggerCount} duration={1100} />
+                <motion.div
+                  className="bg-solar-primary w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 relative"
+                  whileHover={{ 
+                    scale: 1.1,
+                    rotate: 5 
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                </motion.div>
 
-                <div className="text-lg font-semibold text-green-600 mb-2">{stat.label}</div>
-                <div className="text-sm text-gray-600">{stat.description}</div>
+                <CountUp 
+                  target={stat.target} 
+                  suffix={stat.suffix} 
+                  duration={1400} 
+                  isInView={isInView} 
+                />
+
+                <div className="text-base sm:text-lg font-semibold text-solar-primary mb-2">{stat.label}</div>
+                <div className="text-xs sm:text-sm text-tertiary leading-relaxed">{stat.description}</div>
               </motion.div>
             )
           })}
         </motion.div>
 
-        {/* CTA Section */}
+        {/* Enhanced CTA Section */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-8 md:p-12 text-white text-center"
+          variants={itemVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          transition={{ duration: 0.2, delay: 0.2 }}
+          className="bg-gradient-to-r from-solar-primary to-solar-secondary rounded-2xl p-6 sm:p-8 md:p-12 text-primary text-center relative overflow-hidden"
         >
-          <div className="max-w-4xl mx-auto">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.2)_1px,transparent_0)] bg-[length:40px_40px]" />
+          </div>
+
+          <div className="max-w-4xl mx-auto relative z-10">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              variants={itemVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
               transition={{ duration: 0.6, delay: 0.6 }}
               className="mb-6"
             >
-              <Calendar className="h-16 w-16 mx-auto mb-4" />
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <motion.div
+                animate={isInView ? {
+                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.05, 1],
+                } : {}}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <Calendar className="h-8 w-8 text-primary" />
+              </motion.div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 leading-tight">
                 Ready to Power Your Future with Solar Energy?
               </h2>
-              <p className="text-xl text-green-100 mb-8">
+              <p className="text-base sm:text-lg text-primary/90 mb-6 sm:mb-8 leading-relaxed">
                 Join us in creating a sustainable future. Explore our solar solutions and discover how we can help you transition to clean, renewable energy.
               </p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              variants={itemVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8"
             >
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={scrollToAbout}
-                className="bg-white text-green-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition-colors shadow-lg hover:shadow-xl flex items-center justify-center"
+                className="btn btn-primary text-base py-3 px-6 sm:px-8 rounded-xl flex items-center justify-center gap-2 group"
               >
-                Explore Our Solutions
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </button>
-              <button
+                <span>Explore Our Solutions</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={scrollToContact}
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-colors flex items-center justify-center"
+                className="btn btn-accent text-base py-3 px-6 sm:px-8 rounded-xl flex items-center justify-center gap-2 group"
               >
-                Get Free Consultation
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </button>
+                <span>Get Free Consultation</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </motion.button>
             </motion.div>
 
-            {/* Additional Info */}
+            {/* Enhanced Additional Info */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              variants={itemVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
               transition={{ duration: 0.6, delay: 1 }}
-              className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-green-100"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-primary/90"
             >
-              <div className="flex items-center justify-center">
-                <div className="w-2 h-2 bg-green-200 rounded-full mr-3"></div>
+              <div className="flex items-center justify-center gap-2 text-sm">
+                <div className="w-2 h-2 bg-solar-success rounded-full flex-shrink-0" />
                 <span>20+ Years Power Purchase Agreement</span>
               </div>
-              <div className="flex items-center justify-center">
-                <div className="w-2 h-2 bg-green-200 rounded-full mr-3"></div>
+              <div className="flex items-center justify-center gap-2 text-sm">
+                <div className="w-2 h-2 bg-solar-success rounded-full flex-shrink-0" />
                 <span>Utility-scale Solar Projects</span>
               </div>
-              <div className="flex items-center justify-center">
-                <div className="w-2 h-2 bg-green-200 rounded-full mr-3"></div>
+              <div className="flex items-center justify-center gap-2 text-sm">
+                <div className="w-2 h-2 bg-solar-success rounded-full flex-shrink-0" />
                 <span>Proven Track Record</span>
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Trust Indicators */}
+        {/* Enhanced Trust Indicators */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="text-center mt-12"
+          variants={itemVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          transition={{ duration: 0.6, delay: 1.2 }}
+          className="text-center mt-8 sm:mt-12"
         >
-          <p className="text-gray-500 text-sm uppercase tracking-wider mb-4">TRUSTED BY INDUSTRY LEADERS</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            {['Government Agencies', 'Industrial Partners', 'Financial Institutions', 'International Organizations'].map((partner) => (
-              <div key={partner} className="text-gray-400 font-medium">
+          <p className="text-tertiary text-sm uppercase tracking-wider mb-4 font-semibold">TRUSTED BY INDUSTRY LEADERS</p>
+          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 opacity-70">
+            {['Government Agencies', 'Industrial Partners', 'Financial Institutions', 'International Organizations'].map((partner, index) => (
+              <motion.div
+                key={partner}
+                initial={{ opacity: 0, y: 10 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, delay: 1.4 + index * 0.1 }}
+                className="text-tertiary font-medium text-sm flex items-center gap-2"
+              >
+                <div className="w-1 h-1 bg-solar-accent rounded-full" />
                 {partner}
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>

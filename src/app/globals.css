@@ -1,54 +1,1834 @@
 @import "tailwindcss";
 
+/* ====================================================== */
+/* ============ Solar Professional Theme Variables ======= */
+/* ====================================================== */
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  /* Solar Professional Light Mode */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-quaternary: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-tertiary: #475569;
+  --text-quaternary: #64748b;
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-tertiary: #94a3b8;
+  
+  /* Solar Brand Colors */
+  --solar-primary: #059669;      /* Emerald - Growth & Sustainability */
+  --solar-secondary: #0ea5e9;    /* Sky Blue - Clean Energy */
+  --solar-accent: #f59e0b;       /* Amber - Sun & Energy */
+  --solar-success: #10b981;      /* Green - Success & Growth */
+  --solar-warning: #f97316;      /* Orange - Warning/Construction */
+  --solar-error: #ef4444;        /* Red - Errors */
+  --solar-info: #3b82f6;         /* Blue - Information */
+  
+  /* Gradients */
+  --gradient-solar: linear-gradient(135deg, var(--solar-primary) 0%, var(--solar-accent) 100%);
+  --gradient-energy: linear-gradient(135deg, var(--solar-secondary) 0%, var(--solar-primary) 100%);
+  --gradient-sunrise: linear-gradient(135deg, var(--solar-accent) 0%, var(--solar-warning) 100%);
+  
+  /* Enhanced Shadows & Effects */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-xl: 0 24px 64px rgba(15, 23, 42, 0.16);
+  --shadow-strong: 0 8px 24px rgba(15, 23, 42, 0.18);
+  
+  /* Enhanced Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.1);
+  
+  /* Enhanced Overlays */
+  --overlay-bg: rgba(15, 23, 42, 0.15);
+  --overlay-strong: rgba(15, 23, 42, 0.25);
+  
+  /* Spacing & Typography */
+  --spacing-3xs: 0.125rem;
+  --spacing-2xs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  
+  --border-radius-sm: 0.375rem;
+  --border-radius: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-2xl: 1.5rem;
+  
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  
+  --section-spacing: 4rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    /* Solar Professional Dark Mode */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-quaternary: #475569;
+    --text-primary: #f1f5f9;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #cbd5e1;
+    --text-quaternary: #94a3b8;
+    --border-primary: #334155;
+    --border-secondary: #475569;
+    --border-tertiary: #64748b;
+    
+    /* Solar Brand Colors - Dark Mode */
+    --solar-primary: #10b981;
+    --solar-secondary: #38bdf8;
+    --solar-accent: #fbbf24;
+    --solar-success: #34d399;
+    --solar-warning: #fb923c;
+    --solar-error: #f87171;
+    --solar-info: #60a5fa;
+    
+    /* Enhanced Dark Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+    --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.7);
+    
+    /* Enhanced Dark Glass */
+    --glass-bg: rgba(15, 23, 42, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    /* Enhanced Dark Overlays */
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --overlay-strong: rgba(0, 0, 0, 0.8);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* ====================================================== */
+/* ================= CSS Layers ======================== */
+/* ====================================================== */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  *:not(.solar-panel):not(.letter-3d):not(.glass-overlay) {
+    transition: 
+      background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Inter", sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    
+    /* Subtle solar-themed background pattern */
+    background-image: 
+      radial-gradient(circle at 15% 15%, var(--bg-secondary) 1px, transparent 1px),
+      radial-gradient(circle at 85% 85%, var(--bg-secondary) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
+    animation: backgroundShift 120s linear infinite;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* ================= Enhanced Scrollbar ================= */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-sm);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: var(--border-radius-sm);
+    border: 2px solid var(--bg-secondary);
+    transition: background-color 0.3s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-secondary);
+  }
+  
+  /* ================= Enhanced Focus Styles ================= */
+  :focus-visible {
+    outline: 3px solid var(--solar-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+    transition: outline-color 0.2s ease;
+  }
+
+  /* ================= Solar Professional Button System ================= */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+    transition: transform 0.1s ease;
+  }
+
+  .btn-primary {
+    background: var(--solar-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover {
+    background: #047857;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-secondary {
+    background: var(--solar-secondary);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-secondary:hover {
+    background: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-accent {
+    background: var(--solar-accent);
+    color: #0f172a;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-accent:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-ghost:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-success {
+    background: var(--solar-success);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-success:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-warning {
+    background: var(--solar-warning);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-warning:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-error {
+    background: var(--solar-error);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-error:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-sm {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+
+  .btn-lg {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-base);
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* ================= Solar Professional Tag System ================= */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2xs);
+    padding: var(--spacing-2xs) var(--spacing-sm);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    line-height: 1.2;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .tag-primary {
+    background: rgba(5, 150, 105, 0.15);
+    color: var(--solar-primary);
+    border-color: rgba(5, 150, 105, 0.3);
+  }
+
+  .tag-secondary {
+    background: rgba(14, 165, 233, 0.15);
+    color: var(--solar-secondary);
+    border-color: rgba(14, 165, 233, 0.3);
+  }
+
+  .tag-accent {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--solar-accent);
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .tag-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--solar-success);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .tag-warning {
+    background: rgba(249, 115, 22, 0.15);
+    color: var(--solar-warning);
+    border-color: rgba(249, 115, 22, 0.3);
+  }
+
+  .tag-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--solar-error);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .tag-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--solar-info);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .tag-sm {
+    padding: var(--spacing-3xs) var(--spacing-xs);
+    font-size: 0.6875rem;
+  }
+
+  .tag-lg {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+
+  /* ================= Enhanced Card System ================= */
+  .card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: auto;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-secondary);
+  }
+
+  .card-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .card-elevated {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .card-interactive {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .card-interactive::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--solar-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card-interactive:hover::after {
+    opacity: 0.05;
+  }
+
+  /* Solar Status Cards */
+  .card-status-operational {
+    border-left: 4px solid var(--solar-success);
+  }
+
+  .card-status-construction {
+    border-left: 4px solid var(--solar-warning);
+  }
+
+  .card-status-pipeline {
+    border-left: 4px solid var(--solar-info);
+  }
+
+  .card-status-planning {
+    border-left: 4px solid var(--solar-secondary);
+  }
+
+  /* ================= Enhanced Layout Components ================= */
+  .container-responsive {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+  }
+
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding: 0 var(--spacing-lg);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding: 0 var(--spacing-xl);
+    }
+  }
+
+  .section-padding {
+    padding: var(--section-spacing) 0;
+  }
+
+  .grid-responsive {
+    display: grid;
+    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+
+  .grid-auto-fit {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ================= Enhanced Form Components ================= */
+  .input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--border-radius);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--solar-primary);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  }
+
+  .input-error {
+    border-color: var(--solar-error);
+  }
+
+  .input-error:focus {
+    border-color: var(--solar-error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  /* ================= Enhanced Navigation ================= */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .nav-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  .nav-item.active {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--solar-primary);
+    font-weight: 600;
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--solar-primary);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* ================= Advanced Layout Utilities ================= */
+  .aspect-video { aspect-ratio: 16 / 9; }
+  .aspect-square { aspect-ratio: 1 / 1; }
+  .aspect-portrait { aspect-ratio: 3 / 4; }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* ================= Advanced Interaction Utilities ================= */
+
+  .hover-glow:hover {
+    box-shadow: 
+      0 0 20px rgba(5, 150, 105, 0.15),
+      var(--shadow-lg);
   }
+
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--solar-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+  }
+
+
+  /* ================= Solar Professional Visual Utilities ================= */
+  .gradient-solar {
+    background: var(--gradient-solar);
+  }
+
+  .gradient-energy {
+    background: var(--gradient-energy);
+  }
+
+  .gradient-sunrise {
+    background: var(--gradient-sunrise);
+  }
+
+  .gradient-text-solar {
+    background: var(--gradient-solar);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gradient-text-energy {
+    background: var(--gradient-energy);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+
+  .shadow-glow {
+    box-shadow: 
+      0 0 0 1px rgba(5, 150, 105, 0.1),
+      var(--shadow-lg);
+  }
+
+  /* ================= Solar Color Utilities ================= */
+  .text-solar-primary { color: var(--solar-primary); }
+  .bg-solar-primary { background: var(--solar-primary); }
+  .border-solar-primary { border-color: var(--solar-primary); }
+
+  .text-solar-secondary { color: var(--solar-secondary); }
+  .bg-solar-secondary { background: var(--solar-secondary); }
+  .border-solar-secondary { border-color: var(--solar-secondary); }
+
+  .text-solar-accent { color: var(--solar-accent); }
+  .bg-solar-accent { background: var(--solar-accent); }
+  .border-solar-accent { border-color: var(--solar-accent); }
+
+  .text-solar-success { color: var(--solar-success); }
+  .bg-solar-success { background: var(--solar-success); }
+  .border-solar-success { border-color: var(--solar-success); }
+
+  .text-solar-warning { color: var(--solar-warning); }
+  .bg-solar-warning { background: var(--solar-warning); }
+  .border-solar-warning { border-color: var(--solar-warning); }
+
+  .text-solar-error { color: var(--solar-error); }
+  .bg-solar-error { background: var(--solar-error); }
+  .border-solar-error { border-color: var(--solar-error); }
+
+  .text-solar-info { color: var(--solar-info); }
+  .bg-solar-info { background: var(--solar-info); }
+  .border-solar-info { border-color: var(--solar-info); }
+
+  /* ================= Spacing Utilities ================= */
+  .space-y-3xs > * + * { margin-top: var(--spacing-3xs); }
+  .space-y-2xs > * + * { margin-top: var(--spacing-2xs); }
+  .space-y-xs > * + * { margin-top: var(--spacing-xs); }
+  .space-y-sm > * + * { margin-top: var(--spacing-sm); }
+  .space-y-md > * + * { margin-top: var(--spacing-md); }
+  .space-y-lg > * + * { margin-top: var(--spacing-lg); }
+  .space-y-xl > * + * { margin-top: var(--spacing-xl); }
+  .space-y-2xl > * + * { margin-top: var(--spacing-2xl); }
+  .space-y-3xl > * + * { margin-top: var(--spacing-3xl); }
+
+  .space-x-3xs > * + * { margin-left: var(--spacing-3xs); }
+  .space-x-2xs > * + * { margin-left: var(--spacing-2xs); }
+  .space-x-xs > * + * { margin-left: var(--spacing-xs); }
+  .space-x-sm > * + * { margin-left: var(--spacing-sm); }
+  .space-x-md > * + * { margin-left: var(--spacing-md); }
+  .space-x-lg > * + * { margin-left: var(--spacing-lg); }
+  .space-x-xl > * + * { margin-left: var(--spacing-xl); }
+  .space-x-2xl > * + * { margin-left: var(--spacing-2xl); }
+  .space-x-3xl > * + * { margin-left: var(--spacing-3xl); }
+
+  /* ================= Text Utilities ================= */
+  .text-xs { font-size: var(--font-size-xs); }
+  .text-sm { font-size: var(--font-size-sm); }
+  .text-base { font-size: var(--font-size-base); }
+  .text-lg { font-size: var(--font-size-lg); }
+  .text-xl { font-size: var(--font-size-xl); }
+  .text-2xl { font-size: var(--font-size-2xl); }
+  .text-3xl { font-size: var(--font-size-3xl); }
+  .text-4xl { font-size: var(--font-size-4xl); }
+  .text-5xl { font-size: var(--font-size-5xl); }
+
+  .font-light { font-weight: 300; }
+  .font-normal { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  .font-extrabold { font-weight: 800; }
+
+  .leading-tight { line-height: 1.25; }
+  .leading-normal { line-height: 1.6; }
+  .leading-relaxed { line-height: 1.75; }
+
+  /* ================= Color Utilities ================= */
+  .bg-primary { background: var(--bg-primary); }
+  .bg-secondary { background: var(--bg-secondary); }
+  .bg-tertiary { background: var(--bg-tertiary); }
+  .bg-quaternary { background: var(--bg-quaternary); }
+
+  .text-primary { color: var(--text-primary); }
+  .text-secondary { color: var(--text-secondary); }
+  .text-tertiary { color: var(--text-tertiary); }
+  .text-quaternary { color: var(--text-quaternary); }
+
+  .border-primary { border-color: var(--border-primary); }
+  .border-secondary { border-color: var(--border-secondary); }
+  .border-tertiary { border-color: var(--border-tertiary); }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+
+
+/* Solar Banner (Enhanced) */
+.solar-banner-container {
+  perspective: 1600px;
+  transform-style: preserve-3d;
+  position: relative;
+  padding: var(--spacing-lg);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+.solar-grid {
+  display: grid;
+  gap: 1px;
+  position: relative;
+  transform: rotateX(24deg) rotateY(24deg);
+  transform-origin: center;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+  --glare-angle: 120deg;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.solar-grid-shadow {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  width: 80%;
+  height: 50px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 80%);
+  filter: blur(20px);
+  transform: translateX(-50%) rotateX(80deg);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #10b981;
+.solar-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d1b2a;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.8),
+    0 3px 8px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #059669;
+.panel-base-color {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 40px
+  ),
+  repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 40px
+  ),
+  linear-gradient(135deg, #0a1a2f, #102a44, #0d1b2a);
+}
+
+.glass-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    var(--glare-angle),
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  animation: glassSweep 6s ease-in-out infinite;
+}
+
+.letter-3d {
+  font-weight: 800;
+  text-transform: uppercase;
+  position: relative;
+  color: var(--solar-accent);
+  text-align: center;
+  font-size: clamp(0.9rem, 4.5vw, 1.8rem);
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.8), 0 0 20px rgba(245, 158, 11, 0.6);
+}
+
+/* Enhanced Gallery Styles */
+.gallery-container {
+  min-height: 90vh;
+  width: 100%;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: transparent;
+}
+
+.gallery-title {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 800;
+  background: var(--gradient-solar);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Enhanced Modal Styles */
+.gallery-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-strong);
+  backdrop-filter: blur(30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ====================================================== */
+/* ================= Advanced Responsive Design ========= */
+/* ====================================================== */
+
+@container (min-width: 640px) {
+  .card-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container (min-width: 1024px) {
+  .card-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ====================================================== */
+/* ================= Advanced Media Queries ============= */
+/* ====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .solar-grid {
+    transform: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: #000000;
+    --border-secondary: #333333;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-tertiary: #666666;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --border-primary: #ffffff;
+      --border-secondary: #cccccc;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --text-tertiary: #999999;
+    }
+  }
+}
+
+@media (orientation: portrait) {
+  .orientation-warning {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-full {
+    width: 100%;
+  }
+}
+
+/* ====================================================== */
+/* ================= Print Optimizations ================ */
+/* ====================================================== */
+
+@media print {
+  .sidebar, .gallery-modal-close, .btn {
+    display: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+  }
+  
+  .card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  .text-gradient {
+    background: none !important;
+    color: black !important;
+  }
+}
+
+/* ====================================================== */
+/* ================= Advanced Selectors ================ */
+/* ====================================================== */
+
+/* Target modern browsers with feature support */
+@supports (backdrop-filter: blur(10px)) {
+  .glass-enhanced {
+    backdrop-filter: blur(40px);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@supports (height: 100svh) {
+  .full-viewport {
+    height: 100svh;
+  }
+}
+
+/* ====================================================== */
+/* ================= Legacy Browser Support ============= */
+/* ====================================================== */
+
+@supports not (display: grid) {
+  .grid-fallback {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .grid-fallback > * {
+    flex: 1 1 300px;
+    margin: var(--spacing-md);
+  }
+}
+
+/* ================= Custom Scrollbar for Gallery ================= */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
+}
+
+/* ================= Marquee Animation Fixes ================= */
+.marquee-container {
+  mask: linear-gradient(
+    90deg,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+}
+
+/* ================= Performance Optimizations ================= */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+
+/* ================= Missing Gallery Card Styles ================= */
+.gallery-card {
+  flex-shrink: 0;
+  width: min(90vw, 400px);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  scroll-snap-align: start;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .gallery-card {
+    width: min(60vw, 500px);
+  }
+}
+
+.gallery-card-active {
+  opacity: 1;
+  transform: scale(1.05);
+  padding: 4px;
+}
+
+.gallery-card-inactive {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.gallery-card-inner {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  height: 32rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px var(--shadow-strong);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 640px) {
+  .gallery-card-inner {
+    height: 36rem;
+  }
+}
+
+.gallery-card:hover .gallery-card-inner {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px var(--shadow-strong);
+}
+
+.gallery-card-image {
+  height: 90%;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-card-bg {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-tertiary);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-card:hover .gallery-card-bg {
+  transform: scale(1.1);
+}
+
+.gallery-card-category {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 2rem;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.gallery-card-content {
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.gallery-card-title {
+  color: var(--text-primary);
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+/* ================= Missing Gallery Modal Styles ================= */
+.gallery-modal {
+  position: relative;
+  width: min(95vw, 1200px);
+  height: min(95vh, 800px);
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px);
+  border-radius: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 40px 80px var(--shadow-strong);
+  animation: modalSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@media (min-width: 1024px) {
+  .gallery-modal {
+    flex-direction: row;
+  }
+}
+
+/* Enhanced Modal Close Button */
+.gallery-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2rem;
+  height: 2rem;
+  background: var(--glass-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+}
+
+.gallery-modal-close:hover {
+  background: var(--bg-tertiary);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.gallery-modal-close-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-primary);
+}
+
+/* Enhanced Modal Navigation */
+.gallery-modal-nav {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  background: var(--glass-bg);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+}
+
+@media (min-width: 640px) {
+  .gallery-modal-nav {
+    display: flex;
+  }
+}
+
+.gallery-modal-nav:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-50%) scale(1.15);
+}
+
+.gallery-modal-prev {
+  left: 0.5rem;
+}
+
+.gallery-modal-next {
+  right: 0.5rem;
+}
+
+.gallery-modal-nav-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-primary);
+}
+
+/* Enhanced Modal Image */
+.gallery-modal-image {
+  width: 100%;
+  height: 40%;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .gallery-modal-image {
+    width: 50%;
+    height: 100%;
+  }
+}
+
+.gallery-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-modal:hover .gallery-modal-img {
+  transform: scale(1.05);
+}
+
+.gallery-modal-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--overlay-bg), transparent 60%);
+}
+
+@media (min-width: 1024px) {
+  .gallery-modal-gradient {
+    background: linear-gradient(to right, var(--overlay-bg), transparent 60%);
+  }
+}
+
+/* Enhanced Modal Content */
+.gallery-modal-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+}
+
+@media (min-width: 1024px) {
+  .gallery-modal-content {
+    width: 50%;
+    background: transparent;
+  }
+}
+
+.gallery-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.gallery-modal-category {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-radius: 2rem;
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.gallery-modal-date {
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.gallery-modal-title {
+  color: var(--text-primary);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.gallery-modal-description {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.gallery-modal-text {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.gallery-modal-footer {
+  border-top: 1px solid var(--border-primary);
+  padding-top: 1.5rem;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ================= Missing Map Styles ================= */
+.map-responsive {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  padding-bottom: 56.25%; /* 16:9 aspect */
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.map-responsive iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ================= Missing Loading States ================= */
+.gallery-loading {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: transparent;
+}
+
+.gallery-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.gallery-loading-card {
+  width: 100%;
+  height: 20rem;
+  background: var(--glass-bg);
+  border-radius: 1rem;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  animation: shimmer 2s ease-in-out infinite;
+  box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+/* ================= Missing Gallery Cards Container ================= */
+.gallery-cards-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.gallery-cards-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 2rem 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.gallery-cards-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.gallery-cards-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.gallery-cards-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 4px;
+}
+
+.gallery-cards-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ================= Missing Gallery Info ================= */
+.gallery-info {
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0 1rem;
+}
+
+/* ================= Missing Solar Grid Shadow ================= */
+.solar-grid-shadow {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  width: 80%;
+  height: 50px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 80%);
+  filter: blur(20px);
+  transform: translateX(-50%) rotateX(80deg);
+}
+
+.panel-base-color {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 40px
+  ),
+  repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 40px
+  ),
+  linear-gradient(135deg, #0a1a2f, #102a44, #0d1b2a);
+}
+
+/* ================= Missing Custom Scrollbar ================= */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--border-secondary);
+}
+
+/* ================= Missing Marquee Styles ================= */
+.marquee-container {
+  mask: linear-gradient(
+    90deg,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+}
+
+.marquee-content {
+  animation: marquee-scroll 40s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* ================= Missing Utility Classes ================= */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* ================= Missing Animation Keyframes ================= */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes modalSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================= Missing Header Styles ================= */
+.gallery-header {
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.bg-solar-panel-grid {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(var(--border-primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-primary) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+.bg-solar-panel-grid-dark {
+  background-color: var(--bg-secondary);
+  background-image: 
+    linear-gradient(var(--solar-primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--solar-primary) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.1;
+}
+
+.bg-sun-rays {
+  background: 
+    radial-gradient(circle at center, var(--solar-accent) 0%, transparent 50%),
+    conic-gradient(
+      from 0deg at center,
+      transparent 0deg,
+      var(--solar-warning) 10deg,
+      transparent 20deg,
+      var(--solar-accent) 30deg,
+      transparent 40deg
+    );
+  background-size: 100% 100%, 200px 200px;
+  background-position: center, center;
+  opacity: 0.05;
+}
+
+.bg-sunburst {
+  background: 
+    radial-gradient(
+      circle at center,
+      transparent 0%,
+      var(--bg-primary) 70%
+    ),
+    repeating-conic-gradient(
+      from 0deg,
+      var(--solar-accent) 0deg 10deg,
+      transparent 10deg 20deg
+    );
+  background-size: 100% 100%, 300px 300px;
+  opacity: 0.03;
+}
+
+.bg-solar-farm {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle, var(--solar-primary) 1px, transparent 1px),
+    radial-gradient(circle, var(--solar-success) 1px, transparent 1px);
+  background-size: 60px 60px, 120px 120px;
+  background-position: 0 0, 30px 30px;
+  opacity: 0.1;
+}
+
+.bg-solar-array {
+  background-color: var(--bg-secondary);
+  background-image: 
+    linear-gradient(45deg, var(--solar-primary) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--solar-primary) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--solar-primary) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--solar-primary) 75%);
+  background-size: 40px 40px;
+  background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+  opacity: 0.05;
+}
+
+.bg-energy-flow {
+  background: 
+    linear-gradient(90deg, transparent 50%, var(--solar-secondary) 50%),
+    linear-gradient(90deg, var(--solar-secondary) 50%, transparent 50%);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  opacity: 0.1;
+}
+
+.bg-power-grid {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(var(--solar-info) 1px, transparent 1px),
+    linear-gradient(90deg, var(--solar-info) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: center center;
+  opacity: 0.08;
+}
+
+.bg-photovoltaic {
+  background-color: var(--bg-secondary);
+  background-image: 
+    radial-gradient(circle at 25% 25%, var(--solar-accent) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, var(--solar-warning) 2px, transparent 2px);
+  background-size: 60px 60px;
+  opacity: 0.1;
+}
+
+.bg-solar-cells {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      var(--solar-primary) 19px,
+      var(--solar-primary) 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      var(--solar-primary) 19px,
+      var(--solar-primary) 20px
+    );
+  background-size: 20px 20px;
+  opacity: 0.08;
+}
+
+.bg-renewable-energy {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 20% 30%, var(--solar-accent) 10px, transparent 10px),
+    radial-gradient(circle at 80% 70%, var(--solar-secondary) 15px, transparent 15px),
+    radial-gradient(circle at 40% 80%, var(--solar-info) 12px, transparent 12px);
+  background-size: 200px 200px;
+  opacity: 0.05;
+}
+
+.bg-weather-pattern {
+  background: 
+    radial-gradient(ellipse at 30% 20%, var(--solar-accent) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, var(--solar-secondary) 0%, transparent 50%);
+  background-size: 300px 300px, 400px 400px;
+  background-position: 0 0, 100px 100px;
+  opacity: 0.04;
+}
+.bg-circuit-board {
+  background-color: var(--bg-secondary);
+  background-image: 
+    linear-gradient(var(--solar-success) 1px, transparent 1px),
+    linear-gradient(90deg, var(--solar-success) 1px, transparent 1px),
+    radial-gradient(circle, var(--solar-accent) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 25px 25px;
+  background-position: 0 0, 0 0, 25px 25px;
+  opacity: 0.1;
+}
+
+.bg-electrical-grid {
+  background: 
+    linear-gradient(45deg, var(--solar-info) 25%, transparent 25%) -20px 0,
+    linear-gradient(-45deg, var(--solar-info) 25%, transparent 25%) -20px 0,
+    linear-gradient(45deg, transparent 75%, var(--solar-info) 75%) -20px 0,
+    linear-gradient(-45deg, transparent 75%, var(--solar-info) 75%) -20px 0;
+  background-size: 40px 40px;
+  background-color: var(--bg-primary);
+  opacity: 0.08;
+}
+.bg-battery-storage {
+  background-color: var(--bg-secondary);
+  background-image: 
+    linear-gradient(90deg, transparent 90%, var(--solar-success) 90%),
+    linear-gradient(90deg, var(--solar-success) 10%, transparent 10%);
+  background-size: 60px 20px;
+  background-position: 0 0;
+  opacity: 0.1;
+}
+
+.bg-energy-storage {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      var(--solar-success),
+      var(--solar-success) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--solar-success),
+      var(--solar-success) 2px,
+      transparent 2px,
+      transparent 10px
+    );
+  background-size: 20px 20px;
+  background-color: var(--bg-primary);
+  opacity: 0.08;
+}
+.bg-green-energy {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 10% 20%, var(--solar-success) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, var(--solar-primary) 0%, transparent 20%);
+  background-size: 300px 300px;
+  opacity: 0.05;
+}
+
+.bg-sustainability {
+  background: 
+    radial-gradient(circle at 20% 80%, var(--solar-success) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--solar-primary) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--solar-accent) 0%, transparent 50%);
+  background-size: 400px 400px;
+  opacity: 0.03;
+}
+.bg-solar-innovation {
+  background-color: var(--bg-secondary);
+  background-image: 
+    linear-gradient(45deg, var(--solar-accent) 12%, transparent 12%, transparent 88%, var(--solar-accent) 88%, var(--solar-accent)),
+    linear-gradient(135deg, transparent 25%, var(--solar-primary) 25%, var(--solar-primary) 75%, transparent 75%, transparent),
+    linear-gradient(45deg, transparent 25%, var(--solar-primary) 25%, var(--solar-primary) 75%, transparent 75%, transparent);
+  background-size: 80px 80px;
+  background-position: 0 0, 40px 0, 40px -40px;
+  opacity: 0.1;
+}
+
+.bg-technology-grid {
+  background: 
+    radial-gradient(circle at center, var(--solar-secondary) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--solar-info) 1px, transparent 1px);
+  background-size: 30px 30px, 60px 60px;
+  background-position: 0 0, 15px 15px;
+  background-color: var(--bg-primary);
+  opacity: 0.08;
+}
+.bg-solar-installation {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(30deg, var(--border-primary) 12%, transparent 12.5%, transparent 87%, var(--border-primary) 87.5%, var(--border-primary)),
+    linear-gradient(150deg, var(--border-primary) 12%, transparent 12.5%, transparent 87%, var(--border-primary) 87.5%, var(--border-primary)),
+    linear-gradient(30deg, var(--border-primary) 12%, transparent 12.5%, transparent 87%, var(--border-primary) 87.5%, var(--border-primary)),
+    linear-gradient(150deg, var(--border-primary) 12%, transparent 12.5%, transparent 87%, var(--border-primary) 87.5%, var(--border-primary)),
+    linear-gradient(60deg, var(--border-tertiary) 25%, transparent 25.5%, transparent 75%, var(--border-tertiary) 75%, var(--border-tertiary)),
+    linear-gradient(60deg, var(--border-tertiary) 25%, transparent 25.5%, transparent 75%, var(--border-tertiary) 75%, var(--border-tertiary));
+  background-size: 80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+  opacity: 0.1;
+}
+.bg-clean-energy {
+  background: 
+    radial-gradient(circle at 25% 25%, var(--solar-success) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, var(--solar-primary) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--solar-accent) 0%, transparent 50%);
+  background-size: 200px 200px;
+  background-color: var(--bg-secondary);
+  opacity: 0.04;
+}
+
+.bg-renewable-grid {
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(var(--solar-success) 1px, transparent 1px),
+    linear-gradient(90deg, var(--solar-success) 1px, transparent 1px);
+  background-size: 100px 100px;
+  opacity: 0.08;
 }

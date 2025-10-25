@@ -1,7 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { 
   Target, 
   Eye, 
@@ -16,11 +15,11 @@ import {
   Globe,
   Shield,
   Lightbulb,
-  ChevronDown,
-  ChevronUp,
   Calendar,
   LucideIcon
 } from 'lucide-react'
+import { SolarPanelGrid } from './patterns/SolarPanelGrid';
+import { GreenEnergy } from './patterns/GreenEnergy';
 
 // Type definitions
 interface StatItem {
@@ -73,12 +72,6 @@ interface Section {
 }
 
 const About = () => {
-  const [expandedSection, setExpandedSection] = useState<string | null>(null)
-
-  const toggleSection = (title: string) => {
-    setExpandedSection(expandedSection === title ? null : title)
-  }
-
   const sections: Section[] = [
     {
       icon: Building2,
@@ -167,9 +160,9 @@ const About = () => {
       visualization: {
         type: "targets",
         data: [
-          { target: "Quality", progress: 100, color: "green" },
-          { target: "Innovation", progress: 90, color: "blue" },
-          { target: "Sustainability", progress: 95, color: "emerald" }
+          { target: "Quality", progress: 100, color: "bg-solar-primary" },
+          { target: "Innovation", progress: 90, color: "bg-solar-secondary" },
+          { target: "Sustainability", progress: 95, color: "bg-solar-accent" }
         ]
       },
       subsections: [
@@ -217,18 +210,27 @@ const About = () => {
     switch (viz.type) {
       case "stats":
         return (
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 m-2">
             {(viz.data as StatItem[]).map((item: StatItem, index: number) => (
               <motion.div
                 key={item.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center p-3 bg-white rounded-lg shadow-sm"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="card card-glass p-6 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
-                <item.icon className="h-6 w-6 text-green-500 mx-auto mb-2" />
-                <div className="text-lg font-bold text-gray-800">{item.value}</div>
-                <div className="text-xs text-gray-600">{item.label}</div>
+                <div className="p-4 rounded-2xl bg-solar-primary/10 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="h-8 w-8 text-solar-accent" />
+                </div>
+                <div className="text-2xl font-extrabold gradient-text-solar mb-2">{item.value}</div>
+                <div className="text-sm text-tertiary font-medium">{item.label}</div>
+                
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "200%" }}
+                  transition={{ duration: 0.8 }}
+                />
               </motion.div>
             ))}
           </div>
@@ -236,24 +238,31 @@ const About = () => {
       
       case "structure":
         return (
-          <div className="mt-4 space-y-3 flex flex-col sm:flex-row justify-between gap-2">
+          <div className="m-2 grid grid-cols-1 md:grid-cols-3 gap-6">
             {(viz.data as StructureItem[]).map((item: StructureItem, index: number) => (
               <motion.div
                 key={item.level}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`p-3 rounded-lg border-l-4 w-full h-full ${
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className={`card card-interactive p-8 rounded-2xl relative overflow-hidden hover:scale-105 transition-transform duration-300 ${
                   item.highlight 
-                    ? 'bg-green-50 border-green-500' 
-                    : 'bg-gray-50 border-gray-300'
+                    ? 'bg-gradient-to-br from-solar-primary/15 to-solar-secondary/10 ring-2 ring-solar-primary/30' 
+                    : 'bg-secondary/40'
                 }`}
               >
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-gray-700">{item.level}</span>
-                  <span className="text-sm text-gray-600">{item.value}</span>
+                <div className="flex flex-col h-full">
+                  <span className="text-sm font-semibold text-solar-primary mb-3">{item.level}</span>
+                  <h4 className="text-xl font-bold text-primary mb-3">{item.name}</h4>
+                  <p className="text-solar-accent font-semibold text-lg mt-auto">{item.value}</p>
                 </div>
-                <div className="text-sm text-gray-800">{item.name}</div>
+
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "200%" }}
+                  transition={{ duration: 0.8 }}
+                />
               </motion.div>
             ))}
           </div>
@@ -261,72 +270,150 @@ const About = () => {
       
       case "timeline":
         return (
-          <div className="relative mt-12 w-full overflow-x-auto overflow-y-hidden">
-            {/* Horizontal line */}
-            <div className="absolute left-0 right-0 top-1/2 bottom-1/2 h-0.5 bg-green-200"></div>
+          <div className="relative m-2 w-full overflow-auto">
+            {/* Mobile Vertical Timeline */}
+            <div className="block md:hidden">
+              
+              <motion.div
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="absolute left-8 top-0 bottom-0 w-1 bg-solar-secondary rounded-full origin-top"
+              />
 
-            <div className="flex space-x-12 sm:space-x-16 min-w-max px-8 pb-12 pt-8">
-              {(viz.data as TimelineItem[]).map((item: TimelineItem, index: number) => {
-                const isTop = index % 2 === 0;
-
-                return (
+              <div className="">
+                {(viz.data as TimelineItem[]).map((item: TimelineItem, index: number) => (
                   <motion.div
                     key={item.year}
-                    initial={{ opacity: 0, y: isTop ? -40 : 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="relative flex flex-col items-center"
+                    className="relative flex flex-row items-center m-4 gap-4"
                   >
-                    {/* Card */}
-                    <div
-                      className={`${
-                        isTop ? "mt-28" : "mb-10"
-                      } bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-[220px] sm:w-[260px] md:w-[300px] text-center`}
+
+                    <div className="">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="w-8 h-8 bg-solar-accent rounded-full border-4 border-secondary shadow-lg flex items-center justify-center"
+                      >
+                        <Zap className="h-3 w-3 text-secondary" />
+                      </motion.div>
+                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      className="card card-glass card-interactive p-6 rounded-xl shadow-lg w-full text-left relative overflow-hidden"
                     >
-                      <div className="flex items-center justify-center">
-                        <Calendar className="h-6 w-6 text-green-500 mr-2" />
-                        <span className="text-green-600 font-bold">{item.year}</span>
+                      <div className="flex items-center mb-3">
+                        <Calendar className="h-5 w-5 text-solar-accent mr-3" />
+                        <span className="text-solar-accent font-bold text-lg">{item.year}</span>
                       </div>
-                      <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                      <p className="text-tertiary text-base leading-relaxed">
                         {item.event}
                       </p>
-                    </div>
 
-                    {/* Timeline Dot */}
-                    <div className="absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                      <Zap className="h-4 w-4 text-white" />
-                    </div>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "200%" }}
+                        transition={{ duration: 0.8 }}
+                      />
+                    </motion.div>
                   </motion.div>
-                );
-              })}
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Horizontal Timeline */}
+            <div className="hidden md:block">
+              <div className="absolute left-0 right-0 top-1/2 h-4 bg-gradient-to-r from-solar-primary via-solar-accent to-solar-warning rounded-full"></div>
+
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="absolute left-0 right-0 top-1/2 h-1 bg-solar-secondary rounded-full origin-left"
+              />
+
+              <div className="flex justify-between min-w-max px-8 py-16">
+                {(viz.data as TimelineItem[]).map((item: TimelineItem, index: number) => {
+                  const isTop = index % 2 === 0;
+
+                  return (
+                    <motion.div
+                      key={item.year}
+                      initial={{ opacity: 0, y: isTop ? -40 : 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="relative flex flex-col items-center mx-auto"
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05, y: -4 }}
+                        className={`card card-glass card-interactive p-6 rounded-2xl shadow-lg w-56 text-center relative overflow-hidden ${
+                          isTop ? "mt-40" : ""
+                        }`}
+                      >
+                        <div className="flex items-center justify-center mb-3">
+                          <Calendar className="h-6 w-6 text-solar-accent mr-3" />
+                          <span className="text-solar-accent font-bold text-xl">{item.year}</span>
+                        </div>
+                        <p className="text-tertiary text-base leading-relaxed">
+                          {item.event}
+                        </p>
+
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                          initial={{ x: "-100%" }}
+                          whileHover={{ x: "200%" }}
+                          transition={{ duration: 0.8 }}
+                        />
+                      </motion.div>
+
+                      <div className="absolute top-1/2 transform -translate-y-1/2 z-10">
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          className="w-10 h-10 bg-solar-accent rounded-full border-4 border-secondary shadow-lg flex items-center justify-center"
+                        >
+                          <Zap className="h-4 w-4 text-secondary" />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )
       
       case "targets":
         return (
-          <div className="mt-4 space-y-3">
+          <div className="mt-8 space-y-6">
             {(viz.data as TargetItem[]).map((target: TargetItem, index: number) => (
               <motion.div
                 key={target.target}
-                initial={{ opacity: 0, width: 0 }}
-                whileInView={{ opacity: 1, width: "100%" }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="space-y-1"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="card card-glass p-2 sm:p-6 relative overflow-hidden hover:scale-105 transition-transform duration-300"
               >
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium text-gray-700">{target.target}</span>
-                  <span className="text-gray-600">{target.progress}%</span>
+                <div className="flex justify-between text-base m-2">
+                  <span className="font-semibold text-primary text-lg">{target.target}</span>
+                  <span className="text-solar-accent font-bold text-lg">{target.progress}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-secondary/50 rounded-full h-2 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: `${target.progress}%` }}
-                    transition={{ duration: 2, delay: index * 0.3 }}
-                    className={`h-2 rounded-full bg-${target.color}-500`}
+                    transition={{ duration: 1, delay: index * 0.2 }}
+                    className={`h-2 rounded-full ${target.color} shadow-inner`}
                   />
                 </div>
+
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "200%" }}
+                  transition={{ duration: 0.8 }}
+                />
               </motion.div>
             ))}
           </div>
@@ -334,19 +421,29 @@ const About = () => {
       
       case "future":
         return (
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
             {(viz.data as FutureItem[]).map((item: FutureItem, index: number) => (
               <motion.div
                 key={item.aspect}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center p-3"
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="card card-glass card-interactive p-8 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
-                <div className="bg-gradient-to-br from-green-400 to-blue-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <item.icon className="h-6 w-6 text-white" />
-                </div>
-                <div className="text-sm font-semibold text-gray-800">{item.aspect}</div>
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  className="bg-gradient-to-br from-solar-primary to-solar-secondary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
+                >
+                  <item.icon className="h-8 w-8 text-primary" />
+                </motion.div>
+                <div className="text-xl font-bold text-primary">{item.aspect}</div>
+
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "200%" }}
+                  transition={{ duration: 0.8 }}
+                />
               </motion.div>
             ))}
           </div>
@@ -358,178 +455,220 @@ const About = () => {
   }
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="container mx-auto px-4">
-        {/* Main Header */}
+    <section id="about" className="section-padding bg-secondary relative overflow-hidden">
+      <SolarPanelGrid/>
+      <div className="container-responsive relative">
+        {/* Enhanced Main Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center m-2 sm:m-4"
         >
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gradient-to-r from-green-500 to-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="inline-flex items-center gap-4"
           >
-            <Building2 className="h-10 w-10 text-white" />
+            <p className="text-2xl lg:text-4xl font-bold">
+              ABOUT <span className="gradient-text-solar">PARAMOUNT SOLAR</span>
+            </p>
           </motion.div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            ABOUT <span className="text-green-600">PARAMOUNT SOLAR</span>
-          </h2>
-          <div className="w-24 h-1 bg-green-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Pioneering renewable energy solutions for a sustainable future in Bangladesh and beyond
-          </p>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="w-32 h-1 bg-gradient-to-r from-solar-primary to-solar-accent mx-auto mb-8 rounded-full"
+          />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="text-xl text-tertiary max-w-3xl mx-auto leading-relaxed"
+          >
+            Pioneering <span className="text-solar-primary font-semibold">renewable energy solutions</span> for a sustainable future in Bangladesh and beyond
+          </motion.p>
         </motion.div>
 
         {/* Main Sections Grid */}
-        <div className="space-y-8">
+        <div className="space-y-6">
           {sections.map((section, index) => (
             <motion.div
               key={section.title}
               id={section.id}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="card card-elevated overflow-hidden relative group"
             >
               {/* Section Header */}
-              <div 
-                className="p-6 md:p-8 cursor-pointer"
-                onClick={() => toggleSection(section.title)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-gradient-to-r from-green-500 to-blue-500 p-3 rounded-xl">
-                      <section.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-800">
-                        {section.title}
-                      </h3>
-                      <p className="text-gray-600 mt-1 max-w-3xl">
-                        {section.content}
-                      </p>
-                    </div>
-                  </div>
+              <div className="p-2 sm:p-4">
+                <div className="flex flex-row items-center gap-8">
                   <motion.div
-                    animate={{ rotate: expandedSection === section.title ? 360 : 0 }}
-                    transition={{ duration: 0.3 }}
+                    whileHover={{ scale: 1.05, rotate: 3 }}
+                    className="flex-shrink-0"
                   >
-                    {expandedSection === section.title ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500" />
-                    )}
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-solar-primary to-solar-secondary shadow-2xl">
+                      <section.icon className="h-10 w-10 text-primary" />
+                    </div>
                   </motion.div>
+                  
+                  <div className="text-left">
+                    <motion.h3 
+                      initial={{ opacity: 0, y: -20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      className="text-2xl sm:text-3xl font-extrabold text-primary"
+                    >
+                      {section.title}
+                    </motion.h3>
+                  </div>
                 </div>
+                <motion.p 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="m-4 text-xl text-tertiary leading-relaxed max-w-4xl"
+                >
+                  {section.content}
+                </motion.p>
 
                 {/* Visualization */}
-                <div className="mt-6">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
                   {renderVisualization(section.visualization)}
-                </div>
-              </div>
+                </motion.div>
 
-              {/* Expandable Content */}
-              <AnimatePresence>
-                {expandedSection === section.title && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="border-t border-gray-200"
-                  >
-                    <div className="p-6 md:p-8 bg-gray-50">
-                      <h4 className="text-lg font-bold text-gray-800 mb-4">
-                        Detailed Overview
-                      </h4>
-                      
-                      {/* Subsections */}
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {section.subsections.map((subsection, subIndex) => (
-                          <motion.div
-                            key={subsection.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: subIndex * 0.1 }}
-                            className="bg-white p-4 rounded-lg shadow-sm border border-gray-200"
-                          >
-                            <div className="flex items-center mb-3">
-                              <subsection.icon className="h-5 w-5 text-green-500 mr-2" />
-                              <h5 className="font-semibold text-gray-800">
-                                {subsection.title}
-                              </h5>
-                            </div>
-                            <p className="text-gray-600 text-sm leading-relaxed">
+                {/* Subsections */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="mt-8 border-t-3"
+                >
+                  <h4 className="text-2xl font-bold text-primary m-4 flex items-center justify-center lg:justify-start gap-4">
+                    <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
+                    Detailed Overview
+                    <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
+                  </h4>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {section.subsections.map((subsection, subIndex) => (
+                      <motion.div
+                        key={subsection.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: subIndex * 0.1 }}
+                        className="card card-glass p-4 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                      >
+                        <div className="flex flex-col items-start">
+                          <div className="p-4 rounded-2xl bg-solar-accent/10 flex flex-row gap-6 flex-shrink-0">
+                            <subsection.icon className="h-8 w-8 text-solar-accent" />
+                            <h5 className="text-xl font-bold text-primary">
+                              {subsection.title}
+                            </h5>
+                          </div>
+                          <div>
+                            <p className="text-tertiary text-lg leading-relaxed">
                               {subsection.content}
                             </p>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                          </div>
+                        </div>
+
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                          initial={{ x: "-100%" }}
+                          whileHover={{ x: "200%" }}
+                          transition={{ duration: 0.8 }}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-10 right-10 w-32 h-32 bg-solar-accent rounded-full blur-3xl"></div>
+                <div className="absolute bottom-10 left-10 w-24 h-24 bg-solar-primary rounded-full blur-3xl"></div>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Environmental Impact - Enhanced */}
+        {/* Enhanced Environmental Impact */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          className="mt-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-8 md:p-12 text-white overflow-hidden relative"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="mt-8"
         >
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-20 h-20 bg-white rounded-full"></div>
-            <div className="absolute bottom-10 right-10 w-16 h-16 bg-white rounded-full"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white rounded-full"></div>
-          </div>
-
-          <div className="relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Leaf className="h-12 w-12 mx-auto mb-6 text-green-200" />
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">Environmental Impact</h3>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                {[
-                  { value: "145,000+", label: "Tons CO₂ Offset Annually", icon: Leaf },
-                  { value: "130MW", label: "Solar Power Commissioned", icon: Zap },
-                  { value: "20 Years", label: "Power Purchase Agreement", icon: Target },
-                  { value: "3", label: "Major Projects", icon: Building2 }
-                ].map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="text-center"
-                  >
-                    <stat.icon className="h-8 w-8 mx-auto mb-3 text-green-200" />
-                    <div className="text-2xl md:text-3xl font-bold mb-2">{stat.value}</div>
-                    <div className="text-green-100 text-sm">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="mt-8 text-green-100 text-lg max-w-2xl mx-auto"
+          <div className="card card-glass p-4 relative overflow-hidden">
+            <GreenEnergy/>
+            <div className="relative z-10 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Committed to creating a sustainable future through innovative solar energy solutions
-              </motion.p>
-            </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-solar-primary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto shadow-2xl"
+                >
+                  <Leaf className="h-10 w-10 text-primary" />
+                </motion.div>
+                <h3 className="text-2xl lg:text-4xl font-extrabold text-primary m-2 sm:m-4">
+                  Environmental <span className="gradient-text-solar">Impact</span>
+                </h3>
+                
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl sm:p-4 mx-auto">
+                  {[
+                    { value: "145,000+", label: "Tons CO₂ Offset Annually", icon: Leaf },
+                    { value: "130MW", label: "Solar Power Commissioned", icon: Zap },
+                    { value: "20 Years", label: "Power Purchase Agreement", icon: Target },
+                    { value: "3", label: "Major Projects", icon: Building2 }
+                  ].map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="card card-glass p-6 text-center relative overflow-hidden group hover:scale-110 transition-transform duration-300"
+                    >
+                      <div className="bg-solar-accent/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <stat.icon className="h-8 w-8 text-solar-accent" />
+                      </div>
+                      <div className="text-2xl font-extrabold gradient-text-energy mb-2">{stat.value}</div>
+                      <div className="text-tertiary text-sm font-medium leading-tight">{stat.label}</div>
+
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "200%" }}
+                        transition={{ duration: 0.8 }}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="text-xl text-tertiary max-w-2xl mx-auto leading-relaxed"
+                >
+                  Committed to creating a <span className="text-solar-primary font-semibold">sustainable future</span> through innovative solar energy solutions that power communities while protecting our planet
+                </motion.p>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>

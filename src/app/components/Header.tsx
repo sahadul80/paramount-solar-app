@@ -19,7 +19,6 @@ export default function Header() {
       href: '#about',
       dropdown: [
         { name: 'COMPANY', href: '#company' },
-        { name: 'PROFILE', href: '#profile' },
         { name: 'WHO WE ARE', href: '#who-we-are' },
         { name: 'COMPANY BACKGROUND', href: '#company-background' },
         { name: 'OUR GOAL', href: '#our-goal' },
@@ -48,9 +47,9 @@ export default function Header() {
       name: 'PROJECTS',
       href: '#projects',
       dropdown: [
-        { name: 'SOLAR POWER PLANT LALMONIRHAT', href: '#lalmonirhat' },
-        { name: 'PABNA SOLAR PARK', href: '#pabna' },
-        { name: 'MOULVIBAZAR SOLAR POWER PLANT', href: '#moulvibazar' }
+        { name: 'SOLAR POWER PLANT LALMONIRHAT', href: '#projects' },
+        { name: 'PABNA SOLAR PARK', href: '#projects' },
+        { name: 'MOULVIBAZAR SOLAR POWER PLANT', href: '#projects' }
       ]
     },
     {
@@ -119,26 +118,26 @@ export default function Header() {
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg py-2 border-b border-gray-200' 
-          : 'bg-white/90 backdrop-blur-sm py-3 border-b border-transparent'
+          ? 'bg-primary shadow-xl p-4' 
+          : 'bg-primary p-4'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8 }}
       ref={dropdownRef}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          {/* Logo - Shortened for mobile */}
-          <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-full shadow-lg">
-              <Sun className="h-5 w-5 md:h-6 md:w-6 text-white" />
+      <div className="container-responsive">
+        <div className="flex-between">
+          {/* Logo */}
+          <div className="flex-center space-x-3">
+            <div className="bg-solar-accent p-2 rounded-full shadow-lg hover-lift">
+              <Sun className="h-5 w-5 md:h-6 md:w-6 text-primary" />
             </div>
-            <Link href="/">
-              <h1 className="text-lg md:text-xl font-black text-gray-800 tracking-tight">
-                PARAMOUNT <span className="text-green-600">SOLAR</span>
+            <Link href="/" className="hover-lift">
+              <h1 className="text-lg md:text-xl font-extrabold text-primary tracking-tight">
+                PARAMOUNT <span className="text-solar-accent">SOLAR</span>
               </h1>
-              <p className="text-green-600 font-semibold text-xs hidden sm:flex items-center">
+              <p className="text-solar-accent font-semibold text-xs hidden sm:flex items-center">
                 <Leaf className="h-3 w-3 mr-1" />
                 CARBON NEUTRAL FUTURE
               </p>
@@ -157,15 +156,20 @@ export default function Header() {
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
                     <button
-                      className={`flex items-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                      className={`flex items-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group ${
                         isActive(item.href) || item.dropdown?.some(d => isActive(d.href))
-                          ? 'text-green-600 bg-green-50'
-                          : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                          ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
+                          : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                       }`}
                     >
-                      {item.name}
-                      <ChevronDown className={`h-4 w-4 ml-1 transition-transform duration-200 ${
-                        activeDropdown === item.name ? 'rotate-180' : ''
+                      <span className="relative">
+                        {item.name}
+                        {(isActive(item.href) || item.dropdown?.some(d => isActive(d.href))) && (
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
+                        )}
+                      </span>
+                      <ChevronDown className={`h-4 w-4 ml-1 transition-transform duration-300 group-hover:text-solar-accent ${
+                        activeDropdown === item.name ? 'rotate-180 text-solar-accent' : 'text-secondary'
                       }`} />
                     </button>
 
@@ -177,7 +181,7 @@ export default function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 py-2 backdrop-blur-md"
+                          className="absolute top-full left-0 mt-2 w-64 bg-primary rounded-xl shadow-2xl border border-tertiary py-2"
                         >
                           {item.dropdown.map((subItem) => (
                             <a
@@ -187,13 +191,18 @@ export default function Header() {
                                 e.preventDefault()
                                 handleNavClick(subItem.href)
                               }}
-                              className={`block px-4 py-3 text-sm font-medium transition-all duration-200 border-l-2 ${
+                              className={`block px-4 py-3 text-sm font-medium transition-all duration-300 hover-lift group relative ${
                                 isActive(subItem.href)
-                                  ? 'text-green-600 bg-green-50 border-green-500'
-                                  : 'text-gray-700 hover:text-green-600 hover:bg-green-50 border-transparent hover:border-green-300'
+                                  ? 'text-solar-accent bg-solar-accent/10'
+                                  : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                               }`}
                             >
-                              {subItem.name}
+                              <span className="relative">
+                                {subItem.name}
+                                {isActive(subItem.href) && (
+                                  <span className="absolute -bottom-1 left-0 w-3/4 h-0.5 bg-solar-accent rounded-full"></span>
+                                )}
+                              </span>
                             </a>
                           ))}
                         </motion.div>
@@ -208,13 +217,18 @@ export default function Header() {
                       e.preventDefault()
                       handleNavClick(item.href)
                     }}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group relative ${
                       isActive(item.href)
-                        ? 'text-green-600 bg-green-50'
-                        : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                        ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
+                        : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                     }`}
                   >
-                    {item.name}
+                    <span className="relative">
+                      {item.name}
+                      {isActive(item.href) && (
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
+                      )}
+                    </span>
                   </a>
                 )}
               </div>
@@ -223,13 +237,13 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="lg:hidden p-2 rounded-lg bg-secondary hover:bg-tertiary transition-all duration-300 hover-lift"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="h-6 w-6 text-gray-700" />
+              <X className="h-6 w-6 text-primary" />
             ) : (
-              <Menu className="h-6 w-6 text-gray-700" />
+              <Menu className="h-6 w-6 text-primary" />
             )}
           </button>
         </div>
@@ -242,9 +256,9 @@ export default function Header() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white/95 backdrop-blur-md mt-4 rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
+              className="lg:hidden bg-primary mt-4 rounded-2xl shadow-2xl overflow-hidden"
             >
-              <div className="py-4 space-y-1">
+              <div className="py-4 space-y-2">
                 {navItems.map((item) => (
                   <div key={item.name}>
                     {item.dropdown ? (
@@ -252,15 +266,20 @@ export default function Header() {
                       <div>
                         <button
                           onClick={() => toggleDropdown(item.name)}
-                          className={`flex items-center justify-between w-full px-4 py-3 text-left font-semibold transition-all duration-200 ${
+                          className={`flex-between w-full px-6 py-4 text-left font-semibold transition-all duration-300 hover-lift group ${
                             isActive(item.href) || item.dropdown?.some(d => isActive(d.href))
-                              ? 'text-green-600 bg-green-50'
-                              : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                              ? 'text-solar-accent bg-solar-accent/10'
+                              : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                           }`}
                         >
-                          {item.name}
-                          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
-                            activeDropdown === item.name ? 'rotate-180' : ''
+                          <span className="relative">
+                            {item.name}
+                            {(isActive(item.href) || item.dropdown?.some(d => isActive(d.href))) && (
+                              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
+                            )}
+                          </span>
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 group-hover:text-solar-accent ${
+                            activeDropdown === item.name ? 'rotate-180 text-solar-accent' : 'text-secondary'
                           }`} />
                         </button>
 
@@ -272,7 +291,7 @@ export default function Header() {
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.2 }}
-                              className="bg-gray-50/80"
+                              className="bg-tertiary/30"
                             >
                               {item.dropdown.map((subItem) => (
                                 <a
@@ -282,13 +301,18 @@ export default function Header() {
                                     e.preventDefault()
                                     handleNavClick(subItem.href)
                                   }}
-                                  className={`block px-8 py-3 text-sm font-medium transition-all duration-200 border-l-2 ${
+                                  className={`block px-10 py-3 text-sm font-medium transition-all duration-300 hover-lift group relative ${
                                     isActive(subItem.href)
-                                      ? 'text-green-600 bg-green-100 border-green-500'
-                                      : 'text-gray-600 hover:text-green-600 hover:bg-green-100 border-transparent'
+                                      ? 'text-solar-accent bg-solar-accent/10'
+                                      : 'text-secondary hover:text-solar-accent hover:bg-tertiary/50'
                                   }`}
                                 >
-                                  {subItem.name}
+                                  <span className="relative">
+                                    {subItem.name}
+                                    {isActive(subItem.href) && (
+                                      <span className="absolute -bottom-1 left-0 w-3/4 h-0.5 bg-solar-accent rounded-full"></span>
+                                    )}
+                                  </span>
                                 </a>
                               ))}
                             </motion.div>
@@ -303,13 +327,18 @@ export default function Header() {
                           e.preventDefault()
                           handleNavClick(item.href)
                         }}
-                        className={`block px-4 py-3 font-semibold transition-all duration-200 ${
+                        className={`block px-6 py-4 font-semibold transition-all duration-300 hover-lift group relative ${
                           isActive(item.href)
-                            ? 'text-green-600 bg-green-50'
-                            : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                            ? 'text-solar-accent bg-solar-accent/10'
+                            : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                         }`}
                       >
-                        {item.name}
+                        <span className="relative">
+                          {item.name}
+                          {isActive(item.href) && (
+                            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
+                          )}
+                        </span>
                       </a>
                     )}
                   </div>
@@ -317,14 +346,14 @@ export default function Header() {
               </div>
 
               {/* Mobile Contact CTA */}
-              <div className="border-t border-gray-200 p-4 bg-gradient-to-r from-green-50 to-blue-50">
+              <div className="border-t border-tertiary p-4 bg-secondary">
                 <a
                   href="#contact"
                   onClick={(e) => {
                     e.preventDefault()
                     handleNavClick('#contact')
                   }}
-                  className="block w-full bg-green-500 hover:bg-green-600 text-white text-center font-bold py-3 px-4 rounded-lg transition-colors"
+                  className="block w-full btn-accent text-center font-bold py-3 px-4 rounded-lg hover-glow"
                 >
                   GET IN TOUCH
                 </a>
