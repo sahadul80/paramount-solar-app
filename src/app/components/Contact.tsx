@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import {
   Mail,
@@ -204,185 +204,144 @@ const Contact = () => {
   const mapSrc = "https://www.google.com/maps?q=House%2022%20Rd%20No%20113%2FA&z=17&output=embed"
 
   return (
-    <section id="contact" className="section-padding bg-primary mx-auto">
-
+    <section id="contact" className="p-2 sm:p-4 bg-primary relative overflow-hidden z-20">
       <SolarPanelGrid/>
-      <div className="container-responsive space-y-12">
+      <div className="relative container m-2 p-2 sm:m-4 sm:p-4 space-y-8 mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center text-center"
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-solar-secondary w-20 h-20 rounded-full flex-center mx-auto"
-          >
-            <MessageCircle className="h-10 w-10 text-primary" />
-          </motion.div>
-          <h2 className="text-4xl md:text-5xl font-bold text-primary">
-            Get In <span className="text-accent">Touch</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
+            Get In <span className="text-solar-accent">Touch</span>
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto m-4"></div>
-          <p className="text-xl text-secondary max-w-2xl mx-auto">
-            Ready to start your solar energy journey? Contact us today for a free consultation and discover how we can power your future with clean, renewable energy.
+          <div className="w-20 h-1 bg-solar-accent mx-auto mb-4"></div>
+          <p className="text-tertiary max-w-2xl mx-auto">
+            Ready to start your solar energy journey? Contact us today for a free consultation.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-2 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Contact Information */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
           >
-            <div className="flex-between p-4">
-              <h3 className="text-2xl font-bold text-primary">Contact Information</h3>
-              <motion.button
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-primary">Contact Information</h3>
+              <button
                 onClick={downloadContactInfo}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn btn-secondary"
-                aria-label="Download contact information"
+                className="btn btn-secondary text-sm"
               >
                 <Download className="h-4 w-4" />
-                <span className="hidden sm:flex">Download Info</span>
-              </motion.button>
+                <span className="hidden sm:inline">Download Info</span>
+              </button>
             </div>
             
-            <div className="grid-responsive px-4">
+            <div className="space-y-4">
               {contactInfo.map((item, index) => (
                 <motion.div
                   key={item.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="card card-interactive"
-                  onClick={() => toggleCard(item.title)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCard(item.title) }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="card border border-primary/10 bg-white/5 backdrop-blur-sm overflow-hidden"
                 >
-                  <div className="flex flex-row justify-between">
-                    <div className="w-3/20 flex-between p-4">
-                      <div className={`bg-gradient-to-r ${item.color} w-12 h-12 rounded-lg flex-center`}>
-                        <item.icon className="h-6 w-6 text-quaternary" />
+                  <div 
+                    className="flex justify-between items-center p-4 cursor-pointer"
+                    onClick={() => toggleCard(item.title)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`bg-gradient-to-r ${item.color} w-10 h-10 rounded-lg flex items-center justify-center`}>
+                        <item.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-base font-semibold text-primary">{item.title}</h4>
+                        <p className="text-primary font-medium text-sm">{item.details}</p>
+                        <p className="text-tertiary text-xs">{item.subtitle}</p>
                       </div>
                     </div>
-                    <div className="w-16/20 p-2">
-                      <h4 className="text-lg font-bold text-primary">{item.title}</h4>
-                      <p className="text-primary font-semibold">{item.details}</p>
-                      <p className="text-text-tertiary text-sm">{item.subtitle}</p>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: expandedCard === item.title ? 1 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="w-1/20 flex items-center justify-center"
-                    >
+                    <div>
                       {expandedCard === item.title ? (
-                        <ChevronUp className="h-5 w-5 text-text-tertiary" />
+                        <ChevronUp className="h-4 w-4 text-tertiary" />
                       ) : (
-                        <ChevronDown className="h-5 w-5 text-text-tertiary" />
+                        <ChevronDown className="h-4 w-4 text-tertiary" />
                       )}
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Expandable Content */}
-                  <AnimatePresence>
-                    {expandedCard === item.title && item.expandedContent && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="border-t border-primary"
-                      >
-                        <div className="p-2">
-                          <p className="text-secondary">{item.expandedContent.description}</p>
-                          
-                          {item.expandedContent.additionalInfo && (
-                            <div className="space-y-2">
-                              {item.expandedContent.additionalInfo.map((info, infoIndex) => (
-                                <div key={infoIndex} className="flex items-center text-sm text-secondary">
-                                  <div className="w-1.5 h-1.5 bg-success rounded-full mr-3"></div>
-                                  {info}
-                                </div>
-                              ))}
+                  {expandedCard === item.title && item.expandedContent && (
+                    <div className="border-t border-primary/10 p-4">
+                      <p className="text-tertiary text-sm mb-3">{item.expandedContent.description}</p>
+                      
+                      {item.expandedContent.additionalInfo && (
+                        <div className="space-y-2 mb-3">
+                          {item.expandedContent.additionalInfo.map((info, infoIndex) => (
+                            <div key={infoIndex} className="flex items-center text-sm text-tertiary">
+                              <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>
+                              {info}
                             </div>
-                          )}
-
-                          <div className="flex flex-wrap">
-                            {item.expandedContent.email && (
-                              <motion.a
-                                href={`mailto:${item.expandedContent.email}`}
-                                whileHover={{ scale: 1.05 }}
-                                className="tag tag-info"
-                              >
-                                <Mail className="h-3 w-3 mr-1" />
-                                Email
-                              </motion.a>
-                            )}
-                            {item.expandedContent.phone && (
-                              <motion.a
-                                href={`tel:${item.expandedContent.phone}`}
-                                whileHover={{ scale: 1.05 }}
-                                className="tag tag-success"
-                              >
-                                <Phone className="h-3 w-3 mr-1" />
-                                Call
-                              </motion.a>
-                            )}
-                          </div>
+                          ))}
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      )}
+
+                      <div className="flex gap-2">
+                        {item.expandedContent.email && (
+                          <a
+                            href={`mailto:${item.expandedContent.email}`}
+                            className="btn btn-secondary text-xs"
+                          >
+                            <Mail className="h-3 w-3 mr-1" />
+                            Email
+                          </a>
+                        )}
+                        {item.expandedContent.phone && (
+                          <a
+                            href={`tel:${item.expandedContent.phone}`}
+                            className="btn btn-secondary text-xs"
+                          >
+                            <Phone className="h-3 w-3 mr-1" />
+                            Call
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </div>
 
             {/* Additional Info */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="gradient-primary rounded-2xl m-2 p-4 text-primary relative overflow-hidden glass-effect"
+              viewport={{ once: true }}
+              className="card p-4 border border-primary/10 bg-solar-primary/5 mt-6"
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-4 left-4 w-8 h-8 bg-solar-primary rounded-full"></div>
-                <div className="absolute bottom-4 right-4 w-6 h-6 bg-solar-primary rounded-full"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-solar-primary rounded-full"></div>
-              </div>
-
-              <div className="relative z-10 flex items-start">
-                <MessageCircle className="h-8 w-8 text-solar-primary flex-shrink-0 m-2" />
+              <div className="flex items-start gap-3">
+                <MessageCircle className="h-5 w-5 text-solar-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xl font-bold mb-3">Why Choose Paramount Solar?</h4>
-                  <ul className="space-y-2 text-solar-primary">
+                  <h4 className="text-base font-bold text-primary mb-2">Why Choose Paramount Solar?</h4>
+                  <ul className="space-y-1 text-sm text-tertiary">
                     <li className="flex items-center">
-                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-3"></div>
+                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>
                       7+ Years of Solar Industry Experience
                     </li>
                     <li className="flex items-center">
-                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-3"></div>
+                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>
                       130MW+ of Commissioned Solar Projects
                     </li>
                     <li className="flex items-center">
-                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-3"></div>
+                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>
                       End-to-End Solar Solutions
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-3"></div>
-                      Proven Track Record with PPA Agreements
-                    </li>
-                    <li className="flex items-center">
-                      <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-3"></div>
-                      Commitment to Sustainable Development
                     </li>
                   </ul>
                 </div>
@@ -392,26 +351,27 @@ const Contact = () => {
 
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="card card-elevated m-4"
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="card border border-primary/10 bg-white/5 backdrop-blur-sm"
           >
-            <div className="flex items-center p-4">
-              <div className="gradient-primary w-10 h-10 rounded-lg flex-center mr-4">
-                <Send className="h-5 w-5 text-quaternary" />
+            <div className="flex items-center p-4 border-b border-primary/10">
+              <div className="bg-solar-primary w-8 h-8 rounded-lg flex items-center justify-center mr-3">
+                <Send className="h-4 w-4 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-primary">Send us a Message</h3>
+              <h3 className="text-xl font-bold text-primary">Send us a Message</h3>
             </div>
             
             <form onSubmit={handleSubmit} className="p-4 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="label">
+                  <label htmlFor="name" className="text-sm font-medium text-primary">
                     Full Name *
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary" />
                     <input
                       type="text"
                       id="name"
@@ -419,18 +379,18 @@ const Contact = () => {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="input pl-10"
+                      className="input pl-10 w-full"
                       placeholder="Enter your full name"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="email" className="label">
+                  <label htmlFor="email" className="text-sm font-medium text-primary">
                     Email Address *
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary" />
                     <input
                       type="email"
                       id="email"
@@ -438,45 +398,45 @@ const Contact = () => {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="input pl-10"
+                      className="input pl-10 w-full"
                       placeholder="Enter your email"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="company" className="label">
+                  <label htmlFor="company" className="text-sm font-medium text-primary">
                     Company/Organization
                   </label>
                   <div className="relative">
-                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary" />
                     <input
                       type="text"
                       id="company"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="input pl-10"
+                      className="input pl-10 w-full"
                       placeholder="Your company name"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="label">
+                  <label htmlFor="phone" className="text-sm font-medium text-primary">
                     Phone Number
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary" />
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="input pl-10"
+                      className="input pl-10 w-full"
                       placeholder="Your phone number"
                     />
                   </div>
@@ -484,18 +444,18 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="subject" className="label">
+                <label htmlFor="subject" className="text-sm font-medium text-primary">
                   Subject *
                 </label>
                 <div className="relative">
-                  <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                  <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary" />
                   <select
                     id="subject"
                     name="subject"
                     required
                     value={formData.subject}
                     onChange={handleChange}
-                    className="input pl-10 appearance-none"
+                    className="input pl-10 w-full appearance-none"
                   >
                     <option value="">Select a subject</option>
                     {subjects.map((subject) => (
@@ -504,47 +464,45 @@ const Contact = () => {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-tertiary pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-tertiary pointer-events-none" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="label">
+                <label htmlFor="message" className="text-sm font-medium text-primary">
                   Message *
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
-                  rows={6}
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  className="input resize-none"
-                  placeholder="Tell us about your solar energy needs, project requirements, or any questions you may have..."
+                  className="input w-full resize-none"
+                  placeholder="Tell us about your solar energy needs..."
                 />
               </div>
 
-              <motion.button
+              <button
                 type="submit"
                 disabled={isSubmitting}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="btn btn-primary btn-lg btn-full"
+                className="btn btn-primary w-full"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     Sending Message...
                   </>
                 ) : (
                   <>
-                    <Send className="h-5 w-5 mr-2" />
+                    <Send className="h-4 w-4 mr-2" />
                     Send Message
                   </>
                 )}
-              </motion.button>
+              </button>
 
-              <p className="text-sm text-text-tertiary text-center">
+              <p className="text-xs text-tertiary text-center">
                 We typically respond within 24 hours. Your information is secure and confidential.
               </p>
             </form>
@@ -553,85 +511,74 @@ const Contact = () => {
 
         {/* Map Section */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="card card-elevated overflow-hidden m-2"
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="card border border-primary/10 bg-white/5 backdrop-blur-sm overflow-hidden"
         >
-          <div className="flex flex-col sm:flex-row">
-            <div className="w-full h-full sm:w-2/6 gradient-primary p-4 text-primary">
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
-                <MapPin className="h-6 w-6 mr-3" />
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-full lg:w-2/5 bg-solar-primary/10 p-4">
+              <h3 className="text-lg font-bold text-primary mb-4 flex items-center">
+                <MapPin className="h-5 w-5 mr-2" />
                 Our Office Location
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex items-start">
-                  <Building className="h-6 w-6 mr-3 mt-1 flex-shrink-0" />
+                  <Building className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold">Corporate Headquarters</p>
-                    <p className="text-solar-accent">Dhaka, Bangladesh</p>
+                    <p className="font-semibold text-sm">Corporate Headquarters</p>
+                    <p className="text-solar-accent text-sm">Dhaka, Bangladesh</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Clock className="h-6 w-6 mr-3 mt-1 flex-shrink-0" />
+                  <Clock className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold">Business Hours</p>
-                    <p className="text-solar-accent">Sunday - Thursday: 9:00 AM - 6:00 PM</p>
+                    <p className="font-semibold text-sm">Business Hours</p>
+                    <p className="text-solar-accent text-sm">Sunday - Thursday: 9AM-6PM</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <Phone className="h-6 w-6 mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold">Emergency Contact</p>
-                    <p className="text-solar-accent">Available 24/7 for existing clients</p>
-                  </div>
-                </div>
-                <motion.button
+                <button
                   onClick={downloadContactInfo}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn btn-secondary btn-full mt-4"
+                  className="btn btn-secondary w-full text-sm mt-2"
                 >
-                  <Download className="h-4 w-4 mr-2" />
+                  <Download className="h-3 w-3 mr-1" />
                   Download Contact Info
-                </motion.button>
+                </button>
               </div>
             </div>
             
-            <div className="w-full h-cover sm:w-3/6 gradient-secondary text-primary flex flex-col justify-between">
-              {/* Inline small map */}
-              <iframe
-                loading="lazy"
-                src={mapSrc}
-                title="House 22 Rd No 113/A - Google Maps"
-                className={`w-full h-full`}
-              />
-              {/* Open fullscreen modal */}
-              <button
-                onClick={() => setIsMapOpen(true)}
-                className="btn btn-ghost glass-effect w-full"
-                aria-label="Open map in fullscreen"
-              >
-                <Maximize className="h-6 w-6 text-accent text-bold text-center" />
-                Open in Fullscreen
-              </button>
+            <div className="w-full lg:w-3/5">
+              <div className="h-48 lg:h-full">
+                <iframe
+                  loading="lazy"
+                  src={mapSrc}
+                  title="Paramount Solar Office Location"
+                  className="w-full h-full"
+                />
+              </div>
             </div>
-            <div className="w-full sm:w-1/6 text-center text-primary flex flex-col justify-center bg-solar-primary">
-              <MapPin className="h-8 w-8 sm:h-16 sm:w-16 mx-auto m-2 letters-3D text-solar-accent" />
-              <p className="text-sm sm:text-lg font-semibold">Dhaka, Bangladesh</p>
-              <p className="text-xs">Corporate Headquarters</p>
-            </div>
+          </div>
+          <div className="border-t border-primary/10 p-3 text-center">
+            <button
+              onClick={() => setIsMapOpen(true)}
+              className="btn btn-ghost text-sm"
+            >
+              <Maximize className="h-4 w-4 mr-1" />
+              Open Map in Fullscreen
+            </button>
           </div>
         </motion.div>
       </div>
-      {/* Fullscreen modal for the map (with search + theme toggle) */}
-      <AnimatePresence>
+
+      {/* Fullscreen Map Modal */}
+      {isMapOpen && (
         <MapModal
           isOpen={isMapOpen}
           onClose={() => setIsMapOpen(false)}
           locationURL={mapSrc}
         />
-      </AnimatePresence>
+      )}
     </section>
   )
 }

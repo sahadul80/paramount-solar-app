@@ -1548,27 +1548,6 @@
   will-change: opacity;
 }
 
-/* ================= Missing Animation Keyframes ================= */
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-@keyframes modalSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 /* ================= Missing Header Styles ================= */
 .gallery-header {
   text-align: center;
@@ -1831,4 +1810,22 @@
     linear-gradient(90deg, var(--solar-success) 1px, transparent 1px);
   background-size: 100px 100px;
   opacity: 0.08;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% / 2));
+  }
+}
+
+.marquee-animate {
+  animation: marquee 10s linear infinite;
+  display: flex;
+}
+
+.marquee-paused {
+  animation-play-state: paused;
+  display: flex;
 }

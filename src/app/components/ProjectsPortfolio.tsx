@@ -66,168 +66,81 @@ const ProjectsPortfolio = () => {
     router.push(`/pages/projects/${slug}`)
   }
 
-  // Smooth animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.15,
-        ease: "easeOut" as const
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    },
-    hover: {
-      scale: 1.02,
-      y: -5,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut" as const
-      }
-    }
-  }
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 20 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut" as const
-      }
-    }
-  }
-
-  const progressVariants = {
-    hidden: { width: 0 },
-    visible: (progress: number) => ({
-      width: `${progress}%`,
-      transition: {
-        duration: 1.2,
-        delay: 0.5,
-        ease: [0.43, 0.13, 0.23, 0.96]
-      }
-    })
-  }
-
   return (
-    <section id="projects" className="section-padding bg-secondary">
+    <section id="projects" className="py-16 bg-primary relative overflow-hidden z-20">
       <SolarInstallation/>
-      <div className="container-responsive flex flex-col items-between justify-between">
+      <div className="container mx-auto px-4">
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          <motion.h2 
-            className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          >
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
             PROJECTS <span className="text-solar-accent">PORTFOLIO</span>
-          </motion.h2>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="w-20 h-1 bg-solar-accent mx-auto mb-6"
-          />
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="text-base text-tertiary max-w-2xl mx-auto px-4"
-          >
+          </h2>
+          <p className="text-tertiary max-w-2xl mx-auto">
             Discover our growing portfolio of solar power projects driving Bangladesh&apos;s renewable energy transition
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {projects.map((project, index) => (
             <motion.div
               key={project.slug}
-              variants={itemVariants}
-              whileHover="hover"
-              className="card card-interactive overflow-hidden group border border-primary/10"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="card border border-primary/10 bg-white/5 backdrop-blur-sm overflow-hidden"
+              id={project.slug}
             >
               {/* Project Header with Gradient */}
-              <div className={`bg-gradient-to-r ${project.color} p-6 text-primary relative overflow-hidden`}>
-                {/* Animated background pattern */}
-                <motion.div
-                  className="absolute inset-0 opacity-10"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 0.2 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[length:20px_20px]" />
-                </motion.div>
-
-                <div className="flex items-center justify-between mb-4 relative z-10">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                  >
-                    <project.icon className="h-8 w-8" />
-                  </motion.div>
-                  <span className={`tag tag-${getStatusVariant(project.status)}`}>
+              <div className={`bg-gradient-to-r ${project.color} p-4 text-primary`}>
+                <div className="flex items-center justify-between mb-3">
+                  <project.icon className="h-6 w-6" />
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    project.status === 'Operational' ? 'bg-solar-success/20 text-solar-success' : 
+                    project.status === 'Under Construction' ? 'bg-solar-warning/20 text-solar-warning' : 
+                    'bg-solar-primary/20 text-solar-primary'
+                  }`}>
                     {project.status}
                   </span>
                 </div>
                 
-                <h3 className="text-xl font-bold mb-2 leading-tight">{project.name}</h3>
+                <h3 className="text-lg font-bold mb-2 leading-tight">{project.name}</h3>
                 <div className="flex items-center gap-2 text-primary/90">
-                  <Zap className="h-4 w-4" />
-                  <span className="font-semibold">{project.location}</span>
+                  <Zap className="h-3 w-3" />
+                  <span className="font-semibold text-sm">{project.location}</span>
                 </div>
               </div>
 
               {/* Project Details */}
-              <div className="p-6">
-                <p className="text-tertiary mb-4 leading-relaxed">{project.description}</p>
+              <div className="p-4">
+                <p className="text-tertiary mb-4 text-sm leading-relaxed">{project.description}</p>
                 
                 {/* Project Stats */}
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-tertiary">Capacity:</span>
-                    <span className="font-bold text-primary">{project.capacity}</span>
+                    <span className="text-tertiary text-sm">Capacity:</span>
+                    <span className="font-bold text-primary text-sm">{project.capacity}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-tertiary">Type:</span>
-                    <span className="font-semibold text-solar-accent">{project.type}</span>
+                    <span className="text-tertiary text-sm">Type:</span>
+                    <span className="font-semibold text-solar-accent text-sm">{project.type}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-tertiary">CO₂ Offset:</span>
-                    <span className="font-semibold text-solar-success flex items-center gap-1">
+                    <span className="text-tertiary text-sm">CO₂ Offset:</span>
+                    <span className="font-semibold text-solar-success flex items-center gap-1 text-sm">
                       <Leaf className="h-3 w-3" />
                       {project.co2Offset}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-tertiary">Timeline:</span>
+                    <span className="text-tertiary text-sm">Timeline:</span>
                     <span className="text-sm font-medium text-primary">{project.timeline}</span>
                   </div>
                 </div>
@@ -238,121 +151,93 @@ const ProjectsPortfolio = () => {
                     <span>Project Progress</span>
                     <span>{project.progress}%</span>
                   </div>
-                  <div className="w-full bg-tertiary/20 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-tertiary/20 rounded-full h-1.5 overflow-hidden">
                     <motion.div 
-                      custom={project.progress}
-                      initial="hidden"
-                      whileInView="visible"
-                      className={`h-2 rounded-full bg-gradient-to-r ${project.color}`}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${project.progress}%` }}
+                      transition={{ duration: 1, delay: 0.3 }}
+                      viewport={{ once: true }}
+                      className={`h-1.5 rounded-full bg-gradient-to-r ${project.color}`}
                     />
                   </div>
                 </div>
 
                 {/* View Details CTA */}
-                <motion.button 
-                  onClick={() => handleProjectClick(project.slug)}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full mt-6 btn btn-secondary text-sm py-2 inline-flex items-center justify-center z-40"
+                <button 
+                  onClick={() => handleProjectClick(project.slug)} 
+                  className="w-full mt-4 btn btn-secondary text-sm py-2"
                 >
                   View Project Details
-                </motion.button>
+                </button>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Enhanced Total Capacity Summary */}
+        {/* Total Capacity Summary */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-gradient-to-r from-solar-primary to-solar-secondary rounded-2xl p-6 sm:p-8 text-primary overflow-hidden relative"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-solar-primary/10 to-solar-secondary/10 rounded-xl p-6 text-primary border border-primary/10 mb-8 backdrop-blur-sm"
         >
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.3)_1px,transparent_0)] bg-[length:30px_30px]" />
-          </div>
-
-          <div className="text-center mb-6 relative z-10">
-            <h3 className="text-xl sm:text-2xl font-bold mb-2">Total Operational Portfolio</h3>
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold mb-2">Total Operational Portfolio</h3>
             <p className="text-primary/80 text-sm">Powering Bangladesh&apos;s sustainable future</p>
           </div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 relative z-10"
-          >
-            <motion.div
-              variants={cardVariants}
-              className="bg-solar-success/20 rounded-xl p-4 text-center card-interactive border border-solar-success/30"
-            >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-solar-success/10 rounded-lg p-4 text-center border border-solar-success/20">
               <div className="flex justify-center mb-2">
-                <Zap className="h-6 w-6 text-solar-success" />
+                <Zap className="h-5 w-5 text-solar-success" />
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-solar-success mb-1">130MW</p>
-              <p className="text-solar-success/80 text-sm">Commissioned Solar Capacity</p>
-            </motion.div>
+              <p className="text-xl font-bold text-solar-success mb-1">130MW</p>
+              <p className="text-solar-success/80 text-xs">Commissioned Solar Capacity</p>
+            </div>
 
-            <motion.div
-              variants={cardVariants}
-              className="bg-solar-warning/20 rounded-xl p-4 text-center card-interactive border border-solar-warning/30"
-            >
+            <div className="bg-solar-warning/10 rounded-lg p-4 text-center border border-solar-warning/20">
               <div className="flex justify-center mb-2">
-                <Construction className="h-6 w-6 text-solar-warning" />
+                <Construction className="h-5 w-5 text-solar-warning" />
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-solar-warning mb-1">10MW</p>
-              <p className="text-solar-warning/80 text-sm">Under Construction</p>
-            </motion.div>
+              <p className="text-xl font-bold text-solar-warning mb-1">10MW</p>
+              <p className="text-solar-warning/80 text-xs">Under Construction</p>
+            </div>
 
-            <motion.div
-              variants={cardVariants}
-              className="bg-solar-accent/20 rounded-xl p-4 text-center card-interactive border border-solar-accent/30"
-            >
+            <div className="bg-solar-accent/10 rounded-lg p-4 text-center border border-solar-accent/20">
               <div className="flex justify-center mb-2">
-                <TrendingUp className="h-6 w-6 text-solar-accent" />
+                <TrendingUp className="h-5 w-5 text-solar-accent" />
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-solar-accent mb-1">295MW</p>
-              <p className="text-solar-accent/80 text-sm">Pipeline Projects</p>
-            </motion.div>
-          </motion.div>
+              <p className="text-xl font-bold text-solar-accent mb-1">295MW</p>
+              <p className="text-solar-accent/80 text-xs">Pipeline Projects</p>
+            </div>
+          </div>
 
           {/* Environmental Impact */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-            className="mt-6 pt-6 border-t border-primary/30 text-center relative z-10"
-          >
+          <div className="mt-6 pt-4 border-t border-primary/20 text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Leaf className="h-5 w-5 text-solar-success" />
-              <span className="text-solar-success font-semibold">Environmental Impact</span>
+              <Leaf className="h-4 w-4 text-solar-success" />
+              <span className="text-solar-success font-semibold text-sm">Environmental Impact</span>
             </div>
             <p className="text-primary/80 text-sm">
               Total CO₂ Offset: <span className="font-bold text-solar-success">167,000+ tons annually</span>
             </p>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Call to Action */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-          className="text-center mt-12"
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center"
         >
           <p className="text-tertiary mb-4">Interested in our solar projects?</p>
-
           <Link href="#national-footprint">
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn btn-primary px-8 py-3"
-            >
+            <button className="btn btn-primary px-6 py-2">
               Explore All Projects
-            </motion.button>
+            </button>
           </Link>
         </motion.div>
       </div>

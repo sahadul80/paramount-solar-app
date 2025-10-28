@@ -1,10 +1,11 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Sun, Zap, Leaf, Play, Pause, Sparkles, CircuitBoard } from 'lucide-react'
+import { ArrowDown, Sun, Zap, Leaf, Play, Pause } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 import SolarBanner from './SolarBanner'
+import { CleanEnergy } from './patterns/CleanEnergy'
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -118,84 +119,27 @@ const Banner = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [prevSlide, nextSlide])
 
-  // Smooth Floating Particles with continuous flow
-  const FloatingParticles = ({ count, color }: { count: number; color: string }) => {
-    if (!isClient) return null
-
-    const particles = Array.from({ length: count }).map((_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: Math.random() * 15 + 8,
-      duration: Math.random() * 20 + 20, // Longer duration for smoother movement
-      delay: Math.random() * 10
-    }))
-
-    return (
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            className={`absolute ${color} opacity-20`}
-            initial={{
-              x: 0,
-              y: 0,
-              scale: 0.8,
-              rotate: 0,
-            }}
-            animate={{
-              x: [0, 30, 0, -20, 0],
-              y: [0, -20, 10, -10, 0],
-              scale: [0.8, 1.1, 0.9, 1.2, 0.8],
-              rotate: [0, 90, 180, 270, 360],
-            }}
-            transition={{
-              duration: particle.duration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: particle.delay,
-              repeatType: "loop",
-            }}
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              width: particle.size,
-              height: particle.size,
-            }}
-          >
-            <CircuitBoard/>
-          </motion.div>
-        ))}
-      </div>
-    )
-  }
-
   return (
     <section
-      className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4"
+      className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4 z-20"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <FloatingParticles count={100} color={"gray-400"} />
+      <CleanEnergy />
+      
       {/* Background Slides with Next.js Image */}
       <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence mode="wait" custom={direction} initial={false}>
+        <AnimatePresence mode="popLayout" custom={direction} initial={false}>
           <motion.div
             key={currentSlide}
             custom={direction}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              type: "spring",
-              stiffness: 200,
-              damping: 25,
-              duration: 0.6
-            }}
             className="absolute inset-0"
           >
             {/* Background Image */}
-            <div className="absolute inset-0 z-10">
+            <div className="absolute inset-0 z-10 opacity-60 ">
               <Image
                 src={slides[currentSlide].bgImage}
                 alt={slides[currentSlide].title}
@@ -213,7 +157,7 @@ const Banner = () => {
         </AnimatePresence>
       </div>
 
-      {/* Enhanced Solar Banner with 3D Text Effect */}
+      {/* Enhanced Solar Banner without Rotation */}
       <div className='flex flex-col items-center'>
         <div className="items-center justify-center z-10 text-center m-6 mt-24">
           <motion.div
@@ -224,18 +168,26 @@ const Banner = () => {
           >
             <SolarBanner/>
           </motion.div>
-          {/* Content Section */}
         </div>
-        <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg glass-effect z-10">
-          <AnimatePresence mode="wait">
+
+        {/* Content Section */}
+        <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg z-10">
+          <AnimatePresence mode="popLayout" custom={direction}>
             <motion.div
               key={currentSlide}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col sm:flex-row items-center justify-between text-center m-4"
+              custom={direction}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="flex flex-col sm:flex-row items-center justify-between text-center m-4 w-full"
             >
               {/* Icon */}
-              <motion.div className="text-6xl md:text-8xl lg:text-9xl text-center">
+              <motion.div 
+                className="text-6xl md:text-8xl lg:text-9xl text-center"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
                 <motion.div
                   animate={{
                     rotate: [0, 5, -5, 0],
@@ -252,26 +204,44 @@ const Banner = () => {
                 </motion.div>
               </motion.div>
 
-              <motion.div className="flex flex-col justify-between">
+              <motion.div 
+                className="flex flex-col justify-between flex-1 ml-0 sm:ml-6"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
                 {/* Title */}
-                <motion.h1 className="text-2xl sm:text-xl font-bold text-primary leading-tight p-2">
+                <motion.h1 
+                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-tight p-2"
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
                   {slides[currentSlide].title}
                 </motion.h1>
 
                 {/* Subtitle */}
-                <motion.p className="text-md sm:text-lg lg:text-xl text-secondary leading-relaxed max-w-3xl">
+                <motion.p 
+                  className="text-md sm:text-lg lg:text-xl text-secondary leading-relaxed max-w-3xl my-4"
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
                   {slides[currentSlide].subtitle}
                 </motion.p>
 
                 {/* Stats */}
                 <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.8, type: "spring" }}
                   whileHover={{ 
                     scale: 1.05,
                     y: -2,
                   }}
                   whileTap={{ scale: 0.95 }}
                   onClick={scrollToProjects}
-                  className="card card-interactive bg-secondary/50 border border-primary/20 rounded-xl p-2 inline-block cursor-pointer hover-glow"
+                  className="glass-effect border border-primary/20 rounded-xl p-3 inline-block cursor-pointer hover-glow self-center"
                 >
                   <motion.p 
                     className="text-base sm:text-lg font-bold text-solar-accent"
@@ -300,7 +270,7 @@ const Banner = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
           className="flex flex-row gap-4 justify-center items-center w-full max-w-md m-4"
         >
           <motion.button 
@@ -309,7 +279,7 @@ const Banner = () => {
             onClick={scrollToStats}
             className="btn btn-primary btn-lg flex items-center gap-2 group w-full sm:w-auto"
           >
-            <span>Explorek</span>
+            <span>Explore</span>
             <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
           </motion.button>
           
@@ -329,7 +299,7 @@ const Banner = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
             className="flex justify-center mb-4"
           >
             <div className="w-80 h-2 bg-primary/20 rounded-full overflow-hidden backdrop-blur-sm">
@@ -347,7 +317,7 @@ const Banner = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
+            transition={{ duration: 0.8, delay: 1.6 }}
             className="flex items-center justify-center space-x-4 md:space-x-6"
           >
             {/* Play/Pause */}
@@ -415,9 +385,24 @@ const Banner = () => {
         </div>
       </div>
 
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-transparent to-transparent pointer-events-none" />
+      {/* Enhanced Gradient Overlays - Variable Opacity */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Top Gradient - High opacity at top, decreasing to middle */}
+        <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-primary via-primary/50 to-primary/0" />
+        
+        {/* Bottom Gradient - High opacity at bottom, decreasing to middle */}
+        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary via-primary/50 to-primary/0" />
+        
+        {/* Middle Area - Transparent (0 opacity) */}
+        <div className="absolute top-1/3 left-0 right-0 h-1/3 bg-transparent" />
+        
+        {/* Side Gradients for better focus */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-primary to-primary/0" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-primary to-primary/0" />
+      </div>
+
+      {/* Additional subtle overlay for better text readability */}
+      <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
     </section>
   )
 }

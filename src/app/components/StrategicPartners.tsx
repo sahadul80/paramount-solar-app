@@ -1,9 +1,8 @@
 'use client'
 
-import { motion, useAnimationControls } from 'framer-motion'
-import { AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Handshake, Users, Globe, ExternalLink } from 'lucide-react'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RenewableEnergy } from './patterns/RenewableEnergy'
@@ -17,9 +16,6 @@ interface PartnerImage {
 const StrategicPartners = () => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null)
   const [isPaused, setIsPaused] = useState(false)
-  const marqueeRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const controls = useAnimationControls()
 
   const partnerTypes = [
     { icon: Users, title: "Government Partnerships", description: "Collaborating with government agencies for sustainable energy development" },
@@ -40,208 +36,154 @@ const StrategicPartners = () => {
     { src: "/images/sp11.png", link: "/partners/huawei", name: "Huawei Solar" }
   ]
 
-  // Duplicate for seamless loop - using 3 sets for smoother transition
-  const duplicatedPartners = [...partnerImages, ...partnerImages, ...partnerImages]
+  // Use 2 sets for smoother looping
+  const duplicatedPartners = [...partnerImages, ...partnerImages]
 
-  // Initialize animation
-  useEffect(() => {
-    const initializeAnimation = () => {
-      if (marqueeRef.current && containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
-        const marqueeWidth = marqueeRef.current.scrollWidth // Since we have 3 sets
-        
-        controls.start({
-          x: [0, -marqueeWidth-containerWidth],
-          transition: {
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 60, // Slower duration for better visibility
-              ease: "linear"
-            }
-          }
-        })
-      }
-    }
-
-    initializeAnimation()
-    
-    // Re-initialize on window resize
-    window.addEventListener('resize', initializeAnimation)
-    return () => window.removeEventListener('resize', initializeAnimation)
-  }, [controls, partnerImages])
-
-  // Handle hover events
-  const handleMouseEnter = useCallback((partnerName: string) => {
-    setHoveredImage(partnerName)
-    setIsPaused(true)
-    controls.stop()
-  }, [controls])
-
-  const handleMouseLeave = useCallback(() => {
-    setHoveredImage(null)
-    setIsPaused(false)
-    
-    // Restart animation with smooth transition
-    if (marqueeRef.current) {
-      const marqueeWidth = marqueeRef.current.scrollWidth / 3
-      controls.start({
-        x: [null, +marqueeWidth],
-        transition: {
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 60,
-            ease: "linear"
-          }
-        }
-      })
-    }
-  }, [controls])
+  // Handle container hover
+  const handleContainerHover = useCallback((hovering: boolean) => {
+    setIsPaused(hovering)
+  }, [])
 
   // Handle individual partner hover
   const handlePartnerHover = useCallback((partnerName: string) => {
-    handleMouseEnter(partnerName)
-  }, [handleMouseEnter])
+    setHoveredImage(partnerName)
+  }, [])
+
+  const handlePartnerLeave = useCallback(() => {
+    setHoveredImage(null)
+  }, [])
 
   return (
-    <section id="partners" className="section-padding bg-secondary">
+    <section id="partners" className="py-16 bg-primary relative overflow-hidden z-20">
       <RenewableEnergy/>
-      <div className="container-responsive">
+      <div className="container mx-auto px-4">
         {/* Heading */}
         <motion.div 
-          initial={{ opacity: 0, y: 50 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }} 
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4">Our Strategic Partners</h2>
-          <div className="w-24 h-1 bg-solar-accent mx-auto mb-4"></div>
-          <p className="text-lg sm:text-xl text-tertiary max-w-2xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">Our Strategic Partners</h2>
+          <div className="w-20 h-1 bg-solar-accent mx-auto mb-4"></div>
+          <p className="text-tertiary max-w-2xl mx-auto">
             Building strong relationships with key stakeholders to drive renewable energy adoption
           </p>
         </motion.div>
 
         {/* Marquee Container */}
-        <motion.div className="m-6" >
+        <div className="mb-12">
           <div 
-            ref={containerRef}
-            className="relative overflow-show p-4"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
+            className="relative overflow-show py-4"
+            onMouseEnter={() => handleContainerHover(true)}
+            onMouseLeave={() => handleContainerHover(false)}
           >
             {/* Tooltip */}
-            <AnimatePresence>
-              {hoveredImage && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute inset-0 -top-12 bottom-188 left-1/3 right-1/3 bg-secondary z-20"
-                >
-                  <div className="flex flex-row justify-center text-sm m-4 border border-primary/20 rounded-lg shadow-lg gap-2 p-2">
-                    <span className="text-center text-primary font-semibold">{hoveredImage}</span>
-                    <ExternalLink className="h-4 w-4 text-solar-accent" />
-                    <div className="text-xs text-tertiary text-center">Click to visit partner</div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {hoveredImage && (
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-secondary border border-primary/20 rounded-lg shadow-lg z-30 px-3 py-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-primary font-semibold whitespace-nowrap">{hoveredImage}</span>
+                  <ExternalLink className="h-3 w-3 text-solar-accent flex-shrink-0" />
+                </div>
+                <div className="text-xs text-tertiary text-center mt-1">Click to visit partner</div>
+              </div>
+            )}
 
             {/* Pause Indicator */}
-            <AnimatePresence>
-              {isPaused && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="absolute -bottom-4 right-0 bg-solar-accent/10 backdrop-blur-2xl text-solar-accent text-xs px-2 py-1 rounded-full border border-solar-accent/20 z-20"
-                >
-                  Paused
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {isPaused && (
+              <div className="absolute -bottom-1 right-4 bg-solar-accent/10 text-solar-accent text-xs px-2 py-1 rounded-full border border-solar-accent/20 z-20">
+                Paused
+              </div>
+            )}
 
-            {/* Marquee Content */}
-            <motion.div
-              ref={marqueeRef}
-              className="flex gap-8 sm:gap-12 md:gap-16 items-center"
-              animate={controls}
-              style={{ x: 0 }}
-            >
-              {duplicatedPartners.map((partner, idx) => (
-                <motion.div
-                  key={`${partner.src}-${idx}`}
-                  className="flex-shrink-0"
-                  whileHover={{ 
-                    scale: 1.1,
-                    transition: { duration: 0.2 }
-                  }}
-                  onHoverStart={() => handlePartnerHover(partner.name)}
-                  onHoverEnd={handleMouseLeave}
-                >
-                  <Link 
-                    href={partner.link} 
-                    className="block bg-secondary rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-primary/10 p-3 sm:p-4 group"
+            {/* Marquee */}
+            <div className="relative overflow-hidden">
+              <div 
+                className={`flex gap-6 sm:gap-8 items-center ${
+                  isPaused ? 'marquee-paused' : 'marquee-animate'
+                }`}
+              >
+                {duplicatedPartners.map((partner, idx) => (
+                  <div
+                    key={`${partner.src}-${idx}`}
+                    className="flex-shrink-0"
+                    onMouseEnter={() => handlePartnerHover(partner.name)}
+                    onMouseLeave={handlePartnerLeave}
                   >
-                    <div className="w-20 h-10 sm:w-24 sm:h-12 md:w-28 md:h-14 flex items-center justify-center overflow-hidden rounded-lg">
-                      <Image 
-                        src={partner.src} 
-                        alt={partner.name} 
-                        width={112} 
-                        height={56}
-                        className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
-                      />
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
+                    <Link 
+                      href={partner.link} 
+                      className="block bg-primary/80 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-primary/10 p-2 group"
+                    >
+                      <div className="w-24 h-12 sm:w-32 sm:h-16 flex items-center justify-center overflow-hidden rounded">
+                        <Image 
+                          src={partner.src} 
+                          alt={partner.name} 
+                          width={80}
+                          height={40}
+                          className="object-contain transition-all duration-200 group-hover:scale-105"
+                          style={{ 
+                            filter: 'grayscale(1)',
+                            opacity: 0.8
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.filter = 'grayscale(0)'
+                            e.currentTarget.style.opacity = '1'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.filter = 'grayscale(1)'
+                            e.currentTarget.style.opacity = '0.8'
+                          }}
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Partner Types */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
           {partnerTypes.map((type, index) => (
             <motion.div 
               key={type.title} 
-              initial={{ opacity: 0, y: 50 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.6, delay: index * 0.2 }} 
-              className="text-center p-6 card card-glass hover-lift"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="text-center p-4 card border border-primary/10 bg-white/5 backdrop-blur-sm"
             >
-              <div className="bg-solar-accent/10 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex-center mx-auto mb-4">
-                <type.icon className="h-8 w-8 sm:h-10 sm:w-10 text-solar-accent" />
+              <div className="bg-solar-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                <type.icon className="h-5 w-5 text-solar-accent" />
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-primary mb-3">{type.title}</h3>
-              <p className="text-tertiary text-sm sm:text-base">{type.description}</p>
+              <h3 className="text-base font-semibold text-primary mb-2">{type.title}</h3>
+              <p className="text-tertiary text-sm">{type.description}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Partnership Highlights */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }} 
-          whileInView={{ opacity: 1, scale: 1 }} 
-          transition={{ duration: 0.8 }} 
-          className="card card-glass p-6 sm:p-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="card p-6 border border-primary/10 bg-white/5 backdrop-blur-sm mb-12"
         >
           <div className="text-center">
-            <h3 className="text-xl sm:text-2xl font-bold text-primary mb-6">Parent Company Strength</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="card bg-solar-primary/10 p-4 sm:p-6 border border-solar-primary/20 rounded-xl">
-                  <h4 className="text-base sm:text-lg font-bold text-primary mb-2">Paramount Textile PLC</h4>
-                  <p className="text-solar-accent font-semibold text-sm sm:text-base mb-2">Market Capitalization</p>
-                  <p className="text-xl sm:text-2xl font-bold text-solar-primary">BDT 8239.37 Million</p>
-                </div>
+            <h3 className="text-xl font-bold text-primary mb-6">Parent Company Strength</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              <div className="card bg-solar-primary/5 p-4 border border-solar-primary/20 rounded-lg">
+                <h4 className="text-base font-bold text-primary mb-2">Paramount Textile PLC</h4>
+                <p className="text-solar-accent font-semibold text-sm mb-2">Market Capitalization</p>
+                <p className="text-lg font-bold text-solar-primary">BDT 8239.37 Million</p>
               </div>
-              <div className="text-center">
-                <div className="card bg-solar-success/10 p-4 sm:p-6 border border-solar-success/20 rounded-xl">
-                  <h4 className="text-base sm:text-lg font-bold text-primary mb-2">Proven Track Record</h4>
-                  <p className="text-solar-accent font-semibold text-sm sm:text-base mb-2">Successful Project Delivery</p>
-                  <p className="text-lg sm:text-xl font-bold text-solar-success">Multiple Large-scale Projects</p>
-                </div>
+              <div className="card bg-solar-success/5 p-4 border border-solar-success/20 rounded-lg">
+                <h4 className="text-base font-bold text-primary mb-2">Proven Track Record</h4>
+                <p className="text-solar-accent font-semibold text-sm mb-2">Successful Project Delivery</p>
+                <p className="text-base font-bold text-solar-success">Multiple Large-scale Projects</p>
               </div>
             </div>
           </div>
@@ -249,16 +191,17 @@ const StrategicPartners = () => {
 
         {/* CTA */}
         <motion.div 
-          initial={{ opacity: 0, y: 50 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8, delay: 0.4 }} 
-          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center"
         >
-          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-4">Interested in Partnership?</h3>
-          <p className="text-tertiary mb-6 max-w-2xl mx-auto text-sm sm:text-base">
+          <h3 className="text-xl font-bold text-primary mb-3">Interested in Partnership?</h3>
+          <p className="text-tertiary mb-6 max-w-2xl mx-auto text-sm">
             Join us in our mission to create a carbon-neutral future through innovative solar energy solutions.
           </p>
-          <Link href="/contact" className="btn btn-primary px-6 py-3 text-sm sm:text-base">
+          <Link href="/contact" className="btn btn-primary px-6 py-2 text-sm">
             Contact Our Partnership Team
           </Link>
         </motion.div>

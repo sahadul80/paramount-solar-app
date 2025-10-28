@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Target, 
   Eye, 
@@ -13,13 +13,15 @@ import {
   TrendingUp,
   BarChart3,
   Globe,
-  Shield,
   Lightbulb,
   Calendar,
+  ChevronDown,
+  ChevronUp,
   LucideIcon
 } from 'lucide-react'
 import { SolarPanelGrid } from './patterns/SolarPanelGrid';
 import { GreenEnergy } from './patterns/GreenEnergy';
+import { useState } from 'react';
 
 // Type definitions
 interface StatItem {
@@ -72,6 +74,15 @@ interface Section {
 }
 
 const About = () => {
+  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
+
   const sections: Section[] = [
     {
       icon: Building2,
@@ -96,32 +107,6 @@ const About = () => {
           title: "Market Position",
           content: "Leading renewable energy company with a strong portfolio of operational solar power plants and ongoing projects.",
           icon: BarChart3
-        }
-      ]
-    },
-    {
-      icon: Users,
-      title: "WHO WE ARE",
-      id: "who-we-are",
-      content: "Paramount Solar Ltd (PSL) is a leading solar Independent Power Producer (IPP) focused on developing, financing, building, and operating large-scale solar PV projects.",
-      visualization: {
-        type: "structure",
-        data: [
-          { level: "Parent Company", name: "Paramount Textile PLC", value: "BDT 8239.37M", highlight: true },
-          { level: "Subsidiary", name: "Paramount Solar Ltd", value: "100% owned", highlight: false },
-          { level: "Focus", name: "Solar IPP", value: "Large-scale", highlight: false }
-        ]
-      },
-      subsections: [
-        {
-          title: "Technical Expertise",
-          content: "Leveraging deep technical knowledge and industry experience to deliver high-performing sustainable energy assets.",
-          icon: Shield
-        },
-        {
-          title: "Financial Strength",
-          content: "Backed by the financial stability of publicly listed Paramount Textile PLC with market capitalization of BDT 8239.37 million.",
-          icon: TrendingUp
         }
       ]
     },
@@ -210,57 +195,25 @@ const About = () => {
     switch (viz.type) {
       case "stats":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 m-2">
+          <div className="grid grid-cols-3 gap-4 m-2">
             {(viz.data as StatItem[]).map((item: StatItem, index: number) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card card-glass p-6 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                className="card p-2 sm:p-4 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
-                <div className="p-4 rounded-2xl bg-solar-primary/10 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <div className="sm:p-4 rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="h-8 w-8 text-solar-accent" />
                 </div>
-                <div className="text-2xl font-extrabold gradient-text-solar mb-2">{item.value}</div>
+                <div className="text-xl font-extrabold gradient-text-solar mb-2">{item.value}</div>
                 <div className="text-sm text-tertiary font-medium">{item.label}</div>
                 
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                   initial={{ x: "-100%" }}
-                  whileHover={{ x: "200%" }}
-                  transition={{ duration: 0.8 }}
-                />
-              </motion.div>
-            ))}
-          </div>
-        )
-      
-      case "structure":
-        return (
-          <div className="m-2 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(viz.data as StructureItem[]).map((item: StructureItem, index: number) => (
-              <motion.div
-                key={item.level}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`card card-interactive p-8 rounded-2xl relative overflow-hidden hover:scale-105 transition-transform duration-300 ${
-                  item.highlight 
-                    ? 'bg-gradient-to-br from-solar-primary/15 to-solar-secondary/10 ring-2 ring-solar-primary/30' 
-                    : 'bg-secondary/40'
-                }`}
-              >
-                <div className="flex flex-col h-full">
-                  <span className="text-sm font-semibold text-solar-primary mb-3">{item.level}</span>
-                  <h4 className="text-xl font-bold text-primary mb-3">{item.name}</h4>
-                  <p className="text-solar-accent font-semibold text-lg mt-auto">{item.value}</p>
-                </div>
-
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "200%" }}
+                  whileHover={{ x: "100%" }}
                   transition={{ duration: 0.8 }}
                 />
               </motion.div>
@@ -288,7 +241,7 @@ const About = () => {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="relative flex flex-row items-center m-4 gap-4"
+                    className="relative flex flex-row items-center m-2 sm:m-4 gap-4"
                   >
 
                     <div className="">
@@ -314,7 +267,7 @@ const About = () => {
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                         initial={{ x: "-100%" }}
-                        whileHover={{ x: "200%" }}
+                        whileHover={{ x: "100%" }}
                         transition={{ duration: 0.8 }}
                       />
                     </motion.div>
@@ -421,18 +374,18 @@ const About = () => {
       
       case "future":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+          <div className="grid grid-cols-3 gap-2 m-4">
             {(viz.data as FutureItem[]).map((item: FutureItem, index: number) => (
               <motion.div
                 key={item.aspect}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card card-glass card-interactive p-8 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                className="card card-glass card-interactive p-4 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="bg-gradient-to-br from-solar-primary to-solar-secondary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  className="bg-gradient-to-br from-solar-primary to-solar-secondary sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
                 >
                   <item.icon className="h-8 w-8 text-primary" />
                 </motion.div>
@@ -455,7 +408,7 @@ const About = () => {
   }
 
   return (
-    <section id="about" className="section-padding bg-secondary relative overflow-hidden">
+    <section id="about" className="section-padding bg-secondary relative overflow-hidden z-20">
       <SolarPanelGrid/>
       <div className="container-responsive relative">
         {/* Enhanced Main Header */}
@@ -546,52 +499,87 @@ const About = () => {
                   {renderVisualization(section.visualization)}
                 </motion.div>
 
-                {/* Subsections */}
+                {/* Details Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}
-                  className="mt-8 border-t-3"
+                  className="mt-8 flex justify-center"
                 >
-                  <h4 className="text-2xl font-bold text-primary m-4 flex items-center justify-center lg:justify-start gap-4">
-                    <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
-                    Detailed Overview
-                    <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
-                  </h4>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {section.subsections.map((subsection, subIndex) => (
-                      <motion.div
-                        key={subsection.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: subIndex * 0.1 }}
-                        className="card card-glass p-4 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
-                      >
-                        <div className="flex flex-col items-start">
-                          <div className="p-4 rounded-2xl bg-solar-accent/10 flex flex-row gap-6 flex-shrink-0">
-                            <subsection.icon className="h-8 w-8 text-solar-accent" />
-                            <h5 className="text-xl font-bold text-primary">
-                              {subsection.title}
-                            </h5>
-                          </div>
-                          <div>
-                            <p className="text-tertiary text-lg leading-relaxed">
-                              {subsection.content}
-                            </p>
-                          </div>
-                        </div>
-
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                          initial={{ x: "-100%" }}
-                          whileHover={{ x: "200%" }}
-                          transition={{ duration: 0.8 }}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
+                  <motion.button
+                    onClick={() => toggleSection(section.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-solar-primary to-solar-accent text-primary font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+                  >
+                    {expandedSections[section.id] ? 'Hide Details' : 'Show Details'}
+                    <motion.div
+                      animate={{ rotate: expandedSections[section.id] ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {expandedSections[section.id] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </motion.div>
+                  </motion.button>
                 </motion.div>
+
+                {/* Subsections - Animated */}
+                <AnimatePresence>
+                  {expandedSections[section.id] && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="mt-8 border-t-3 pt-8"
+                      >
+                        <h4 className="text-2xl font-bold text-primary m-4 flex items-center justify-center lg:justify-start gap-4">
+                          <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
+                          Detailed Overview
+                          <div className="w-2 h-10 bg-solar-accent rounded-full"></div>
+                        </h4>
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          {section.subsections.map((subsection, subIndex) => (
+                            <motion.div
+                              key={subsection.title}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.6, delay: subIndex * 0.1 + 0.3 }}
+                              className="card card-glass p-4 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                            >
+                              <div className="flex flex-col items-start">
+                                <div className="p-4 rounded-2xl bg-solar-accent/10 flex flex-row gap-6 flex-shrink-0">
+                                  <subsection.icon className="h-8 w-8 text-solar-accent" />
+                                  <h5 className="text-xl font-bold text-primary">
+                                    {subsection.title}
+                                  </h5>
+                                </div>
+                                <div>
+                                  <p className="text-tertiary text-lg leading-relaxed">
+                                    {subsection.content}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                                initial={{ x: "-100%" }}
+                                whileHover={{ x: "200%" }}
+                                transition={{ duration: 0.8 }}
+                              />
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Background Pattern */}

@@ -25,7 +25,7 @@ export default function Home() {
     // Set a timeout to hide the loader after 2.5 seconds
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 2500)
+    }, 800)
 
     // Clean up the timer
     return () => clearTimeout(timer)
@@ -43,14 +43,6 @@ export default function Home() {
 
       {/* Hero / Banner */}
       <Banner />
-
-      {/* Smooth fade-in transition for all sections */}
-      <motion.div
-        className="mx-auto"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
         <StatsCTA />
         <About />
         <History />
@@ -59,7 +51,6 @@ export default function Home() {
         <NationalFootprint />
         <ProjectsPortfolio />
         <StrategicPartners />
-      </motion.div>
       <Contact />
       {/* Footer */}
       <Footer />

@@ -43,7 +43,7 @@ const NationalFootprint = () => {
       coordinates: { lat: 25.9974, lng: 89.1524 },
       capacity: "30MW",
       slug: "lalmonirhat-project",
-      position: { top: "10%", left: "24%" }
+      position: { top: isTouchDevice ? "20%" : "10%", left: "24%" }
     },
     {
       name: "PABNA 1",
@@ -307,9 +307,8 @@ const NationalFootprint = () => {
   const totalCapacity = operationalCapacity + underConstructionCapacity + pipelineCapacity
 
   return (
-    <section id="national-footprint" className="section-padding bg-secondary relative overflow-hidden">
+    <section id="national-footprint" className="section-padding bg-primary relative overflow-hidden z-20">
       <CleanEnergy/>
-
       <div className="container-responsive relative">
         {/* Enhanced Header Section */}
         <motion.div
@@ -318,23 +317,9 @@ const NationalFootprint = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-16"
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="inline-flex items-center gap-3 mb-6"
-          >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
               NATIONAL <span className="gradient-text-solar">FOOTPRINT</span>
             </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="w-32 h-1 bg-gradient-to-r from-solar-primary to-solar-accent mx-auto mb-8 rounded-full"
-          />
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -372,7 +357,7 @@ const NationalFootprint = () => {
                   transformOrigin: 'center center',
                   transition: isDragging ? 'none' : 'transform 0.3s ease-in-out',
                   touchAction: zoom > 1 ? 'none' : 'auto',
-                  minHeight: '600px'
+                  minHeight: '480px'
                 }}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
@@ -395,7 +380,7 @@ const NationalFootprint = () => {
                         width="100%"
                         height="100%"
                         viewBox="-10 0 450 600"
-                        className="min-h-[600px] sm:min-h-[720px] w-full pointer-events-none" // Added pointer-events-none
+                        className="min-h-[480px] sm:min-h-[600px] w-full pointer-events-none" // Added pointer-events-none
                         preserveAspectRatio="xMidYMid meet"
                       >
                         <path
@@ -617,7 +602,7 @@ const NationalFootprint = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="absolute bottom-6 left-1/2 transform -translate-x-1/2 card card-glass px-4 py-2 backdrop-blur-sm"
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 card card-glass px-4 py-2 backdrop-blur-sm"
               >
                 {zoom > 1 ? (
                   <span className="text-solar-accent text-sm font-medium">🎯 Drag to navigate the map</span>
@@ -631,7 +616,7 @@ const NationalFootprint = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                className="text-lg text-secondary font-bold tracking-wide"
+                className="items-center"
               >
                 <SolarBanner/>
               </motion.div>

@@ -145,7 +145,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1 hover:text-solar-accent hover:bg-tertiary">
             {navItems.map((item) => (
               <div key={item.name} className="relative">
                 {item.dropdown ? (
@@ -156,7 +156,7 @@ export default function Header() {
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
                     <button
-                      className={`flex items-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group ${
+                      className={`flex items-center p-4 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift ${
                         isActive(item.href) || item.dropdown?.some(d => isActive(d.href))
                           ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
                           : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
@@ -177,11 +177,8 @@ export default function Header() {
                     <AnimatePresence>
                       {activeDropdown === item.name && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-primary rounded-xl shadow-2xl border border-tertiary py-2"
+                          className="absolute top-full left-0 w-64 bg-primary rounded-xl shadow-2xl border border-tertiary py-2"
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
                         >
                           {item.dropdown.map((subItem) => (
                             <a
@@ -191,9 +188,9 @@ export default function Header() {
                                 e.preventDefault()
                                 handleNavClick(subItem.href)
                               }}
-                              className={`block px-4 py-3 text-sm font-medium transition-all duration-300 hover-lift group relative ${
+                              className={`block p-4 text-sm font-medium transition-all duration-300 hover-lift group relative ${
                                 isActive(subItem.href)
-                                  ? 'text-solar-accent bg-solar-accent/10'
+                                  ? 'text-solar-accent bg-solar-accent/20'
                                   : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                               }`}
                             >
@@ -211,16 +208,16 @@ export default function Header() {
                   </div>
                 ) : (
                   /* Regular Items */
-                  <a
+                  <Link
                     href={item.href}
                     onClick={(e) => {
                       e.preventDefault()
                       handleNavClick(item.href)
                     }}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group relative ${
+                    className={`p-4 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group relative ${
                       isActive(item.href)
                         ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
-                        : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
+                        : 'text-secondary'
                     }`}
                   >
                     <span className="relative">
@@ -229,7 +226,7 @@ export default function Header() {
                         <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
                       )}
                     </span>
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
@@ -252,10 +249,6 @@ export default function Header() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
               className="lg:hidden bg-primary mt-4 rounded-2xl shadow-2xl overflow-hidden"
             >
               <div className="py-4 space-y-2">
@@ -290,11 +283,11 @@ export default function Header() {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.2 }}
+                              transition={{ duration: 0.5, ease: "easeInOut" }}
                               className="bg-tertiary/30"
                             >
                               {item.dropdown.map((subItem) => (
-                                <a
+                                <Link
                                   key={subItem.name}
                                   href={subItem.href}
                                   onClick={(e) => {
@@ -313,7 +306,7 @@ export default function Header() {
                                       <span className="absolute -bottom-1 left-0 w-3/4 h-0.5 bg-solar-accent rounded-full"></span>
                                     )}
                                   </span>
-                                </a>
+                                </Link>
                               ))}
                             </motion.div>
                           )}
@@ -321,7 +314,7 @@ export default function Header() {
                       </div>
                     ) : (
                       /* Mobile Regular Items */
-                      <a
+                      <Link
                         href={item.href}
                         onClick={(e) => {
                           e.preventDefault()
@@ -339,7 +332,7 @@ export default function Header() {
                             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
                           )}
                         </span>
-                      </a>
+                      </Link>
                     )}
                   </div>
                 ))}
@@ -347,7 +340,7 @@ export default function Header() {
 
               {/* Mobile Contact CTA */}
               <div className="border-t border-tertiary p-4 bg-secondary">
-                <a
+                <Link
                   href="#contact"
                   onClick={(e) => {
                     e.preventDefault()
@@ -356,7 +349,7 @@ export default function Header() {
                   className="block w-full btn-accent text-center font-bold py-3 px-4 rounded-lg hover-glow"
                 >
                   GET IN TOUCH
-                </a>
+                </Link>
               </div>
             </motion.nav>
           )}
