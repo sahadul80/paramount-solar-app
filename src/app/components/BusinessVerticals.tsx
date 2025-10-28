@@ -209,10 +209,10 @@ const BusinessVerticals: React.FC = () => {
 
       <div className="container mx-auto p-2 sm:p-4 relative">
         {/* Mobile Gallery - Show on top for mobile */}
-        <div className="block sm:hidden fixed top-18 z-10">
+        <div className="block sm:hidden fixed top-18 left-0 right-0 z-10">
           <div className="shadow-lg mx-auto glass-effect p-2">
             <h4 className="text-md font-semibold text-primary text-center">{activeVertical.title}</h4>
-            <div className="relative h-36 rounded-lg overflow-hidden mb-3">
+            <div className="relative h-36 rounded-lg overflow-hidden m-2">
               <motion.img
                 key={`${activeVertical.id}-${activeImageIndex}`}
                 src={activeVertical.images[activeImageIndex]}
