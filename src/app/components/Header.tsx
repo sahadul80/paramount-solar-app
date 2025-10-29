@@ -15,11 +15,14 @@ export default function Header() {
   // Navigation structure
   const navItems = [
     {
+      name: 'HOME',
+      href: '#home'
+    },
+    {
       name: 'ABOUT',
       href: '#about',
       dropdown: [
         { name: 'COMPANY', href: '#company' },
-        { name: 'WHO WE ARE', href: '#who-we-are' },
         { name: 'COMPANY BACKGROUND', href: '#company-background' },
         { name: 'OUR GOAL', href: '#our-goal' },
         { name: 'VISION', href: '#vision' }
@@ -118,8 +121,8 @@ export default function Header() {
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-primary shadow-xl p-4' 
-          : 'bg-primary p-4'
+          ? 'bg-primary shadow-xl p-2' 
+          : 'glass-effect'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}

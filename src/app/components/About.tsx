@@ -195,16 +195,16 @@ const About = () => {
     switch (viz.type) {
       case "stats":
         return (
-          <div className="grid grid-cols-3 gap-4 m-2">
+          <div className="grid grid-cols-3 gap-2 m-2">
             {(viz.data as StatItem[]).map((item: StatItem, index: number) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card p-2 sm:p-4 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                className="card p-2 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
-                <div className="sm:p-4 rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
+                <div className="rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="h-8 w-8 text-solar-accent" />
                 </div>
                 <div className="text-xl font-extrabold gradient-text-solar mb-2">{item.value}</div>
@@ -346,9 +346,9 @@ const About = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card card-glass p-2 sm:p-6 relative overflow-hidden hover:scale-105 transition-transform duration-300"
+                className="card card-glass p-2 relative overflow-hidden hover:scale-95 transition-transform duration-300"
               >
-                <div className="flex justify-between text-base m-2">
+                <div className="flex justify-between text-base">
                   <span className="font-semibold text-primary text-lg">{target.target}</span>
                   <span className="text-solar-accent font-bold text-lg">{target.progress}%</span>
                 </div>
@@ -381,15 +381,15 @@ const About = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card card-glass card-interactive p-4 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
+                className="card card-glass card-interactive p-2 text-center relative overflow-hidden group hover:scale-95 transition-transform duration-300"
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="bg-gradient-to-br from-solar-primary to-solar-secondary sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  className="bg-gradient-to-br from-solar-primary to-solar-secondary w-12 h-12 rounded-lg flex items-center justify-center mx-auto m-2 shadow-lg"
                 >
                   <item.icon className="h-8 w-8 text-primary" />
                 </motion.div>
-                <div className="text-xl font-bold text-primary">{item.aspect}</div>
+                <div className="text-md font-bold text-primary">{item.aspect}</div>
 
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"

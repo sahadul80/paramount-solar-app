@@ -107,14 +107,14 @@ const Footer = () => {
                 </a>
               </div>
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
-                <a href="tel:+8801XXXXXXXXX" className="flex flex-row">
+                <a href="tel:+880 1722 191757" className="flex flex-row">
                   <Phone className="h-5 w-5 mr-3 text-[var(--text-tertiary)]" />
-                  <span>+880 XXXX-XXXXXX</span>
+                  <span>+880 1722 191757</span>
                 </a>
               </div>
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
                 <MapPin className="h-5 w-5 mr-3 text-[var(--text-tertiary)]" />
-                <span>Corporate Office, Dhaka, Bangladesh</span>
+                <span>House#22, Road#113/A, Gulshan-2, Dhaka-1212, Dhaka, Bangladesh</span>
               </div>
             </div>
 

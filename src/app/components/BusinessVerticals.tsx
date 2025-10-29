@@ -207,7 +207,7 @@ const BusinessVerticals: React.FC = () => {
       <SunRays />
       <EnergyFlow />
 
-      <div className="container mx-auto p-2 sm:p-4 relative">
+      <div className="container mx-auto p-2 sm:p-4 relative overflow-auto">
         {/* Mobile Gallery - Show on top for mobile */}
         <div className="block sm:hidden fixed top-18 left-0 right-0 z-10">
           <div className="shadow-lg mx-auto glass-effect p-2">
@@ -278,15 +278,15 @@ const BusinessVerticals: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  className={`card border border-primary/10 bg-white/5 backdrop-blur-sm overflow-hidden rounded-xl sm:rounded-2xl shadow-sm ${
-                    activeId === vertical.id ? 'ring-2 ring-solar-accent/50 shadow-md' : ''
+                  className={`card border border-primary backdrop-blur-sm overflow-hidden rounded-lg shadow-sm ${
+                    activeId === vertical.id ? 'ring-2 ring-solar-accent shadow-md' : ''
                   }`}
                   id={vertical.id}
                 >
                   {/* Header */}
-                  <div className="bg-gradient-to-r from-solar-primary/8 to-solar-accent/8 p-4 sm:p-6 border-b border-primary/10">
+                  <div className="bg-gradient-to-r from-solar-primary to-solar-accent p-2 sm:p-4 border-b border-primary">
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
+                      <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-transparent backdrop-blur-sm border border-secondary">
                         <vertical.icon className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -303,9 +303,9 @@ const BusinessVerticals: React.FC = () => {
                   {/* Content Grid */}
                   <div className="flex flex-col lg:flex-row">
                     {/* Visual Section */}
-                    <div className="w-full lg:w-2/5 p-4 sm:p-6 border-b lg:border-b-0 lg:border-r border-primary/10">
+                    <div className="w-full lg:w-2/5 p-2 sm:p-4 border-b lg:border-b-0 lg:border-r border-primary">
                       <div className="card p-4 border border-primary/10 flex flex-col items-center justify-center text-center rounded-lg sm:rounded-xl bg-gradient-to-br from-white/2 to-white/5">
-                        <div className="text-4xl sm:text-5xl mb-3">{vertical.image}</div>
+                        <div className="text-4xl sm:text-5xl">{vertical.image}</div>
                         <div className="flex items-center text-solar-accent mb-4">
                           <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                           <span className="text-xs sm:text-sm font-semibold">{vertical.imageDescription}</span>
@@ -317,7 +317,7 @@ const BusinessVerticals: React.FC = () => {
                             <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-solar-accent" />
                             Quick Facts
                           </h4>
-                          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                          <div className="grid grid-rows-3 gap-2 sm:gap-3">
                             {vertical.stats.map((stat, idx) => (
                               <div key={idx} className="text-center p-2 sm:p-3 rounded-lg bg-primary/5 border border-primary/10">
                                 <div className="text-sm sm:text-base font-bold text-solar-accent">{stat.value}</div>
@@ -330,18 +330,18 @@ const BusinessVerticals: React.FC = () => {
                     </div>
 
                     {/* Content Section */}
-                    <div className="w-full lg:w-3/5 p-4 sm:p-6 space-y-4 sm:space-y-6">
+                    <div className="w-full lg:w-3/5 p-2 sm:p-4">
                       {/* Projects */}
                       {vertical.projects && (
                         <div>
-                          <h4 className="text-sm sm:text-base font-semibold text-primary mb-3 flex items-center gap-2">
+                          <h4 className="text-sm sm:text-base font-semibold text-primary m-2 flex items-center gap-2">
                             <Target className="h-4 w-4 text-solar-accent flex-shrink-0" />
                             Commissioned Projects
                           </h4>
                           <div className="space-y-2">
                             {vertical.projects.map((project, idx) => (
-                              <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50 hover:bg-tertiary/30 transition-colors">
-                                <div className="w-2 h-2 bg-solar-accent rounded-full mt-2 flex-shrink-0" />
+                              <div key={idx} className="flex items-center justify-start gap-3 p-2 rounded-lg bg-secondary hover:bg-tertiary transition-colors">
+                                <div className="w-2 h-2 bg-solar-accent rounded-full flex-shrink-0" />
                                 <span className="text-sm text-tertiary flex-1 leading-relaxed">{project}</span>
                               </div>
                             ))}
@@ -444,14 +444,14 @@ const BusinessVerticals: React.FC = () => {
           </div>
 
           {/* Right: sticky gallery - Desktop only */}
-          <aside className="hidden sm:inline fixed lg:w-1/3 top-24 right-0 h-[calc(75vh)] flex-col gap-6">
-            <div className="flex-1 flex flex-col bg-gradient-to-br from-white/3 to-white/6 p-4 rounded-2xl border border-primary/10 shadow-lg">
+          <aside className="hidden sm:inline fixed lg:w-1/3 top-20 right-0 h-[calc(75vh)] flex-col backdrop-blur-xs m-4">
+            <div className="flex flex-col bg- p-4 rounded-2xl border border-primary/10 shadow-lg">
               <div className="mb-4">
                 <h4 className="text-lg font-semibold text-primary mb-1">{activeVertical.title}</h4>
                 <p className="text-sm text-tertiary">{activeVertical.imageDescription}</p>
               </div>
 
-              <div className="relative flex-1 rounded-xl overflow-hidden bg-black/5 mb-4 h-[360px]">
+              <div className="relative rounded-xl overflow-hidden bg-black/5 mb-4 h-[360px]">
                 <motion.img
                   key={`${activeVertical.id}-${activeImageIndex}`}
                   src={activeVertical.images[activeImageIndex]}

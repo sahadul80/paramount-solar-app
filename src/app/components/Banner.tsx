@@ -122,6 +122,7 @@ const Banner = () => {
   return (
     <section
       className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4 z-20"
+      id="home"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -159,7 +160,7 @@ const Banner = () => {
 
       {/* Enhanced Solar Banner without Rotation */}
       <div className='flex flex-col items-center'>
-        <div className="items-center justify-center z-10 text-center m-6 mt-24">
+        <div className="items-center justify-center z-10 text-center m-8 mt-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -241,7 +242,7 @@ const Banner = () => {
                   }}
                   whileTap={{ scale: 0.95 }}
                   onClick={scrollToProjects}
-                  className="glass-effect border border-primary/20 rounded-xl p-3 inline-block cursor-pointer hover-glow self-center"
+                  className="glass-effect border border-primary/20 p-2 rounded-xl inline-block cursor-pointer hover-glow self-center"
                 >
                   <motion.p 
                     className="text-base sm:text-lg font-bold text-solar-accent"
@@ -277,7 +278,7 @@ const Banner = () => {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToStats}
-            className="btn btn-primary btn-lg flex items-center gap-2 group w-full sm:w-auto"
+            className="btn btn-primary btn-md flex items-center gap-2 group w-full"
           >
             <span>Explore</span>
             <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
@@ -287,31 +288,14 @@ const Banner = () => {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={scrollToContact}
-            className="btn btn-accent btn-lg w-full sm:w-auto"
+            className="btn btn-accent btn-md w-full"
           >
             Get Started
           </motion.button>
         </motion.div>
 
         {/* Controls Section */}
-        <div className="w-full max-w-2xl mx-auto m-4 p-4">
-          {/* Progress Bar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.4 }}
-            className="flex justify-center mb-4"
-          >
-            <div className="w-80 h-2 bg-primary/20 rounded-full overflow-hidden backdrop-blur-sm">
-              <motion.div
-                key={`progress-${currentSlide}-${isAutoPlaying}`}
-                initial={{ width: "0%" }}
-                animate={isAutoPlaying && !isHovering ? { width: "100%" } : { width: "0%" }}
-                transition={{ duration: 5, ease: "linear" }}
-                className="h-full bg-solar-accent rounded-full"
-              />
-            </div>
-          </motion.div>
+        <div className="w-full max-w-2xl mx-auto m-4">
 
           {/* Slide Controls */}
           <motion.div
@@ -384,25 +368,6 @@ const Banner = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Enhanced Gradient Overlays - Variable Opacity */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Top Gradient - High opacity at top, decreasing to middle */}
-        <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-primary via-primary/50 to-primary/0" />
-        
-        {/* Bottom Gradient - High opacity at bottom, decreasing to middle */}
-        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary via-primary/50 to-primary/0" />
-        
-        {/* Middle Area - Transparent (0 opacity) */}
-        <div className="absolute top-1/3 left-0 right-0 h-1/3 bg-transparent" />
-        
-        {/* Side Gradients for better focus */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-primary to-primary/0" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-primary to-primary/0" />
-      </div>
-
-      {/* Additional subtle overlay for better text readability */}
-      <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
     </section>
   )
 }

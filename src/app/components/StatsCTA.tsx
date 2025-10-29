@@ -135,7 +135,7 @@ const StatsCTA = () => {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 m-2 sm:m-4"
         >
           {stats.map((stat, index) => {
             const Icon = stat.icon
@@ -150,14 +150,14 @@ const StatsCTA = () => {
                   ease: "easeOut"
                 }}
                 whileHover={{ y: -4 }}
-                className={`card card-interactive p-4 sm:p-6 text-center bg-transparent backdrop-blur-xs relative overflow-hidden group border border-primary/10 hover:shadow-lg transition-shadow duration-300`}
+                className={`card card-interactive p-2 sm:p-4 text-center bg-transparent backdrop-blur-xs relative overflow-hidden group border border-primary/10 hover:shadow-lg transition-shadow duration-300`}
               >
                 <motion.div
-                  className="bg-solar-primary w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 relative"
+                  className="bg-solar-primary w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center m-2 sm:m-4 relative"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                  <Icon className="h-8 w-8 text-primary" />
                 </motion.div>
 
                 <CountUp 
@@ -167,7 +167,7 @@ const StatsCTA = () => {
                   isInView={isInView} 
                 />
 
-                <div className="text-base sm:text-lg font-semibold text-solar-primary mb-2">{stat.label}</div>
+                <div className="text-base sm:text-lg font-semibold text-solar-primary m-2">{stat.label}</div>
                 <div className="text-xs sm:text-sm text-tertiary leading-relaxed">{stat.description}</div>
               </motion.div>
             )
@@ -179,7 +179,7 @@ const StatsCTA = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-          className="bg-gradient-to-r from-solar-primary to-solar-secondary rounded-2xl p-6 sm:p-8 md:p-12 text-primary text-center relative overflow-hidden"
+          className="bg-gradient-to-r from-solar-primary to-solar-secondary rounded-2xl p-2 sm:p-4 text-primary text-center relative overflow-hidden"
         >
           {/* Static Background Pattern */}
           <div className="absolute inset-0 opacity-10">
