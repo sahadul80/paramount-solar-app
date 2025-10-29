@@ -355,7 +355,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="card border border-primary/10 bg-white/5 backdrop-blur-sm"
+            className="card border border-primary bg-transparent backdrop-blur-xs"
           >
             <div className="flex items-center p-4 border-b border-primary/10">
               <div className="bg-solar-primary w-8 h-8 rounded-lg flex items-center justify-center mr-3">

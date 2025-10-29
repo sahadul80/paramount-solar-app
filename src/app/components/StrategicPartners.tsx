@@ -54,7 +54,7 @@ const StrategicPartners = () => {
   }, [])
 
   return (
-    <section id="partners" className="py-16 bg-primary relative overflow-hidden z-20">
+    <section id="strategic-partners" className="py-16 bg-primary relative overflow-hidden z-20">
       <RenewableEnergy/>
       <div className="container mx-auto px-4">
         {/* Heading */}
@@ -65,7 +65,9 @@ const StrategicPartners = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">Our Strategic Partners</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
+            OUR <span className="gradient-text-solar">STRATEGIC PARTNERS</span>
+          </h2>
           <div className="w-20 h-1 bg-solar-accent mx-auto mb-4"></div>
           <p className="text-tertiary max-w-2xl mx-auto">
             Building strong relationships with key stakeholders to drive renewable energy adoption
@@ -92,7 +94,7 @@ const StrategicPartners = () => {
 
             {/* Pause Indicator */}
             {isPaused && (
-              <div className="absolute -bottom-1 right-4 bg-solar-accent/10 text-solar-accent text-xs px-2 py-1 rounded-full border border-solar-accent/20 z-20">
+              <div className="absolute -bottom-4 right-4 bg-solar-accent/10 text-solar-accent text-xs px-2 py-1 rounded-full border border-solar-accent/20 z-20">
                 Paused
               </div>
             )}

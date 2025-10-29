@@ -753,7 +753,7 @@ const NationalFootprint = () => {
             {/* Statistics */}
             <motion.div
               variants={containerVariants}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+              className="grid grid-cols-3 gap-2"
             >
               {[
                 { 

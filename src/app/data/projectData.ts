@@ -3,7 +3,7 @@ import { ProjectData } from '../components/ProjectVisualization'
 
 export const projects: { [key: string]: ProjectData } = {
   'lalmonirhat-project': {
-    name: "LALMONIRHAT",
+    name: "INTRACO SOLAR POWER LTD",
     type: "30MW Solar Power Plant",
     status: "Operational",
     capacity: "30MW",
@@ -48,7 +48,7 @@ export const projects: { [key: string]: ProjectData } = {
     ]
   },
   'pabna-project': {
-    name: "PABNA 1",
+    name: "DYNAMIC SUN ENERGY POWER LTD",
     type: "100MW Solar Park",
     status: "Operational",
     capacity: "100MW",
@@ -94,7 +94,7 @@ export const projects: { [key: string]: ProjectData } = {
     ]
   },
   'bibiana-project': {
-    name: "BIBIANA, MOULVIBAZAR",
+    name: "MOULVIBAZAR SOLAR POWER LTD",
     type: "50MW Power Plant",
     status: "Pipeline",
     capacity: "50MW",

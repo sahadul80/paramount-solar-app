@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { Sun, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, ArrowUp, Zap, Leaf, Users, Building2 } from 'lucide-react'
 import { useCallback } from 'react'
 import Link from 'next/link'
+import { SolarFarm } from './patterns/SolarFarm'
+import { SolarPanelGrid } from './patterns/SolarPanelGrid'
 
 const Footer = () => {
   const scrollToTop = useCallback(() => {
@@ -47,7 +49,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-gradient-to-br from-[var(--bg-primary)] to-[var(--bg-secondary)] text-[var(--text-primary)] relative overflow-hidden border-t border-[var(--border-primary)] z-20">
+    <footer className="bg-primary text-text-primary relative overflow-hidden border-t border-border-primary z-20">
       {/* Stats Bar */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -227,7 +229,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
       {/* Bottom Gradient */}
       <div className="h-1 bg-gradient-to-r from-[var(--solar-primary)] via-[var(--solar-accent)] to-[var(--solar-secondary)]"></div>
     </footer>
