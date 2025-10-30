@@ -125,30 +125,20 @@ const Banner = () => {
       {/* Background Slides with Next.js Image */}
       <div className="absolute inset-0 overflow-hidden">
         <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-          <motion.div
-            key={currentSlide}
-            custom={direction}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className="absolute inset-0"
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0 z-10 opacity-60 ">
-              <Image
-                src={slides[currentSlide].bgImage}
-                alt={slides[currentSlide].title}
-                fill
-                className="object-cover"
-                priority={currentSlide === 0}
-                quality={90}
-                sizes="100vw"
-              />
-            </div>
-            
-            {/* Gradient Overlay */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${slides[currentSlide].bg}`} />
-          </motion.div>
+          {/* Background Image */}
+          <div key={currentSlide} className="absolute inset-0 z-10 opacity-60 ">
+            <Image
+              src={slides[currentSlide].bgImage}
+              alt={slides[currentSlide].title}
+              fill
+              className="object-cover"
+              priority={currentSlide === 0}
+              quality={100}
+              sizes="100vw"
+            />
+          </div>
+          {/* Gradient Overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${slides[currentSlide].bg}`} />
         </AnimatePresence>
       </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { Sun, Leaf, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 
@@ -12,8 +12,8 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Navigation structure
-  const navItems = [
+  // Fixed: Wrap navItems in useMemo to prevent unnecessary re-renders
+  const navItems = useMemo(() => [
     {
       name: 'HOME',
       href: '#home'
@@ -59,7 +59,7 @@ export default function Header() {
       name: 'CONTACT US',
       href: '#contact'
     }
-  ]
+  ], [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,7 +88,7 @@ export default function Header() {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [navItems])
+  }, [navItems]) // Now this dependency is stable due to useMemo
 
   // Close dropdown when clicking outside
   useEffect(() => {

@@ -319,7 +319,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`fixed top-0 left-0 right-0 glass-effect border-b border-primary/20 z-10 ${
+        className={`fixed top-0 left-0 right-0 glass-effect border-b border-primary/20 p-1 z-10 ${
           isScrolled ? 'shadow-lg' : 'shadow-sm'
         }`}
       >
@@ -366,7 +366,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center max-w-4xl mx-auto m-2 mt-10"
+              className="text-center max-w-4xl mx-auto m-2 mt-12"
             >
               <SolarPanelGrid/>
               <motion.div
@@ -397,16 +397,16 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex flex-wrap justify-center gap-2 sm:gap-4"
               >
-                <div className="flex items-center gap-2 sm:gap-3 card card-glass p-2">
+                <div className="flex items-center gap-2 sm:gap-3 card card-glass">
                   <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
                   <span className="font-semibold text-primary text-sm sm:text-base lg:text-lg">{projectData.capacity}</span>
                 </div>
-                <div className="flex items-center gap-2 sm:gap-3 card card-glass p-2">
+                <div className="flex items-center gap-2 sm:gap-3 card card-glass">
                   <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
                   <span className="text-tertiary text-sm sm:text-base">{projectData.location}</span>
                 </div>
                 {projectData.commissioningDate && (
-                  <div className="flex items-center gap-2 sm:gap-3 card card-glass p-2">
+                  <div className="flex items-center gap-2 sm:gap-3 card card-glass">
                     <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
                     <span className="text-tertiary text-sm sm:text-base">Since {projectData.commissioningDate}</span>
                   </div>
@@ -416,14 +416,14 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
           </div>
         </section>
         {/* Main Content */}
-        <div className="p-2 sm:p-4 h-[80vh] flex flex-col relative overflow-auto">
+        <div className="p-2 sm:p-4 h-[85vh] flex flex-col relative overflow-auto">
           <div className="flex flex-col lg:flex-row gap-2 sm:gap-4">
             {/* Main Content - 2/3 width on desktop, full width on mobile */}
-            <div className="flex-1 space-y-4 sm:space-y-6 md:space-y-8">
+            <div className="flex-1 space-y-4">
               {/* Project Overview */}
               <motion.section
                 variants={cardVariants}
-                className="card card-glass card-interactive p-2 sm:p-4"
+                className="card card-glass card-interactive p-2 sm:p-4 z-10"
               >
                 <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Project Overview</h2>
                 <div className="space-y-4 sm:space-y-6">
@@ -435,8 +435,8 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   </p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
-                    <div className="card card-interactive p-2 sm:p-4 relative overflow-auto group">
-                      <h3 className="font-bold text-primary m-2 sm:m-3 text-lg">Project Significance</h3>
+                    <div className="card card-interactive p-2 sm:p-4 relative overflow-auto group z-10">
+                      <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Project Significance</h3>
                       <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
                         {[
                           "Contributing to national renewable energy targets",
@@ -465,7 +465,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                         }}
                       />
                     </div>
-                    <div className="card card-interactive p-2 sm:p-4 bg-solar-secondary/10 border-solar-secondary/20 relative overflow-auto group">
+                    <div className="card card-interactive p-2 sm:p-4 bg-solar-secondary/10 border-solar-secondary/20 relative overflow-auto group z-10">
                       <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Community Impact</h3>
                       <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
                         {[
@@ -504,11 +504,11 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               {/* Image Carousel Section */}
               <motion.section
                 variants={cardVariants}
-                className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
+                className="card card-glass card-interactive p-4 relative overflow-auto"
               >
-                <div className="flex items-center justify-between m-2 sm:m-4">
+                <div className="flex items-center justify-between">
                   <h2 className="text-xl sm:text-2xl font-extrabold text-primary">Project Gallery</h2>
-                  <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="flex items-center gap-2">
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -584,7 +584,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => goToImage(index)}
-                        className={`flex-shrink-0 relative aspect-[4/3] w-16 sm:w-20 md:w-24 rounded-lg overflow-auto border-2 transition-all duration-200 ${
+                        className={`flex-shrink-0 relative aspect-[4/3] w-16 sm:w-20 md:w-24 rounded-lg overflow-auto border-2 transition-all duration-200 z-10 ${
                           index === currentImageIndex 
                             ? 'border-solar-accent ring-2 ring-solar-accent/20' 
                             : 'border-primary/20 hover:border-solar-primary'
@@ -612,7 +612,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                 className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
               >
                 <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Key Features & Technology</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                   {defaultKeyFeatures.map((feature, index) => {
                     const FeatureIcon = iconMap[feature.icon as keyof typeof iconMap] || Zap
                     return (
@@ -621,7 +621,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                        className="card card-interactive p-2 sm:p-4 bg-secondary/50 border-primary/20 relative overflow-auto group"
+                        className="card card-interactive p-2 sm:p-4 bg-secondary/50 border-primary/20 relative overflow-auto group z-10"
                       >
                         <div className="flex items-start gap-3 sm:gap-4">
                           <motion.div
@@ -652,13 +652,13 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               {/* Technical Specifications */}
               <motion.section
                 variants={cardVariants}
-                className="card card-glass card-interactive p-4 sm:p-6 md:p-8 relative overflow-auto"
+                className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
               >
                 <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Technical Specifications</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                   <div>
-                    <h3 className="font-bold text-primary m-2 sm:m-4 text-lg">System Components</h3>
-                    <div className="space-y-3 sm:space-y-4">
+                    <h3 className="font-bold text-primary sm:m-4 text-lg">System Components</h3>
+                    <div className="p-2">
                       {Object.entries(defaultTechnicalSpecs).map(([key, value], index) => (
                         <motion.div
                           key={key}
@@ -682,22 +682,18 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="card p-2 sm:p-4 bg-gradient-to-r from-solar-primary to-solar-accent text-primary rounded-xl relative overflow-auto"
+                          className="card p-2 sm:p-4 bg-gradient-to-r from-solar-primary to-solar-accent text-primary rounded-xl relative overflow-auto z-10 flex flex-col items-center"
                         >
                           <div className="text-xl sm:text-2xl font-bold m-2">{projectData.annualGeneration}</div>
                           <div className="text-primary/90 text-sm sm:text-base">Annual Electricity Generation</div>
-                          <motion.div
-                            animate={floatingAnimation}
-                            className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-12 h-12 sm:w-16 sm:h-16 bg-primary rounded-full"
-                          ></motion.div>
                         </motion.div>
                       )}
-                      <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {projectData.householdsPowered && (
                           <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="card card-interactivep-2 sm:p-4 text-center hover:shadow-glow transition-all"
+                            className="card card-interactivep-2 p-2 text-center hover:shadow-glow transition-all"
                           >
                             <div className="text-lg sm:text-xl font-bold text-solar-success mb-1">{projectData.householdsPowered}</div>
                             <div className="text-tertiary text-xs sm:text-sm">Households Powered</div>
@@ -722,13 +718,13 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
 
             {/* Sidebar - Hidden on mobile (shown in drawer), 1/3 width on desktop */}
             {!isMobile && (
-              <div className="w-full lg:w-1/3 space-y-4 sm:space-y-6">
+              <div className="w-full lg:w-1/3 space-y-4">
                 {/* Quick Facts */}
                 <motion.div
                   variants={cardVariants}
-                  className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
+                  className="card card-glass card-interactive p-4 relative overflow-auto"
                 >
-                  <h3 className="text-lg sm:text-xl font-extrabold text-primary m-2 sm:m-4 text-center">Project at a Glance</h3>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-primary text-center">Project at a Glance</h3>
                   <div className="space-y-3 sm:space-y-4">
                     <div className="flex justify-between items-center p-1 border-b border-primary/20">
                       <span className="font-medium text-primary text-sm sm:text-base">Status</span>
@@ -776,7 +772,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                       <div>{projectData.location}</div>
                       <div>Coordinates: {projectData.coordinates.lat}°N, {projectData.coordinates.lng}°E</div>
                     </div>
-                    <div className="w-auto h-auto card bg-secondary/50 border-primary/20 rounded-lg">
+                    <div className="aspect-[4/3] sm:aspect-video card bg-secondary/50 border-primary/20 rounded-lg">
                       <iframe
                         loading="lazy"
                         src={projectData.map}
@@ -912,9 +908,9 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed top-0 right-0 h-full w-80 max-w-[90vw] bg-secondary border-l border-primary/20 overflow-y-auto custom-scrollbar z-10"
+              className="fixed top-0 right-0 h-full w-full max-w-[100vw] bg-secondary border-l border-primary/20 overflow-y-auto custom-scrollbar z-10"
             >
-              <div className="p-4 space-y-4">
+              <div className="p-2">
                 {/* Header */}
                 <div className="flex items-center justify-between m-2">
                   <h3 className="text-lg font-bold text-primary">Project Details</h3>
@@ -957,37 +953,72 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   </div>
                 </div>
 
-                {/* Location */}
-                <div className="card card-glass p-2">
-                  <div className="flex items-center gap-2 m-2">
-                    <MapPin className="h-4 w-4 text-solar-accent" />
-                    <h4 className="font-bold text-primary text-sm">Location</h4>
+                  {/* Location */}
+                  <div className="m-2 sm:m-4">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                      <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
+                      <h4 className="font-bold text-primary text-sm sm:text-base">Location</h4>
+                    </div>
+                    <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-tertiary m-2 sm:m-4">
+                      <div>{projectData.location}</div>
+                      <div>Coordinates: {projectData.coordinates.lat}°N, {projectData.coordinates.lng}°E</div>
+                    </div>
+                    <div className="w-auto h-auto card bg-secondary/50 border-primary/20 rounded-lg">
+                      <iframe
+                        loading="lazy"
+                        src={projectData.map}
+                        title={`${projectData.name} - Location Map`}
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={openMap}
+                        className="btn btn-ghost w-full flex items-center gap-2 p-2 text-xs sm:text-sm z-10"
+                      >
+                        <Maximize className="h-3 w-3 sm:h-4 sm:w-4 text-solar-accent" />
+                        <span className="text-solar-accent font-medium">Open in Fullscreen</span>
+                      </motion.button>
+                    </div>
                   </div>
-                  <div className="space-y-1 text-xs text-tertiary m-2">
-                    <div>{projectData.location}</div>
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={openMap}
-                    className="btn btn-primary btn-sm w-full flex items-center gap-2"
-                  >
-                    <Maximize className="h-3 w-3" />
-                    <span>View Map</span>
-                  </motion.button>
-                </div>
 
-                {/* Environmental Impact */}
-                <div className="card card-glass p-2 bg-solar-success border-solar-success">
-                  <h4 className="font-bold text-primary m-2 text-center text-sm">Environmental Impact</h4>
-                  <div className="space-y-3">
-                    {defaultEnvironmentalImpact.slice(0, 2).map((impact, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-sm font-bold text-solar-success m-1">{impact.value}</div>
-                        <div className="font-medium text-primary text-xs m-1">{impact.metric}</div>
-                      </div>
+                {/* Environmental Impact - Alternative Structure */}
+                <div className="card bg-solar-success p-2 sm:p-4 relative overflow-auto group z-10">
+                  <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Environmental Impact<hr/></h3>
+                  <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
+                    {defaultEnvironmentalImpact.map((impact, index) => (
+                      <motion.li
+                        key={`impact-${index}`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="space-y-1"
+                      >
+                        <div className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-2 h-2 bg-solar-success rounded-full m-2 flex-shrink-0" />
+                          <span className="font-semibold">{impact.value}</span>
+                        </div>
+                        <div className="flex items-start gap-2 sm:gap-3 ml-4">
+                          <div className="w-1.5 h-1.5 bg-solar-success/70 rounded-full m-2 flex-shrink-0" />
+                          <span>{impact.metric}</span>
+                        </div>
+                        <div className="flex items-start gap-2 sm:gap-3 ml-4">
+                          <div className="w-1.5 h-1.5 bg-solar-success/70 rounded-full m-2 flex-shrink-0" />
+                          <span className="text-xs opacity-80">{impact.description}</span>
+                        </div>
+                      </motion.li>
                     ))}
-                  </div>
+                  </ul>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-success to-transparent -skew-x-12"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ 
+                      x: "200%",
+                      transition: shineTransition
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>

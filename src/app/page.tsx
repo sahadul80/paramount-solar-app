@@ -78,7 +78,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-blue-50 to-green-50">
+    <main className="min-h-screen w-full">
       <Header />
       <Banner />
 

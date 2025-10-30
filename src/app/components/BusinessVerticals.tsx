@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { motion } from 'framer-motion';
 import {
   Building,
@@ -40,7 +40,8 @@ type Vertical = {
 };
 
 const BusinessVerticals: React.FC = () => {
-  const verticals: Vertical[] = [
+  // Fixed: Wrap verticals in useMemo to prevent unnecessary re-renders
+  const verticals: Vertical[] = useMemo(() => [
     {
       id: "ipp-projects",
       icon: Building,
@@ -149,9 +150,9 @@ const BusinessVerticals: React.FC = () => {
         "/images/pabna3.png"
       ]
     }
-  ];
+  ], []);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  // Fixed: Removed unused containerRef
   const itemRefs = useRef<Record<string, HTMLElement | null>>({});
   const [activeId, setActiveId] = useState<string>(verticals[0].id);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
@@ -194,7 +195,7 @@ const BusinessVerticals: React.FC = () => {
     return () => {
       observer.disconnect();
     };
-  }, [verticals]);
+  }, [verticals]); // Now this dependency is stable due to useMemo
 
   const handleThumbClick = (index: number) => {
     setActiveImageIndex(index);

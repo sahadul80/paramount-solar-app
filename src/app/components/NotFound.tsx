@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Home, ArrowLeft, Sun, Zap } from 'lucide-react'
+import { Home, ArrowLeft, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -36,7 +36,7 @@ const NotFound = () => {
         <h1 className="text-6xl font-black text-primary mb-4">404</h1>
         <h2 className="text-2xl font-bold text-primary mb-4">Project Not Found</h2>
         <p className="text-tertiary mb-8">
-          The solar project you're looking for isn't available. It might be under construction or no longer active.
+          The solar project you&apos;re looking for isn&apos;t available. It might be under construction or no longer active.
         </p>
 
         {/* Actions */}
