@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { SolarPanelGrid } from './patterns/SolarPanelGrid';
 import { SunRays } from './patterns/SunRays';
 import { EnergyFlow } from './patterns/EnergyFlow';
+import Image from "next/image";
 
 type Stat = { value: string; label: string };
 type Vertical = {
@@ -213,15 +214,13 @@ const BusinessVerticals: React.FC = () => {
           <div className="shadow-lg mx-auto glass-effect p-2">
             <h4 className="text-md font-semibold text-primary text-center">{activeVertical.title}</h4>
             <div className="relative h-36 rounded-lg overflow-hidden m-2">
-              <motion.img
+              <Image
                 key={`${activeVertical.id}-${activeImageIndex}`}
                 src={activeVertical.images[activeImageIndex]}
                 alt={`${activeVertical.title} image ${activeImageIndex + 1}`}
+                width={360}
+                height={180}
                 loading="lazy"
-                initial={{ opacity: 0, y: 12, scale: 0.99 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45 }}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -234,7 +233,7 @@ const BusinessVerticals: React.FC = () => {
                   className={`flex-none rounded-md overflow-hidden border-2 ${i === activeImageIndex ? 'border-solar-accent' : 'border-transparent'}`}
                   aria-label={`Show image ${i + 1}`}
                 >
-                  <img src={src} alt={`thumb-${i}`} className="w-16 h-12 object-cover" loading="lazy" />
+                  <Image src={src} alt={`thumb-${i}`} width={64} height={36} className="w-16 h-12 object-cover" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -242,7 +241,7 @@ const BusinessVerticals: React.FC = () => {
         </div>
 
         {/* Main layout */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 overflow-hidden">
           {/* Left: verticals list - removed overflow constraints */}
           <div className="w-full lg:w-2/3">
             {/* Header */}
@@ -452,14 +451,13 @@ const BusinessVerticals: React.FC = () => {
               </div>
 
               <div className="relative rounded-xl overflow-hidden bg-black/5 mb-4 h-[360px]">
-                <motion.img
+                <Image
                   key={`${activeVertical.id}-${activeImageIndex}`}
                   src={activeVertical.images[activeImageIndex]}
                   alt={`${activeVertical.title} image ${activeImageIndex + 1}`}
+                  width={360}
+                  height={480}
                   loading="lazy"
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
@@ -477,9 +475,11 @@ const BusinessVerticals: React.FC = () => {
                     }`}
                     aria-label={`Show image ${i + 1}`}
                   >
-                    <img 
+                    <Image 
                       src={src} 
-                      alt={`thumb-${i}`} 
+                      alt={`thumb-${i}`}
+                      width={64}
+                      height={36}
                       className="w-16 h-12 lg:w-20 lg:h-14 object-cover" 
                       loading="lazy" 
                     />

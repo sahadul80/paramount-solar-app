@@ -1,58 +1,125 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Header from './components/Header'
 import Banner from './components/Banner'
 import Footer from './components/Footer'
 import ParamountLoader from './components/Loader'
 
-const StatsCTA = dynamic(() => import('./components/StatsCTA'), { ssr: false })
-const About = dynamic(() => import('./components/About'), { ssr: false })
-const History = dynamic(() => import('./components/History'), { ssr: false })
-const CompanyBoard = dynamic(() => import('./components/CompanyBoard'), { ssr: false })
-const BusinessVerticals = dynamic(() => import('./components/BusinessVerticals'), { ssr: false })
-const NationalFootprint = dynamic(() => import('./components/NationalFootprint'), { ssr: false })
-const ProjectsPortfolio = dynamic(() => import('./components/ProjectsPortfolio'), { ssr: false })
-const StrategicPartners = dynamic(() => import('./components/StrategicPartners'), { ssr: false })
-const Contact = dynamic(() => import('./components/Contact'), { ssr: false })
+// Create a simple loading component for individual sections
+const SectionLoader = () => (
+  <div className="w-full h-64 flex items-center justify-center">
+    <div className="animate-pulse flex space-x-4 w-full">
+      <div className="flex-1 space-y-6 py-1">
+        <div className="h-4 bg-gray-200 rounded"></div>
+        <div className="space-y-3">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="h-4 bg-gray-200 rounded col-span-2"></div>
+            <div className="h-4 bg-gray-200 rounded col-span-1"></div>
+          </div>
+          <div className="h-4 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+// Individual component imports with proper loading states
+const StatsCTA = dynamic(() => import('./components/StatsCTA'), {
+  loading: () => <SectionLoader />
+})
+
+const About = dynamic(() => import('./components/About'), {
+  loading: () => <SectionLoader />
+})
+
+const History = dynamic(() => import('./components/History'), {
+  loading: () => <SectionLoader />
+})
+
+const CompanyBoard = dynamic(() => import('./components/CompanyBoard'), {
+  loading: () => <SectionLoader />
+})
+
+const BusinessVerticals = dynamic(() => import('./components/BusinessVerticals'), {
+  loading: () => <SectionLoader />
+})
+
+const NationalFootprint = dynamic(() => import('./components/NationalFootprint'), {
+  loading: () => <SectionLoader />
+})
+
+const ProjectsPortfolio = dynamic(() => import('./components/ProjectsPortfolio'), {
+  loading: () => <SectionLoader />
+})
+
+const StrategicPartners = dynamic(() => import('./components/StrategicPartners'), {
+  loading: () => <SectionLoader />
+})
+
+const Contact = dynamic(() => import('./components/Contact'), {
+  loading: () => <SectionLoader />
+})
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Set a timeout to hide the loader after 2.5 seconds
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 800)
+    }, 1000)
 
-    // Clean up the timer
     return () => clearTimeout(timer)
   }, [])
 
-  // Show loader while loading
   if (isLoading) {
     return <ParamountLoader />
   }
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-blue-50 to-green-50">
-      {/* Fixed header */}
       <Header />
-
-      {/* Hero / Banner */}
       <Banner />
-        <StatsCTA />
-        <About />
-        <History />
-        <CompanyBoard />
-        <BusinessVerticals />
-        <NationalFootprint />
-        <ProjectsPortfolio />
-        <StrategicPartners />
-      <Contact />
-      {/* Footer */}
+
+      <div className="space-y-0">
+        <Suspense fallback={<SectionLoader />}>
+          <StatsCTA />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <About />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <History />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <CompanyBoard />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <BusinessVerticals />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <ProjectsPortfolio />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <NationalFootprint />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <StrategicPartners />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <Contact />
+        </Suspense>
+      </div>
+
       <Footer />
     </main>
   )

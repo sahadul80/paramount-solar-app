@@ -50,9 +50,9 @@ export default function Header() {
       name: 'PROJECTS',
       href: '#projects',
       dropdown: [
-        { name: 'INTRACO SOLAR POWER LTD', href: '#projects' },
-        { name: 'DYNAMIC SUN ENERGY POWER LTD', href: '#projects' },
-        { name: 'MOULVIBAZAR SOLAR POWER LTD', href: '#projects' }
+        { name: 'INTRACO SOLAR POWER LTD', href: '#lalmonirhat-project' },
+        { name: 'DYNAMIC SUN ENERGY POWER LTD', href: '#pabna-project' },
+        { name: 'MOULVIBAZAR SOLAR POWER LTD', href: '#bibiana-project' }
       ]
     },
     {

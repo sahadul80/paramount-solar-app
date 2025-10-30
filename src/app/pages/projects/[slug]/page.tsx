@@ -1,7 +1,8 @@
 "use client"
-import { projects } from '@/app/data/projectData'
+import { projects } from '../../../data/projectData'
 import ProjectVisualization from '../../../components/ProjectVisualization'
 import { use } from 'react'
+import { NotFound } from '../../../components/NotFound'
 
 interface ProjectPageProps {
   params: Promise<{
@@ -14,7 +15,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const project = projects[resolvedParams.slug]
 
   if (!project) {
-    return <div>Project not found</div>
+    return <div><NotFound/></div>
   }
 
   return (

@@ -204,7 +204,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="card p-2 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
-                <div className="rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
+                <div className="sm:p-4 rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
                   <item.icon className="h-8 w-8 text-solar-accent" />
                 </div>
                 <div className="text-xl font-extrabold gradient-text-solar mb-2">{item.value}</div>

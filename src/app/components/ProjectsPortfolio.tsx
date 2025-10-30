@@ -53,15 +53,6 @@ const ProjectsPortfolio = () => {
     }
   ]
 
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case 'Operational': return 'success'
-      case 'Under Construction': return 'warning'
-      case 'Pipeline': return 'primary'
-      default: return 'secondary'
-    }
-  }
-
   const handleProjectClick = (slug: string) => {
     router.push(`/pages/projects/${slug}`)
   }

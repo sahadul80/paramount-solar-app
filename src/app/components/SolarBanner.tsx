@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type DisplayMode = 'dawn' | 'day' | 'dusk' | 'night' | 'sun' | 'moon' | 'auto';
+type DisplayMode = 'dawn' | 'day' | 'dusk' | 'night' | 'sun' | 'moon';
 
 interface ModeConfig {
   hasSun: boolean;
@@ -21,31 +21,79 @@ interface SolarBannerProps {
 
 export default function SolarBanner({ onModeChange }: SolarBannerProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [currentMode, setCurrentMode] = useState<DisplayMode>('auto');
-  const [modeConfig, setModeConfig] = useState<ModeConfig>({
-    hasSun: true,
-    hasMoon: false,
-    sunIntensity: 0.8,
-    moonIntensity: 0.2,
-    reflectionColor: 'rgba(255, 255, 255, 0.5)',
-    duration: 15,
-    bodyClass: "gradient-day"
-  });
+  const [currentModeIndex, setCurrentModeIndex] = useState(0);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
   const targetRotate = useRef({ x: 0, y: 0 });
   const currentRotate = useRef({ x: 0, y: 0 });
 
+  // Define the modes to cycle through
+  const modes: DisplayMode[] = useMemo(() => 
+    ['dawn', 'day', 'dusk', 'night', 'sun', 'moon'], 
+    []
+  );
+
   const modeConfigs: Record<DisplayMode, ModeConfig> = useMemo(() => ({
-    dawn: { hasSun: true, hasMoon: false, sunIntensity: 0.6, moonIntensity: 0, reflectionColor: 'rgba(255, 180, 100, 0.8)', duration: 12, bodyClass: "gradient-dawn" },
-    day: { hasSun: true, hasMoon: false, sunIntensity: 1, moonIntensity: 0, reflectionColor: 'rgba(255,255,200,1)', duration: 10, bodyClass: "gradient-day" },
-    dusk: { hasSun: true, hasMoon: false, sunIntensity: 0.5, moonIntensity: 0.2, reflectionColor: 'rgba(255,120,120,0.8)', duration: 14, bodyClass: "gradient-dusk" },
-    night: { hasSun: false, hasMoon: true, sunIntensity: 0, moonIntensity: 0.6, reflectionColor: 'rgba(180,200,255,0.6)', duration: 20, bodyClass: "gradient-night" },
-    sun: { hasSun: true, hasMoon: false, sunIntensity: 1, moonIntensity: 0, reflectionColor: 'rgba(255,255,150,1)', duration: 8, bodyClass: "gradient-sun" },
-    moon: { hasSun: false, hasMoon: true, sunIntensity: 0, moonIntensity: 0.8, reflectionColor: 'rgba(160,180,255,0.8)', duration: 18, bodyClass: "gradient-moon" },
-    auto: { hasSun: true, hasMoon: false, sunIntensity: 0.8, moonIntensity: 0.2, reflectionColor: 'rgba(255,255,255,0.7)', duration: 15, bodyClass: "gradient-day" }
+    dawn: { 
+      hasSun: true, 
+      hasMoon: false, 
+      sunIntensity: 0.6, 
+      moonIntensity: 0, 
+      reflectionColor: 'rgba(255, 180, 100, 0.8)', 
+      duration: 12, 
+      bodyClass: "gradient-dawn" 
+    },
+    day: { 
+      hasSun: true, 
+      hasMoon: false, 
+      sunIntensity: 1, 
+      moonIntensity: 0, 
+      reflectionColor: 'rgba(255,255,200,1)', 
+      duration: 10, 
+      bodyClass: "gradient-day" 
+    },
+    dusk: { 
+      hasSun: true, 
+      hasMoon: false, 
+      sunIntensity: 0.5, 
+      moonIntensity: 0.2, 
+      reflectionColor: 'rgba(255,120,120,0.8)', 
+      duration: 14, 
+      bodyClass: "gradient-dusk" 
+    },
+    night: { 
+      hasSun: false, 
+      hasMoon: true, 
+      sunIntensity: 0, 
+      moonIntensity: 0.6, 
+      reflectionColor: 'rgba(180,200,255,0.6)', 
+      duration: 20, 
+      bodyClass: "gradient-night" 
+    },
+    sun: { 
+      hasSun: true, 
+      hasMoon: false, 
+      sunIntensity: 1, 
+      moonIntensity: 0, 
+      reflectionColor: 'rgba(255,255,150,1)', 
+      duration: 8, 
+      bodyClass: "gradient-sun" 
+    },
+    moon: { 
+      hasSun: false, 
+      hasMoon: true, 
+      sunIntensity: 0, 
+      moonIntensity: 0.8, 
+      reflectionColor: 'rgba(160,180,255,0.8)', 
+      duration: 18, 
+      bodyClass: "gradient-moon" 
+    }
   }), []);
+
+  // Get current mode and config
+  const currentMode = modes[currentModeIndex];
+  const modeConfig = modeConfigs[currentMode];
 
   useEffect(() => {
     const checkSize = () => setIsMobile(window.innerWidth < 768);
@@ -53,6 +101,23 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     window.addEventListener("resize", checkSize);
     return () => window.removeEventListener("resize", checkSize);
   }, []);
+
+  // Auto-cycle through modes every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentModeIndex((prevIndex) => (prevIndex + 1) % modes.length);
+    }, 5000); // 5 seconds
+
+    return () => clearInterval(interval);
+  }, [modes.length]);
+
+  // Update body class and notify parent when mode changes
+  useEffect(() => {
+    document.body.className = modeConfig.bodyClass;
+    if (onModeChange) {
+      onModeChange(currentMode);
+    }
+  }, [currentMode, modeConfig.bodyClass, onModeChange]);
 
   // Smooth animation loop
   useEffect(() => {
@@ -117,34 +182,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     };
   }, []);
 
-  // Auto mode updater
-  useEffect(() => {
-    if (currentMode !== 'auto') return;
-    const updateAuto = () => {
-      const hour = new Date().getHours();
-      let auto: DisplayMode = 'day';
-      if (hour >= 5 && hour < 7) auto = 'dawn';
-      else if (hour >= 7 && hour < 17) auto = 'day';
-      else if (hour >= 17 && hour < 19) auto = 'dusk';
-      else auto = 'night';
-      setModeConfig(modeConfigs[auto]);
-      if (onModeChange) onModeChange(auto);
-      document.body.className = modeConfigs[auto].bodyClass;
-    };
-    updateAuto();
-    const interval = setInterval(updateAuto, 300000);
-    return () => clearInterval(interval);
-  }, [currentMode, modeConfigs, onModeChange]);
-
-  // Manual mode updater
-  useEffect(() => {
-    if (currentMode !== 'auto') {
-      setModeConfig(modeConfigs[currentMode]);
-      document.body.className = modeConfigs[currentMode].bodyClass;
-      if (onModeChange) onModeChange(currentMode);
-    }
-  }, [currentMode, modeConfigs, onModeChange]);
-
   const { cols, rows, panels } = useMemo(() => {
     const cols = 11;
     const rows = 4;
@@ -172,13 +209,16 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
 
   return (
     <div className="solar-banner-container mt-2">
+
       {/* Reflections */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {modeConfig.hasSun && (
           <motion.div
+            key={`sun-${currentMode}`}
             className="sun-reflection-track"
             initial={{ x: "-100%" }}
             animate={{ x: "100%" }}
+            exit={{ x: "100%" }}
             transition={{ duration: modeConfig.duration, repeat: Infinity, ease: "linear" }}
             style={{
               background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
@@ -188,9 +228,11 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
         )}
         {modeConfig.hasMoon && (
           <motion.div
+            key={`moon-${currentMode}`}
             className="moon-reflection-track"
             initial={{ x: "-100%" }}
             animate={{ x: "100%" }}
+            exit={{ x: "100%" }}
             transition={{ duration: modeConfig.duration + 5, repeat: Infinity, ease: "linear" }}
             style={{
               background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
@@ -201,13 +243,17 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
       </AnimatePresence>
 
       {/* Grid */}
-      <div
+      <motion.div
         ref={gridRef}
+        key={currentMode} // Re-render grid on mode change for smooth transitions
         className="solar-grid w-auto h-auto"
+        initial={{ opacity: 0.8 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
         style={{
           gridTemplateColumns: `repeat(${cols}, 1fr)`,
           gridTemplateRows: `repeat(${rows}, 1fr)`,
-          transform: "rotateX(0deg) rotateY(0deg) scale(1)", // Initial state
+          transform: "rotateX(0deg) rotateY(0deg) scale(1)",
         }}
       >
         {panels.map(({ id, letter, row, col }) => {
@@ -257,7 +303,7 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Floating Shadow */}
       <div className="solar-grid-shadow" />

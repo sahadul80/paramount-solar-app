@@ -146,15 +146,6 @@ const NationalFootprint = () => {
     }
   }
 
-  const floatingAnimation = {
-    y: [-8, 8, -8],
-    transition: {
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut" as const
-    }
-  }
-
   const shineTransition = {
     duration: 1.5,
     ease: "easeInOut" as const
@@ -779,7 +770,7 @@ const NationalFootprint = () => {
                 }
               ].map((stat, index) => (
                 <motion.div
-                  key={stat.status}
+                  key={index}
                   variants={cardVariants}
                   whileHover="hover"
                   className={`card card-glass card-interactive p-4 text-center cursor-pointer bg-${stat.color}/10 border-${stat.color}/20`}

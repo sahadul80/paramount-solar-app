@@ -1,4 +1,3 @@
-// projectData.ts
 import { ProjectData } from '../components/ProjectVisualization'
 
 export const projects: { [key: string]: ProjectData } = {

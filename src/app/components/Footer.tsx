@@ -1,11 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Sun, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, ArrowUp, Zap, Leaf, Users, Building2 } from 'lucide-react'
+import { Sun, Mail, Phone, MapPin, ArrowUp, Zap, Leaf, Users, Building2, FacebookIcon, TwitterIcon, LinkedinIcon, InstagramIcon } from 'lucide-react'
 import { useCallback } from 'react'
 import Link from 'next/link'
-import { SolarFarm } from './patterns/SolarFarm'
-import { SolarPanelGrid } from './patterns/SolarPanelGrid'
 
 const Footer = () => {
   const scrollToTop = useCallback(() => {
@@ -42,10 +40,10 @@ const Footer = () => {
   ]
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook', color: 'hover:bg-blue-600' },
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:bg-sky-500' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:bg-blue-700' },
-    { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:bg-pink-600' }
+    { icon: FacebookIcon, href: '#', label: 'Facebook', color: 'hover:bg-blue-600' },
+    { icon: TwitterIcon, href: '#', label: 'Twitter', color: 'hover:bg-sky-500' },
+    { icon: LinkedinIcon, href: '#', label: 'LinkedIn', color: 'hover:bg-blue-700' },
+    { icon: InstagramIcon, href: '#', label: 'Instagram', color: 'hover:bg-pink-600' }
   ]
 
   return (

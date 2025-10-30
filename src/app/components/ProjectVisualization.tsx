@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import MapModal from './MapModal'
-import { SolarFarm } from './patterns/SolarFarm'
 import { SolarPanelGrid } from './patterns/SolarPanelGrid'
 import { RenewableEnergy } from './patterns/RenewableEnergy'
 
@@ -555,7 +554,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
 
                   {/* Navigation Arrows */}
                   {images.length > 1 && (
-                    <>
+                    <div>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -572,7 +571,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                       >
                         <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
                       </motion.button>
-                    </>
+                    </div>
                   )}
                 </div>
 
@@ -983,7 +982,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   <h4 className="font-bold text-primary m-2 text-center text-sm">Environmental Impact</h4>
                   <div className="space-y-3">
                     {defaultEnvironmentalImpact.slice(0, 2).map((impact, index) => (
-                      <div key={impact.metric} className="text-center">
+                      <div key={index} className="text-center">
                         <div className="text-sm font-bold text-solar-success m-1">{impact.value}</div>
                         <div className="font-medium text-primary text-xs m-1">{impact.metric}</div>
                       </div>

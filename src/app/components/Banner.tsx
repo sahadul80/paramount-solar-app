@@ -12,7 +12,6 @@ const Banner = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isHovering, setIsHovering] = useState(false)
   const [direction, setDirection] = useState(0)
-  const [isClient, setIsClient] = useState(false)
 
   const slides = [
     {
@@ -49,11 +48,6 @@ const Banner = () => {
       bgImage: "/images/b1.png"
     }
   ]
-
-  // Set client-side flag
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
 
   // Auto-play effect
   useEffect(() => {

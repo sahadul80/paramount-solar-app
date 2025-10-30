@@ -161,7 +161,7 @@ const CompanyBoard = () => {
                 <div className="flex flex-wrap gap-2">
                   {industries.map((industry, index) => (
                     <span
-                      key={industry}
+                      key={index}
                       className="px-3 py-1 bg-solar-primary/10 text-solar-primary text-md rounded-full border border-solar-primary/20"
                     >
                       {industry}
@@ -185,7 +185,7 @@ const CompanyBoard = () => {
                     { icon: Leaf, value: "Sustainable", desc: "Eco-Conscious" }
                   ].map((item, index) => (
                     <div
-                      key={item.value}
+                      key={index}
                       className="text-center p-3"
                     >
                       <div className="bg-solar-primary/10 w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2">

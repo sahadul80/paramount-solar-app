@@ -101,7 +101,7 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         {/* Header Controls */}
-        <div className="flex items-center gap-3 p-2 bg-primary/5 border-b border-primary/20">
+        <div className="flex flex-row items-center gap-2 p-2 bg-primary/5 border-b border-primary/20">
           {/* Search Input */}
           <div className="flex-1 flex items-center glass-effect rounded-lg shadow-md p-2">
             <input
