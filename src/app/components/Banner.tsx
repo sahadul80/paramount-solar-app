@@ -115,7 +115,7 @@ const Banner = () => {
 
   return (
     <section
-      className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4 z-20"
+      className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4 z-20 backdrop-blur-sm"
       id="home"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}

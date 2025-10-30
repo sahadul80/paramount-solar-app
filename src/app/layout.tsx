@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -99,13 +99,7 @@ export const metadata: Metadata = {
 
   // Additional Important Metadata
   manifest: '/manifest.json',
-  themeColor: '#0F766E', // Solar theme color
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-
+  
   // Verification (Add your actual verification codes)
   verification: {
     google: 'your-google-verification-code',
@@ -139,6 +133,14 @@ export const metadata: Metadata = {
     'dc:publisher': companyInfo.name,
     'dc:rights': `Copyright © ${new Date().getFullYear()} ${companyInfo.name}`,
   }
+}
+
+// Viewport configuration - MOVED from metadata
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#0F766E', // Solar theme color
 }
 
 // Structured Data (JSON-LD) for Organization

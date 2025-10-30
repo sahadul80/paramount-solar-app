@@ -84,30 +84,6 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
 
   const isMobile = windowWidth < 768
 
-  // Animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  }
-
   const cardVariants: Variants = {
     hidden: { opacity: 0, scale: 0.95, y: 20 },
     visible: {
@@ -145,15 +121,6 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
         duration: 0.4,
         ease: "easeOut"
       }
-    }
-  }
-
-  const floatingAnimation = {
-    y: [-8, 8, -8],
-    transition: {
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut" as const
     }
   }
 
@@ -334,10 +301,66 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 group-hover:-translate-x-1 transition-transform" />
               <span className="hidden sm:inline font-semibold text-primary text-sm sm:text-base">Back to Projects</span>
             </motion.button>
+            {/* Hero Section */}
+            <section className={`relative overflow-auto ${statusConfig.bgColor}`}>
+              <div className="container-responsive">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="text-center max-w-4xl"
+                >
+                  <SolarPanelGrid/>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="inline-flex items-center"
+                  >
+                    <h1 className="text-md sm:text-2xl font-extrabold text-primary leading-tight z-10">
+                      {projectData.name}
+                    </h1>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="inline-flex items-center"
+                  >
+                    <p className="hidden sm:flex text-lg sm:text-xl md:text-2xl font-normal text-primary leading-tight z-10">
+                      : {projectData.type}
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="hidden sm:flex flex-wrap justify-center gap-2 sm:gap-4"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3 card card-glass">
+                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
+                      <span className="font-semibold text-primary text-sm sm:text-base lg:text-lg">{projectData.capacity}</span>
+                    </div>
+                    <div className="flex items-center gap-2 sm:gap-3 card card-glass">
+                      <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
+                      <span className="text-tertiary text-sm sm:text-base">{projectData.location}</span>
+                    </div>
+                    {projectData.commissioningDate && (
+                      <div className="flex items-center gap-2 sm:gap-3 card card-glass">
+                        <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
+                        <span className="text-tertiary text-sm sm:text-base">Since {projectData.commissioningDate}</span>
+                      </div>
+                    )}
+                  </motion.div>
+                </motion.div>
+              </div>
+            </section>
             
             <div className="flex items-center gap-2 sm:gap-3">
-              <StatusIcon className="h-4 w-4 sm:h-5 sm:w-5 text-solar-success" />
-              <span className={`tag ${statusConfig.color} font-medium text-xs sm:text-sm`}>
+              <StatusIcon className="hidden sm:inline h-4 w-4 sm:h-5 sm:w-5 text-solar-success" />
+              <span className={`hidden sm:inline tag ${statusConfig.color} font-medium text-xs sm:text-sm`}>
                 {projectData.status}
               </span>
               
@@ -347,9 +370,11 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={toggleSidebar}
-                  className="btn btn-primary btn-sm"
                 >
-                  <span className="text-xs">Quick Facts</span>
+                  <span className={`tag ${statusConfig.color} font-medium text-xs sm:text-sm`}>
+                    <StatusIcon className="h-4 w-4 sm:h-5 sm:w-5 text-solar-success" />
+                    {projectData.status}
+                  </span>
                 </motion.button>
               )}
             </div>
@@ -357,536 +382,477 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
         </div>
       </motion.header>
 
-      {/* Main content with padding for fixed header */}
-      <div className="m-2 sm:m-4"> {/* Add padding to account for fixed header */}
-        {/* Hero Section */}
-        <section className={`relative overflow-auto ${statusConfig.bgColor}`}>
-          <div className="container-responsive">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center max-w-4xl mx-auto m-2 mt-12"
+      {/* Main Content */}
+      <div className="container w-auto h-auto flex flex-col relative overflow-hidden mt-12 m-2 mx-auto p-2">
+        <div className="flex flex-col lg:flex-row gap-2 sm:gap-4">
+          {/* Main Content - 2/3 width on desktop, full width on mobile */}
+          <div className="flex-1 space-y-4">
+            {/* Project Overview */}
+            <motion.section
+              variants={cardVariants}
+              className="card card-glass card-interactive p-2 sm:p-4"
             >
-              <SolarPanelGrid/>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-flex items-center"
-              >
-                <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-primary leading-tight z-10">
-                  {projectData.name}
-                </h1>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="inline-flex items-center"
-              >
-                <p className="hidden sm:flex text-lg sm:text-xl md:text-2xl font-normal text-primary leading-tight z-10">
-                  : {projectData.type}
+              <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Project Overview</h2>
+              <div className="space-y-4 sm:space-y-6">
+                <p className="text-tertiary leading-relaxed text-sm sm:text-base md:text-lg">
+                  The {projectData.name} is a {projectData.capacity.toLowerCase()} {projectData.type.toLowerCase()} 
+                  located in {projectData.location}. This project represents a significant step forward in 
+                  Bangladesh&apos;s renewable energy infrastructure, contributing to the nation&apos;s sustainable 
+                  development goals.
                 </p>
-              </motion.div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+                  <div className="card card-interactive p-2 sm:p-4 relative overflow-auto group z-10">
+                    <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Project Significance</h3>
+                    <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
+                      {[
+                        "Contributing to national renewable energy targets",
+                        "Reducing dependency on fossil fuels",
+                        "Creating local employment opportunities",
+                        "Supporting sustainable development goals"
+                      ].map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          className="flex items-start gap-2 sm:gap-3"
+                        >
+                          <div className="w-2 h-2 bg-solar-success rounded-full m-2 flex-shrink-0" />
+                          {item}
+                        </motion.li>
+                      ))}
+                    </ul>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-success/5 to-transparent -skew-x-12"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ 
+                        x: "200%",
+                        transition: shineTransition
+                      }}
+                    />
+                  </div>
+                  <div className="card card-interactive p-2 sm:p-4 bg-solar-secondary/10 border-solar-secondary/20 relative overflow-auto group z-10">
+                    <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Community Impact</h3>
+                    <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
+                      {[
+                        "Local job creation during construction and operation",
+                        "Skills development and technical training",
+                        "Improved regional energy security",
+                        "Environmental benefits for local communities"
+                      ].map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          className="flex items-start gap-2 sm:gap-3"
+                        >
+                          <div className="w-2 h-2 bg-solar-secondary rounded-full m-1 flex-shrink-0" />
+                          {item}
+                        </motion.li>
+                      ))}
+                    </ul>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-secondary/5 to-transparent -skew-x-12"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ 
+                        x: "200%",
+                        transition: shineTransition
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.section>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-wrap justify-center gap-2 sm:gap-4"
-              >
-                <div className="flex items-center gap-2 sm:gap-3 card card-glass">
-                  <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
-                  <span className="font-semibold text-primary text-sm sm:text-base lg:text-lg">{projectData.capacity}</span>
+            <RenewableEnergy/>
+
+            {/* Image Carousel Section */}
+            <motion.section
+              variants={cardVariants}
+              className="card card-glass card-interactive p-4 relative overflow-auto"
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-primary">Project Gallery</h2>
+                <div className="flex items-center gap-2">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={toggleAutoPlay}
+                    className="btn btn-ghost p-1 sm:p-2 rounded-lg"
+                    title={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+                  >
+                    {isAutoPlaying ? (
+                      <Pause className="h-4 w-4 sm:h-5 sm:w-5 text-tertiary" />
+                    ) : (
+                      <Play className="h-4 w-4 sm:h-5 sm:w-5 text-tertiary" />
+                    )}
+                  </motion.button>
+                  <span className="text-xs sm:text-sm text-tertiary">
+                    {currentImageIndex + 1} / {images.length}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 sm:gap-3 card card-glass">
-                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
-                  <span className="text-tertiary text-sm sm:text-base">{projectData.location}</span>
-                </div>
-                {projectData.commissioningDate && (
-                  <div className="flex items-center gap-2 sm:gap-3 card card-glass">
-                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
-                    <span className="text-tertiary text-sm sm:text-base">Since {projectData.commissioningDate}</span>
+              </div>
+
+              {/* Main Image Carousel */}
+              <div className="relative aspect-[4/3] sm:aspect-video bg-tertiary/20 rounded-xl overflow-auto">
+                {images.map((image, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ 
+                      opacity: index === currentImageIndex ? 1 : 0,
+                      scale: index === currentImageIndex ? 1 : 1.1
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className={`absolute inset-0 ${index === currentImageIndex ? 'block' : 'hidden'}`}
+                  >
+                    <Image
+                      src={"/images/"+image.src}
+                      alt={image.alt || `${projectData.name} - Image ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
+                      priority={index === 0}
+                    />
+                  </motion.div>
+                ))}
+
+                {/* Navigation Arrows */}
+                {images.length > 1 && (
+                  <div>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={prevImage}
+                      className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-solar-primary/80 hover:bg-solar-primary text-primary p-2 sm:p-4 rounded-full transition-all duration-200 shadow-lg z-10"
+                    >
+                      <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={nextImage}
+                      className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-solar-primary/80 hover:bg-solar-primary text-primary p-2 sm:p-4 rounded-full transition-all duration-200 shadow-lg z-10"
+                    >
+                      <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
+                    </motion.button>
                   </div>
                 )}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-        {/* Main Content */}
-        <div className="p-2 sm:p-4 h-[85vh] flex flex-col relative overflow-auto">
-          <div className="flex flex-col lg:flex-row gap-2 sm:gap-4">
-            {/* Main Content - 2/3 width on desktop, full width on mobile */}
-            <div className="flex-1 space-y-4">
-              {/* Project Overview */}
-              <motion.section
-                variants={cardVariants}
-                className="card card-glass card-interactive p-2 sm:p-4 z-10"
-              >
-                <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Project Overview</h2>
-                <div className="space-y-4 sm:space-y-6">
-                  <p className="text-tertiary leading-relaxed text-sm sm:text-base md:text-lg">
-                    The {projectData.name} is a {projectData.capacity.toLowerCase()} {projectData.type.toLowerCase()} 
-                    located in {projectData.location}. This project represents a significant step forward in 
-                    Bangladesh&apos;s renewable energy infrastructure, contributing to the nation&apos;s sustainable 
-                    development goals.
-                  </p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
-                    <div className="card card-interactive p-2 sm:p-4 relative overflow-auto group z-10">
-                      <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Project Significance</h3>
-                      <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
-                        {[
-                          "Contributing to national renewable energy targets",
-                          "Reducing dependency on fossil fuels",
-                          "Creating local employment opportunities",
-                          "Supporting sustainable development goals"
-                        ].map((item, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="flex items-start gap-2 sm:gap-3"
-                          >
-                            <div className="w-2 h-2 bg-solar-success rounded-full m-2 flex-shrink-0" />
-                            {item}
-                          </motion.li>
-                        ))}
-                      </ul>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-success/5 to-transparent -skew-x-12"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ 
-                          x: "200%",
-                          transition: shineTransition
-                        }}
-                      />
-                    </div>
-                    <div className="card card-interactive p-2 sm:p-4 bg-solar-secondary/10 border-solar-secondary/20 relative overflow-auto group z-10">
-                      <h3 className="font-bold text-primary mb-3 sm:mb-4 text-lg">Community Impact</h3>
-                      <ul className="space-y-2 sm:space-y-3 text-tertiary text-sm sm:text-base">
-                        {[
-                          "Local job creation during construction and operation",
-                          "Skills development and technical training",
-                          "Improved regional energy security",
-                          "Environmental benefits for local communities"
-                        ].map((item, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="flex items-start gap-2 sm:gap-3"
-                          >
-                            <div className="w-2 h-2 bg-solar-secondary rounded-full m-1 flex-shrink-0" />
-                            {item}
-                          </motion.li>
-                        ))}
-                      </ul>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-secondary/5 to-transparent -skew-x-12"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ 
-                          x: "200%",
-                          transition: shineTransition
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </motion.section>
+              </div>
 
-              <RenewableEnergy/>
-
-              {/* Image Carousel Section */}
-              <motion.section
-                variants={cardVariants}
-                className="card card-glass card-interactive p-4 relative overflow-auto"
-              >
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl sm:text-2xl font-extrabold text-primary">Project Gallery</h2>
-                  <div className="flex items-center gap-2">
+              {/* Thumbnail Strip */}
+              {images.length > 1 && (
+                <div className="m-2 sm:m-4 flex gap-2 sm:gap-3 overflow-x-auto p-2 custom-scrollbar">
+                  {images.map((image, index) => (
                     <motion.button
+                      key={index}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={toggleAutoPlay}
-                      className="btn btn-ghost p-1 sm:p-2 rounded-lg"
-                      title={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
-                    >
-                      {isAutoPlaying ? (
-                        <Pause className="h-4 w-4 sm:h-5 sm:w-5 text-tertiary" />
-                      ) : (
-                        <Play className="h-4 w-4 sm:h-5 sm:w-5 text-tertiary" />
-                      )}
-                    </motion.button>
-                    <span className="text-xs sm:text-sm text-tertiary">
-                      {currentImageIndex + 1} / {images.length}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Main Image Carousel */}
-                <div className="relative aspect-[4/3] sm:aspect-video bg-tertiary/20 rounded-xl overflow-auto">
-                  {images.map((image, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ 
-                        opacity: index === currentImageIndex ? 1 : 0,
-                        scale: index === currentImageIndex ? 1 : 1.1
-                      }}
-                      transition={{ duration: 0.5 }}
-                      className={`absolute inset-0 ${index === currentImageIndex ? 'block' : 'hidden'}`}
+                      onClick={() => goToImage(index)}
+                      className={`flex-shrink-0 relative aspect-[4/3] w-16 sm:w-20 md:w-24 rounded-lg overflow-auto border-2 transition-all duration-200 z-10 ${
+                        index === currentImageIndex 
+                          ? 'border-solar-accent ring-2 ring-solar-accent/20' 
+                          : 'border-primary/20 hover:border-solar-primary'
+                      }`}
                     >
                       <Image
                         src={"/images/"+image.src}
-                        alt={image.alt || `${projectData.name} - Image ${index + 1}`}
+                        alt={image.alt || `Thumbnail ${index + 1}`}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
-                        priority={index === 0}
+                        sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
+                      />
+                      <div className={`absolute inset-0 ${
+                        index === currentImageIndex ? 'bg-solar-accent/20' : 'bg-black/0 hover:bg-black/10'
+                      } transition-colors`} />
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </motion.section>
+
+            {/* Key Features */}
+            <motion.section
+              variants={cardVariants}
+              className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
+            >
+              <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Key Features & Technology</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                {defaultKeyFeatures.map((feature, index) => {
+                  const FeatureIcon = iconMap[feature.icon as keyof typeof iconMap] || Zap
+                  return (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                      className="card card-interactive p-2 sm:p-4 bg-secondary/50 border-primary/20 relative overflow-auto group z-10"
+                    >
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <motion.div
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          className="p-2 sm:p-3 rounded-xl bg-solar-accent/10 flex-shrink-0"
+                        >
+                          <FeatureIcon className="h-5 w-5 sm:h-6 sm:w-6 text-solar-accent" />
+                        </motion.div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-primary mb-2 sm:mb-3 text-base sm:text-lg">{feature.title}</h3>
+                          <p className="text-tertiary leading-relaxed text-sm sm:text-base">{feature.description}</p>
+                        </div>
+                      </div>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ 
+                          x: "200%",
+                          transition: shineTransition
+                        }}
                       />
                     </motion.div>
-                  ))}
+                  )
+                })}
+              </div>
+            </motion.section>
 
-                  {/* Navigation Arrows */}
-                  {images.length > 1 && (
-                    <div>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={prevImage}
-                        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-solar-primary/80 hover:bg-solar-primary text-primary p-2 sm:p-4 rounded-full transition-all duration-200 shadow-lg z-10"
+            {/* Technical Specifications */}
+            <motion.section
+              variants={cardVariants}
+              className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
+            >
+              <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Technical Specifications</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                <div>
+                  <h3 className="font-bold text-primary sm:m-4 text-lg">System Components</h3>
+                  <div className="p-2">
+                    {Object.entries(defaultTechnicalSpecs).map(([key, value], index) => (
+                      <motion.div
+                        key={key}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.05 }}
+                        className="flex flex-col sm:flex-row sm:justify-between sm:items-start p-2 sm:p-3 border-b border-primary/20 gap-1 sm:gap-0"
                       >
-                        <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={nextImage}
-                        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-solar-primary/80 hover:bg-solar-primary text-primary p-2 sm:p-4 rounded-full transition-all duration-200 shadow-lg z-10"
+                        <span className="font-medium text-primary text-sm sm:text-base capitalize">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}:
+                        </span>
+                        <span className="text-tertiary text-sm sm:text-base sm:text-right sm:ml-4">{value}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-primary m-2 sm:m-4 text-lg">Performance Metrics</h3>
+                  <div className="space-y-4">
+                    {projectData.annualGeneration && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="card p-2 sm:p-4 bg-gradient-to-r from-solar-primary to-solar-accent text-primary rounded-xl relative overflow-auto z-10 flex flex-col items-center"
                       >
-                        <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
-                      </motion.button>
+                        <div className="text-xl sm:text-2xl font-bold m-2">{projectData.annualGeneration}</div>
+                        <div className="text-primary/90 text-sm sm:text-base">Annual Electricity Generation</div>
+                      </motion.div>
+                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {projectData.householdsPowered && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="card card-interactivep-2 p-2 text-center hover:shadow-glow transition-all"
+                        >
+                          <div className="text-lg sm:text-xl font-bold text-solar-success mb-1">{projectData.householdsPowered}</div>
+                          <div className="text-tertiary text-xs sm:text-sm">Households Powered</div>
+                        </motion.div>
+                      )}
+                      {projectData.co2Reduction && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="card card-interactivep-2 sm:p-4 text-center hover:shadow-glow transition-all"
+                        >
+                          <div className="text-lg sm:text-xl font-bold text-solar-success mb-1">{projectData.co2Reduction}</div>
+                          <div className="text-tertiary text-xs sm:text-sm">CO₂ Reduction</div>
+                        </motion.div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          </div>
+
+          {/* Sidebar - Hidden on mobile (shown in drawer), 1/3 width on desktop */}
+          {!isMobile && (
+            <div className="w-full lg:w-1/3 space-y-4">
+              {/* Quick Facts */}
+              <motion.div
+                variants={cardVariants}
+                className="card card-glass card-interactive p-4 relative overflow-auto"
+              >
+                <h3 className="text-lg sm:text-xl font-extrabold text-primary text-center">Project at a Glance</h3>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                    <span className="font-medium text-primary text-sm sm:text-base">Status</span>
+                    <span className={`tag ${statusConfig.color} font-medium text-xs sm:text-sm`}>
+                      {projectData.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                    <span className="font-medium text-primary text-sm sm:text-base">Capacity</span>
+                    <span className="font-bold text-solar-accent text-base sm:text-lg">{projectData.capacity}</span>
+                  </div>
+                  {projectData.commissioningDate && (
+                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                      <span className="font-medium text-primary text-sm sm:text-base">Commissioned</span>
+                      <span className="text-tertiary text-sm sm:text-base">{projectData.commissioningDate}</span>
+                    </div>
+                  )}
+                  {projectData.investment && (
+                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                      <span className="font-medium text-primary text-sm sm:text-base">Investment</span>
+                      <span className="text-tertiary text-sm sm:text-base">{projectData.investment}</span>
+                    </div>
+                  )}
+                  {projectData.landArea && (
+                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                      <span className="font-medium text-primary text-sm sm:text-base">Land Area</span>
+                      <span className="text-tertiary text-sm sm:text-base">{projectData.landArea}</span>
+                    </div>
+                  )}
+                  {projectData.developer && (
+                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
+                      <span className="font-medium text-primary text-sm sm:text-base">Developer</span>
+                      <span className="text-solar-accent font-medium text-sm sm:text-base">{projectData.developer}</span>
                     </div>
                   )}
                 </div>
 
-                {/* Thumbnail Strip */}
-                {images.length > 1 && (
-                  <div className="m-2 sm:m-4 flex gap-2 sm:gap-3 overflow-x-auto p-2 custom-scrollbar">
-                    {images.map((image, index) => (
-                      <motion.button
-                        key={index}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => goToImage(index)}
-                        className={`flex-shrink-0 relative aspect-[4/3] w-16 sm:w-20 md:w-24 rounded-lg overflow-auto border-2 transition-all duration-200 z-10 ${
-                          index === currentImageIndex 
-                            ? 'border-solar-accent ring-2 ring-solar-accent/20' 
-                            : 'border-primary/20 hover:border-solar-primary'
-                        }`}
-                      >
-                        <Image
-                          src={"/images/"+image.src}
-                          alt={image.alt || `Thumbnail ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                        />
-                        <div className={`absolute inset-0 ${
-                          index === currentImageIndex ? 'bg-solar-accent/20' : 'bg-black/0 hover:bg-black/10'
-                        } transition-colors`} />
-                      </motion.button>
-                    ))}
+                {/* Location */}
+                <div className="m-2 sm:m-4">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
+                    <h4 className="font-bold text-primary text-sm sm:text-base">Location</h4>
                   </div>
-                )}
-              </motion.section>
+                  <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-tertiary m-2 sm:m-4">
+                    <div>{projectData.location}</div>
+                    <div>Coordinates: {projectData.coordinates.lat}°N, {projectData.coordinates.lng}°E</div>
+                  </div>
+                  <div className="aspect-[4/3] sm:aspect-video card bg-secondary/50 border-primary/20 rounded-lg">
+                    <iframe
+                      loading="lazy"
+                      src={projectData.map}
+                      title={`${projectData.name} - Location Map`}
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={openMap}
+                      className="btn btn-ghost w-full flex items-center gap-2 p-2 text-xs sm:text-sm z-10"
+                    >
+                      <Maximize className="h-3 w-3 sm:h-4 sm:w-4 text-solar-accent" />
+                      <span className="text-solar-accent font-medium">Open in Fullscreen</span>
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
 
-              {/* Key Features */}
-              <motion.section
+              {/* Environmental Impact */}
+              <motion.div
+                variants={cardVariants}
+                className="card card-glass card-interactive p-2 sm:p-4 bg-solar-success/10 border-solar-success/20 relative overflow-auto"
+              >
+                <h3 className="text-lg sm:text-xl font-extrabold text-primary m-2 sm:m-4 text-center">Environmental Impact</h3>
+                <div className="space-y-3 sm:space-y-4">
+                  {defaultEnvironmentalImpact.map((impact, index) => (
+                    <motion.div
+                      key={impact.metric}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="text-center"
+                    >
+                      <div className="text-base sm:text-lg font-bold text-solar-success m-1">{impact.value}</div>
+                      <div className="font-medium text-primary text-sm sm:text-base m-1">{impact.metric}</div>
+                      <div className="text-xs sm:text-sm text-tertiary">{impact.description}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Project Timeline */}
+              <motion.div
                 variants={cardVariants}
                 className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
               >
-                <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Key Features & Technology</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
-                  {defaultKeyFeatures.map((feature, index) => {
-                    const FeatureIcon = iconMap[feature.icon as keyof typeof iconMap] || Zap
-                    return (
-                      <motion.div
-                        key={feature.title}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                        className="card card-interactive p-2 sm:p-4 bg-secondary/50 border-primary/20 relative overflow-auto group z-10"
-                      >
-                        <div className="flex items-start gap-3 sm:gap-4">
-                          <motion.div
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            className="p-2 sm:p-3 rounded-xl bg-solar-accent/10 flex-shrink-0"
-                          >
-                            <FeatureIcon className="h-5 w-5 sm:h-6 sm:w-6 text-solar-accent" />
-                          </motion.div>
-                          <div className="flex-1">
-                            <h3 className="font-bold text-primary mb-2 sm:mb-3 text-base sm:text-lg">{feature.title}</h3>
-                            <p className="text-tertiary leading-relaxed text-sm sm:text-base">{feature.description}</p>
-                          </div>
-                        </div>
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                          initial={{ x: "-100%" }}
-                          whileHover={{ 
-                            x: "200%",
-                            transition: shineTransition
-                          }}
-                        />
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </motion.section>
-
-              {/* Technical Specifications */}
-              <motion.section
-                variants={cardVariants}
-                className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
-              >
-                <h2 className="text-xl sm:text-2xl font-extrabold text-primary m-2 sm:m-4">Technical Specifications</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                  <div>
-                    <h3 className="font-bold text-primary sm:m-4 text-lg">System Components</h3>
-                    <div className="p-2">
-                      {Object.entries(defaultTechnicalSpecs).map(([key, value], index) => (
-                        <motion.div
-                          key={key}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.05 }}
-                          className="flex flex-col sm:flex-row sm:justify-between sm:items-start p-2 sm:p-3 border-b border-primary/20 gap-1 sm:gap-0"
-                        >
-                          <span className="font-medium text-primary text-sm sm:text-base capitalize">
-                            {key.replace(/([A-Z])/g, ' $1').trim()}:
-                          </span>
-                          <span className="text-tertiary text-sm sm:text-base sm:text-right sm:ml-4">{value}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-primary m-2 sm:m-4 text-lg">Performance Metrics</h3>
-                    <div className="space-y-4">
-                      {projectData.annualGeneration && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="card p-2 sm:p-4 bg-gradient-to-r from-solar-primary to-solar-accent text-primary rounded-xl relative overflow-auto z-10 flex flex-col items-center"
-                        >
-                          <div className="text-xl sm:text-2xl font-bold m-2">{projectData.annualGeneration}</div>
-                          <div className="text-primary/90 text-sm sm:text-base">Annual Electricity Generation</div>
-                        </motion.div>
-                      )}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {projectData.householdsPowered && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="card card-interactivep-2 p-2 text-center hover:shadow-glow transition-all"
-                          >
-                            <div className="text-lg sm:text-xl font-bold text-solar-success mb-1">{projectData.householdsPowered}</div>
-                            <div className="text-tertiary text-xs sm:text-sm">Households Powered</div>
-                          </motion.div>
-                        )}
-                        {projectData.co2Reduction && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="card card-interactivep-2 sm:p-4 text-center hover:shadow-glow transition-all"
-                          >
-                            <div className="text-lg sm:text-xl font-bold text-solar-success mb-1">{projectData.co2Reduction}</div>
-                            <div className="text-tertiary text-xs sm:text-sm">CO₂ Reduction</div>
-                          </motion.div>
+                <h3 className="text-lg sm:text-xl font-extrabold text-primary m-2 sm:m-3 text-center">Project Timeline</h3>
+                <div className="space-y-3 sm:space-y-4">
+                  {defaultMilestones.map((milestone, index) => (
+                    <motion.div
+                      key={milestone.date}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="flex gap-3 sm:gap-4"
+                    >
+                      <div className="flex flex-col items-center">
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-solar-accent rounded-full flex-shrink-0" />
+                        {index < defaultMilestones.length - 1 && (
+                          <div className="w-0.5 h-full bg-primary/20 mt-1" />
                         )}
                       </div>
-                    </div>
-                  </div>
+                      <div className="pb-3 sm:pb-4 flex-1">
+                        <div className="font-bold text-primary text-sm sm:text-base m-1">{milestone.date}</div>
+                        <div className="text-tertiary text-xs sm:text-sm">{milestone.event}</div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-              </motion.section>
+              </motion.div>
             </div>
-
-            {/* Sidebar - Hidden on mobile (shown in drawer), 1/3 width on desktop */}
-            {!isMobile && (
-              <div className="w-full lg:w-1/3 space-y-4">
-                {/* Quick Facts */}
-                <motion.div
-                  variants={cardVariants}
-                  className="card card-glass card-interactive p-4 relative overflow-auto"
-                >
-                  <h3 className="text-lg sm:text-xl font-extrabold text-primary text-center">Project at a Glance</h3>
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                      <span className="font-medium text-primary text-sm sm:text-base">Status</span>
-                      <span className={`tag ${statusConfig.color} font-medium text-xs sm:text-sm`}>
-                        {projectData.status}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                      <span className="font-medium text-primary text-sm sm:text-base">Capacity</span>
-                      <span className="font-bold text-solar-accent text-base sm:text-lg">{projectData.capacity}</span>
-                    </div>
-                    {projectData.commissioningDate && (
-                      <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                        <span className="font-medium text-primary text-sm sm:text-base">Commissioned</span>
-                        <span className="text-tertiary text-sm sm:text-base">{projectData.commissioningDate}</span>
-                      </div>
-                    )}
-                    {projectData.investment && (
-                      <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                        <span className="font-medium text-primary text-sm sm:text-base">Investment</span>
-                        <span className="text-tertiary text-sm sm:text-base">{projectData.investment}</span>
-                      </div>
-                    )}
-                    {projectData.landArea && (
-                      <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                        <span className="font-medium text-primary text-sm sm:text-base">Land Area</span>
-                        <span className="text-tertiary text-sm sm:text-base">{projectData.landArea}</span>
-                      </div>
-                    )}
-                    {projectData.developer && (
-                      <div className="flex justify-between items-center p-1 border-b border-primary/20">
-                        <span className="font-medium text-primary text-sm sm:text-base">Developer</span>
-                        <span className="text-solar-accent font-medium text-sm sm:text-base">{projectData.developer}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Location */}
-                  <div className="m-2 sm:m-4">
-                    <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                      <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-solar-accent" />
-                      <h4 className="font-bold text-primary text-sm sm:text-base">Location</h4>
-                    </div>
-                    <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-tertiary m-2 sm:m-4">
-                      <div>{projectData.location}</div>
-                      <div>Coordinates: {projectData.coordinates.lat}°N, {projectData.coordinates.lng}°E</div>
-                    </div>
-                    <div className="aspect-[4/3] sm:aspect-video card bg-secondary/50 border-primary/20 rounded-lg">
-                      <iframe
-                        loading="lazy"
-                        src={projectData.map}
-                        title={`${projectData.name} - Location Map`}
-                        className="w-full h-full"
-                      />
-                    </div>
-                    <div className="p-2">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={openMap}
-                        className="btn btn-ghost w-full flex items-center gap-2 p-2 text-xs sm:text-sm z-10"
-                      >
-                        <Maximize className="h-3 w-3 sm:h-4 sm:w-4 text-solar-accent" />
-                        <span className="text-solar-accent font-medium">Open in Fullscreen</span>
-                      </motion.button>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Environmental Impact */}
-                <motion.div
-                  variants={cardVariants}
-                  className="card card-glass card-interactive p-2 sm:p-4 bg-solar-success/10 border-solar-success/20 relative overflow-auto"
-                >
-                  <h3 className="text-lg sm:text-xl font-extrabold text-primary m-2 sm:m-4 text-center">Environmental Impact</h3>
-                  <div className="space-y-3 sm:space-y-4">
-                    {defaultEnvironmentalImpact.map((impact, index) => (
-                      <motion.div
-                        key={impact.metric}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="text-center"
-                      >
-                        <div className="text-base sm:text-lg font-bold text-solar-success m-1">{impact.value}</div>
-                        <div className="font-medium text-primary text-sm sm:text-base m-1">{impact.metric}</div>
-                        <div className="text-xs sm:text-sm text-tertiary">{impact.description}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-
-                {/* Project Timeline */}
-                <motion.div
-                  variants={cardVariants}
-                  className="card card-glass card-interactive p-2 sm:p-4 relative overflow-auto"
-                >
-                  <h3 className="text-lg sm:text-xl font-extrabold text-primary m-2 sm:m-3 text-center">Project Timeline</h3>
-                  <div className="space-y-3 sm:space-y-4">
-                    {defaultMilestones.map((milestone, index) => (
-                      <motion.div
-                        key={milestone.date}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="flex gap-3 sm:gap-4"
-                      >
-                        <div className="flex flex-col items-center">
-                          <div className="w-2 h-2 sm:w-3 sm:h-3 bg-solar-accent rounded-full flex-shrink-0" />
-                          {index < defaultMilestones.length - 1 && (
-                            <div className="w-0.5 h-full bg-primary/20 mt-1" />
-                          )}
-                        </div>
-                        <div className="pb-3 sm:pb-4 flex-1">
-                          <div className="font-bold text-primary text-sm sm:text-base m-1">{milestone.date}</div>
-                          <div className="text-tertiary text-xs sm:text-sm">{milestone.event}</div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            )}
-          </div>
-
-          {/* Contact CTA */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mt-6 sm:mt-8 md:mt-12"
-          >
-            <div className="card card-glass p-2 sm:p-4 text-center relative overflow-auto">
-              <div className="absolute inset-0 gradient-energy opacity-20"></div>
-              <div className="relative">
-                <h2 className="text-xl sm:text-2xl font-extrabold text-primary mb-3 sm:mb-4">Interested in Learning More?</h2>
-                <p className="text-tertiary mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
-                  Contact our project team for detailed technical specifications, investment opportunities, 
-                  or partnership inquiries about the {projectData.name}.
-                </p>
-                <div className="flex flex-row gap-2 sm:gap-4 justify-center">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn btn-primary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download Project Brief
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn btn-secondary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
-                  >
-                    <Mail className="h-4 w-4" />
-                    Contact Project Team
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-          </motion.section>
+          )}
         </div>
+
+        {/* Contact CTA */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-6 sm:mt-8 md:mt-12"
+        >
+          <div className="card card-glass p-2 sm:p-4 text-center relative overflow-auto">
+            <div className="absolute inset-0 gradient-energy opacity-20"></div>
+            <div className="relative">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-primary mb-3 sm:mb-4">Interested in Learning More?</h2>
+              <p className="text-tertiary mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
+                Contact our project team for detailed technical specifications, investment opportunities, 
+                or partnership inquiries about the {projectData.name}.
+              </p>
+              <div className="flex flex-row gap-2 sm:gap-4 justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn btn-primary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Project Brief
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn btn-secondary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
+                >
+                  <Mail className="h-4 w-4" />
+                  Contact Project Team
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.section>
       </div>
 
       {/* Mobile Sidebar Drawer */}
@@ -1029,11 +995,13 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
       {/* Fullscreen modal for the map */}
       <AnimatePresence>
         {isMapOpen && (
-          <MapModal
-            isOpen={isMapOpen}
-            onClose={closeMap}
-            locationURL={projectData.map}
-          />
+          <div className="z-10">
+            <MapModal
+              isOpen={isMapOpen}
+              onClose={closeMap}
+              locationURL={projectData.map}
+            />
+          </div>
         )}
       </AnimatePresence>
     </div>
