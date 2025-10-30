@@ -10,35 +10,27 @@ export interface MapModalProps {
   onClose: () => void
   locationURL: string
   query?: string
-  theme?: 'dark' | 'light'
 }
 
-export default function MapModal({ isOpen, onClose, locationURL, query, theme }: MapModalProps) {
+export default function MapModal({ isOpen, onClose, locationURL, query }: MapModalProps) {
   const [modalQuery, setModalQuery] = useState<string>(query || '')
-  const [modalTheme, setModalTheme] = useState<'dark' | 'light'>(theme || 'light')
   const [iframeSrc, setIframeSrc] = useState<string>('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   // Build iframe source based on query + theme
-  const buildIframeSrc = useCallback((q: string, t: 'dark' | 'light') => {
+  const buildIframeSrc = useCallback((q: string) => {
     const encoded = encodeURIComponent(q)
-    if (process.env.NEXT_PUBLIC_USE_LOCAL_MAP_FRAME === 'true') {
-      return `/map-frame?query=${encoded}&theme=${t}`
-    }
-    if (t === 'dark') {
-      return `https://tiles.wmflabs.org/bw-mapnik/#15/23.8103/90.4125`
-    }
     return `https://www.google.com/maps?q=${encoded}&z=15&hl=en-GB&output=embed`
   }, [])
 
   // Fixed: Proper useEffect without expression and with correct dependencies
   useEffect(() => {
     if (isOpen) {
-      const src = query ? buildIframeSrc(query, theme || 'light') : locationURL
+      const src = query ? buildIframeSrc(query) : locationURL
       setIframeSrc(src)
     }
-  }, [isOpen, query, theme, locationURL, buildIframeSrc])
+  }, [isOpen, query, locationURL, buildIframeSrc])
 
   // Handle escape key to close modal and prevent body scroll
   useEffect(() => {
@@ -96,10 +88,10 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
 
   // Apply search query manually
   const applyMapQuery = useCallback(() => {
-    const newSrc = buildIframeSrc(modalQuery, modalTheme)
+    const newSrc = buildIframeSrc(modalQuery)
     setIframeSrc(newSrc)
     setShowSuggestions(false)
-  }, [modalQuery, modalTheme, buildIframeSrc])
+  }, [modalQuery, buildIframeSrc])
 
   // Handle input key press
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
@@ -113,18 +105,9 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
     setModalQuery(suggestion)
     setShowSuggestions(false)
     // Auto-apply when suggestion is clicked
-    const newSrc = buildIframeSrc(suggestion, modalTheme)
+    const newSrc = buildIframeSrc(suggestion)
     setIframeSrc(newSrc)
-  }, [modalTheme, buildIframeSrc])
-
-  // Toggle theme
-  const toggleTheme = useCallback(() => {
-    const newTheme = modalTheme === 'dark' ? 'light' : 'dark'
-    setModalTheme(newTheme)
-    // Update iframe source with new theme
-    const newSrc = buildIframeSrc(modalQuery, newTheme)
-    setIframeSrc(newSrc)
-  }, [modalTheme, modalQuery, buildIframeSrc])
+  }, [buildIframeSrc])
 
   // Handle input focus
   const handleInputFocus = () => {
@@ -217,28 +200,6 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
               )}
             </div>
 
-            {/* Theme Toggle */}
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn btn-sm glass-effect flex items-center gap-2 p-2"
-              aria-pressed={modalTheme === 'dark'}
-              aria-label={`Switch to ${modalTheme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {modalTheme === 'dark' ? (
-                <>
-                  <Moon className="h-4 w-4 text-solar-accent" />
-                  <span className="text-xs font-medium text-primary hidden sm:block">Dark</span>
-                </>
-              ) : (
-                <>
-                  <SunDim className="h-4 w-4 text-solar-accent" />
-                  <span className="hidden sm:inline text-xs font-medium text-primary hidden sm:block">Light</span>
-                </>
-              )}
-            </motion.button>
-
             {/* Close Button */}
             <motion.button 
               onClick={onClose}
@@ -255,7 +216,7 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
           <div className="w-full h-full bg-tertiary/20">
             {iframeSrc ? (
               <iframe
-                key={`${iframeSrc}-${modalTheme}`} // Force re-render on source/theme change
+                key={`${iframeSrc}`} // Force re-render on source/theme change
                 loading="lazy"
                 src={iframeSrc}
                 title="Fullscreen Map"
@@ -278,7 +239,7 @@ export default function MapModal({ isOpen, onClose, locationURL, query, theme }:
 
           {/* Search Tips */}
           {showSuggestions && (
-            <div className="absolute top-16 left-4 bg-primary/90 backdrop-blur-sm rounded-lg p-3 text-xs text-tertiary border border-tertiary/20">
+            <div className="absolute top-16 left-2 bg-solar-primary/80 backdrop-blur-sm rounded-lg p-3 text-xs text-secondary border border-tertiary">
               <p className="font-medium text-solar-accent mb-1">Search Tips:</p>
               <ul className="space-y-1">
                 <li>• Type district names (Dhaka, Chittagong, Sylhet)</li>

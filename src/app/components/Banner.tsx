@@ -124,36 +124,35 @@ const Banner = () => {
       
       {/* Background Slides with Next.js Image */}
       <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-          {/* Background Image */}
-          <div key={currentSlide} className="absolute inset-0 z-10 opacity-60 ">
-            <Image
-              src={slides[currentSlide].bgImage}
-              alt={slides[currentSlide].title}
-              fill
-              className="object-cover"
-              priority={currentSlide === 0}
-              quality={100}
-              sizes="100vw"
-            />
-          </div>
-          {/* Gradient Overlay */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${slides[currentSlide].bg}`} />
+        <AnimatePresence>
+          <motion.div 
+            className="flex flex-col justify-between flex-1 m-2"
+            initial={{ y: 60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 5, ease: "easeInOut"  }}
+          >
+            {/* Background Image */}
+            <div key={currentSlide} className="absolute inset-0 z-10 opacity-75 ">
+              <Image
+                src={slides[currentSlide].bgImage}
+                alt={slides[currentSlide].title}
+                fill
+                className="object-cover"
+                priority={currentSlide === 0}
+                quality={100}
+                sizes="100vw"
+              />
+            </div>
+            </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Enhanced Solar Banner without Rotation */}
       <div className='flex flex-col items-center'>
-        <div className="items-center justify-center z-10 text-center m-8 mt-24">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="text-lg text-secondary font-bold tracking-wide"
-          >
+        
+          <div className="items-center justify-center z-40 text-center m-8 mt-24">
             <SolarBanner/>
-          </motion.div>
-        </div>
+          </div>
 
         {/* Content Section */}
         <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg z-10">
@@ -169,38 +168,25 @@ const Banner = () => {
               {/* Icon */}
               <motion.div 
                 className="text-6xl md:text-8xl lg:text-9xl text-center"
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.1,  }}
               >
-                <motion.div
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    repeatType: "reverse"
-                  }}
-                >
                   {slides[currentSlide].image}
-                </motion.div>
               </motion.div>
 
               <motion.div 
-                className="flex flex-col justify-between flex-1 ml-0 sm:ml-6"
+                className="flex flex-col justify-between flex-1 m-2"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                transition={{ duration: 0.1,  }}
               >
                 {/* Title */}
                 <motion.h1 
                   className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-tight p-2"
                   initial={{ y: -10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
+                  transition={{ duration: 0.1,  }}
                 >
                   {slides[currentSlide].title}
                 </motion.h1>
@@ -210,16 +196,16 @@ const Banner = () => {
                   className="text-md sm:text-lg lg:text-xl text-secondary leading-relaxed max-w-3xl my-4"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
+                  transition={{ duration: 0.1,  }}
                 >
                   {slides[currentSlide].subtitle}
                 </motion.p>
 
                 {/* Stats */}
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
+                  initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8, type: "spring" }}
+                  transition={{ duration: 0.1, type: "tween" }}
                   whileHover={{ 
                     scale: 1.05,
                     y: -2,
@@ -255,7 +241,7 @@ const Banner = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
+          transition={{ duration: 0.1, ease: "easeOut" }}
           className="flex flex-row gap-4 justify-center items-center w-full max-w-md m-4"
         >
           <motion.button 
@@ -285,7 +271,7 @@ const Banner = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.6 }}
+            transition={{ duration: 0.1,  }}
             className="flex items-center justify-center space-x-4 md:space-x-6"
           >
             {/* Play/Pause */}
@@ -333,7 +319,7 @@ const Banner = () => {
                     <motion.div
                       layoutId="activeIndicator"
                       className="absolute inset-0 rounded-full bg-solar-accent"
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      transition={{ type: "tween" }}
                     />
                   )}
                 </motion.button>

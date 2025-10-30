@@ -91,7 +91,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     }
   }), []);
 
-  // Get current mode and config
   const currentMode = modes[currentModeIndex];
   const modeConfig = modeConfigs[currentMode];
 
@@ -102,7 +101,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  // Auto-cycle through modes every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentModeIndex((prevIndex) => (prevIndex + 1) % modes.length);
@@ -111,7 +109,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     return () => clearInterval(interval);
   }, [modes.length]);
 
-  // Update body class and notify parent when mode changes
   useEffect(() => {
     document.body.className = modeConfig.bodyClass;
     if (onModeChange) {
@@ -119,7 +116,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     }
   }, [currentMode, modeConfig.bodyClass, onModeChange]);
 
-  // Smooth animation loop
   useEffect(() => {
     const animate = () => {
       const grid = gridRef.current;
@@ -143,7 +139,6 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
     };
   }, []);
 
-  // 🌀 Smooth Tilt + Glare effect
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;

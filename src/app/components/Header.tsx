@@ -118,6 +118,7 @@ export default function Header() {
   const isActive = (href: string) => activeSection === href
 
   return (
+    <header>
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
@@ -359,5 +360,6 @@ export default function Header() {
         </AnimatePresence>
       </div>
     </motion.header>
+    </header>
   )
 }

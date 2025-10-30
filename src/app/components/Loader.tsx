@@ -9,7 +9,7 @@ import { EnergyFlow } from "./patterns/EnergyFlow";
 
 export default function ParamountLoader() {
   return (
-    <section className="z-50">
+    <section id="loader" className="z-50">
       <SolarFarm/>
       <SolarPanelGrid/>
       <SunRays/>

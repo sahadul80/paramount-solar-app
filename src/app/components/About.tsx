@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   Target, 
   Eye, 
@@ -201,7 +201,7 @@ const About = () => {
                 key={item.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
                 className="card p-2 text-center relative overflow-hidden group hover:scale-105 transition-transform duration-300"
               >
                 <div className="sm:p-4 rounded-2xl bg-solar-primary/10 w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-4">
@@ -209,13 +209,6 @@ const About = () => {
                 </div>
                 <div className="text-xl font-extrabold gradient-text-solar mb-2">{item.value}</div>
                 <div className="text-sm text-tertiary font-medium">{item.label}</div>
-                
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.8 }}
-                />
               </motion.div>
             ))}
           </div>
@@ -226,13 +219,6 @@ const About = () => {
           <div className="relative m-2 w-full overflow-auto">
             {/* Mobile Vertical Timeline */}
             <div className="block md:hidden">
-              
-              <motion.div
-                initial={{ scaleY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="absolute left-8 top-0 bottom-0 w-1 bg-solar-secondary rounded-full origin-top"
-              />
 
               <div className="">
                 {(viz.data as TimelineItem[]).map((item: TimelineItem, index: number) => (
@@ -240,7 +226,7 @@ const About = () => {
                     key={item.year}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    transition={{ ease: "easeOut" }}
                     className="relative flex flex-row items-center m-2 sm:m-4 gap-4"
                   >
 
@@ -268,7 +254,7 @@ const About = () => {
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                         initial={{ x: "-100%" }}
                         whileHover={{ x: "100%" }}
-                        transition={{ duration: 0.8 }}
+                        transition={{ duration: 1 }}
                       />
                     </motion.div>
                   </motion.div>
@@ -296,7 +282,7 @@ const About = () => {
                       key={item.year}
                       initial={{ opacity: 0, y: isTop ? -40 : 40 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      transition={{ ease: "easeOut" }}
                       className="relative flex flex-col items-center mx-auto"
                     >
                       <motion.div
@@ -317,7 +303,7 @@ const About = () => {
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                           initial={{ x: "-100%" }}
                           whileHover={{ x: "200%" }}
-                          transition={{ duration: 0.8 }}
+                          transition={{ duration: 2 }}
                         />
                       </motion.div>
 
@@ -342,10 +328,10 @@ const About = () => {
           <div className="mt-8 space-y-6">
             {(viz.data as TargetItem[]).map((target: TargetItem, index: number) => (
               <motion.div
-                key={target.target}
+                key={index}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
                 className="card card-glass p-2 relative overflow-hidden hover:scale-95 transition-transform duration-300"
               >
                 <div className="flex justify-between text-base">
@@ -356,7 +342,7 @@ const About = () => {
                   <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: `${target.progress}%` }}
-                    transition={{ duration: 1, delay: index * 0.2 }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
                     className={`h-2 rounded-full ${target.color} shadow-inner`}
                   />
                 </div>
@@ -365,7 +351,7 @@ const About = () => {
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "200%" }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 2 }}
                 />
               </motion.div>
             ))}
@@ -380,7 +366,7 @@ const About = () => {
                 key={item.aspect}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
                 className="card card-glass card-interactive p-2 text-center relative overflow-hidden group hover:scale-95 transition-transform duration-300"
               >
                 <motion.div
@@ -390,13 +376,6 @@ const About = () => {
                   <item.icon className="h-8 w-8 text-primary" />
                 </motion.div>
                 <div className="text-md font-bold text-primary">{item.aspect}</div>
-
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "200%" }}
-                  transition={{ duration: 0.8 }}
-                />
               </motion.div>
             ))}
           </div>
@@ -415,13 +394,12 @@ const About = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center m-2 sm:m-4"
         >
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="inline-flex items-center gap-4"
           >
             <p className="text-2xl lg:text-4xl font-bold">
@@ -429,17 +407,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="w-32 h-1 bg-gradient-to-r from-solar-primary to-solar-accent mx-auto mb-8 rounded-full"
-          />
-
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="text-xl text-tertiary max-w-3xl mx-auto leading-relaxed"
           >
             Pioneering <span className="text-solar-primary font-semibold">renewable energy solutions</span> for a sustainable future in Bangladesh and beyond
@@ -454,7 +425,7 @@ const About = () => {
               id={section.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
               className="card card-elevated overflow-hidden relative group"
             >
@@ -474,7 +445,7 @@ const About = () => {
                     <motion.h3 
                       initial={{ opacity: 0, y: -20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
+                      transition={{ duration: 1, ease: "easeOut" }}
                       className="text-2xl sm:text-3xl font-extrabold text-primary"
                     >
                       {section.title}
@@ -484,7 +455,7 @@ const About = () => {
                 <motion.p 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="m-4 text-xl text-tertiary leading-relaxed max-w-4xl"
                 >
                   {section.content}
@@ -494,7 +465,7 @@ const About = () => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                 >
                   {renderVisualization(section.visualization)}
                 </motion.div>
@@ -503,7 +474,7 @@ const About = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="mt-8 flex justify-center"
                 >
                   <motion.button
@@ -515,27 +486,25 @@ const About = () => {
                     {expandedSections[section.id] ? 'Hide Details' : 'Show Details'}
                     <motion.div
                       animate={{ rotate: expandedSections[section.id] ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 1.3 }}
                     >
                       {expandedSections[section.id] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </motion.div>
                   </motion.button>
                 </motion.div>
 
-                {/* Subsections - Animated */}
-                <AnimatePresence>
                   {expandedSections[section.id] && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      transition={{ duration: 1.5, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
+                        transition={{ duration: 1, ease: "easeOut" }}
                         className="mt-8 border-t-3 pt-8"
                       >
                         <h4 className="text-2xl font-bold text-primary m-4 flex items-center justify-center lg:justify-start gap-4">
@@ -547,10 +516,10 @@ const About = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           {section.subsections.map((subsection, subIndex) => (
                             <motion.div
-                              key={subsection.title}
+                              key={subIndex}
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.6, delay: subIndex * 0.1 + 0.3 }}
+                              transition={{ duration: 1, ease: "easeOut" }}
                               className="card card-glass p-4 relative overflow-hidden group hover:scale-105 transition-transform duration-300"
                             >
                               <div className="flex flex-col items-start">
@@ -566,20 +535,12 @@ const About = () => {
                                   </p>
                                 </div>
                               </div>
-
-                              <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                                initial={{ x: "-100%" }}
-                                whileHover={{ x: "200%" }}
-                                transition={{ duration: 0.8 }}
-                              />
                             </motion.div>
                           ))}
                         </div>
                       </motion.div>
                     </motion.div>
                   )}
-                </AnimatePresence>
               </div>
 
               {/* Background Pattern */}
@@ -595,7 +556,7 @@ const About = () => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
           className="mt-8"
         >
@@ -605,7 +566,7 @@ const About = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                transition={{ duration: 1, ease: "easeOut" }}
               >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -628,7 +589,7 @@ const About = () => {
                       key={stat.label}
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      transition={{ duration: 1, ease: "easeOut" }}
                       className="card card-glass p-6 text-center relative overflow-hidden group hover:scale-110 transition-transform duration-300"
                     >
                       <div className="bg-solar-accent/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -636,13 +597,6 @@ const About = () => {
                       </div>
                       <div className="text-2xl font-extrabold gradient-text-energy mb-2">{stat.value}</div>
                       <div className="text-tertiary text-sm font-medium leading-tight">{stat.label}</div>
-
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: "200%" }}
-                        transition={{ duration: 0.8 }}
-                      />
                     </motion.div>
                   ))}
                 </div>
@@ -650,7 +604,7 @@ const About = () => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="text-xl text-tertiary max-w-2xl mx-auto leading-relaxed"
                 >
                   Committed to creating a <span className="text-solar-primary font-semibold">sustainable future</span> through innovative solar energy solutions that power communities while protecting our planet
