@@ -158,10 +158,10 @@ export default function SolarNews() {
         {/* Header Section */}
         <div className="flex-between flex-row gap-4 m-2 sm:m-4">
           <div className="text-left">
-            <h2 className="text-xl md:text-3xl font-bold gradient-text-solar">
-              Solar & Renewable Energy News
+            <h2 className="text-2xl sm:text-4xl font-bold gradient-text-solar">
+              Solar Energy News
             </h2>
-            <p className="text-tertiary text-sm lg:text-base">
+            <p className="text-tertiary text-xs sm:text-sm">
               Latest updates from the solar energy industry
             </p>
           </div>
@@ -196,17 +196,18 @@ export default function SolarNews() {
             Page {page}{totalPages ? ` of ${totalPages}` : ''}
             {total && <span className="ml-2">({total} total)</span>}
         </div>
+
         {/* Loading State */}
         {loading && (
-          <div className="flex items-center justify-center h-64">
+          <div className="flex items-center justify-center h-screen">
             <ParamountLoader />
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="card card-status-error p-2 sm:p-4 text-center">
-            <div className="flex flex-col items-center gap-2">
+          <div className="card card-status-error p-6 text-center">
+            <div className="flex flex-col items-center gap-3">
               <svg className="w-12 h-12 text-solar-error" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
@@ -284,7 +285,7 @@ export default function SolarNews() {
                     </div>
 
                     {/* Content Container */}
-                    <div className="flex-1 p-4 flex flex-col">
+                    <div className="flex-1 p-2 sm:p-4 flex flex-col">
                       <h3 className="text-sm font-bold text-primary line-clamp-3 mb-2 group-hover:text-solar-primary transition-colors">
                         {article.title}
                       </h3>
@@ -297,7 +298,7 @@ export default function SolarNews() {
                       
                       <div className="mt-auto pt-3 border-t border-primary">
                         <div className="btn btn-sm btn-ghost w-full justify-center group/link">
-                          Read Full Article
+                          Read
                           <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
