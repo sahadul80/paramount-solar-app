@@ -3,6 +3,8 @@ import { projects } from '../../../data/projectData'
 import ProjectVisualization from '../../../components/ProjectVisualization'
 import { use } from 'react'
 import { NotFound } from '../../../components/NotFound'
+import Header from '@/app/components/Header'
+import Footer from '@/app/components/Footer'
 
 interface ProjectPageProps {
   params: Promise<{
@@ -20,7 +22,11 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <div>
+      <Header/>
+      <div className="p-2 sm:p-4 mx-auto m-4">
       <ProjectVisualization projectData={project} />
+      </div>
+      <Footer/>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { Moon, Search, SunDim, X } from "lucide-react"
+import { Search, X } from "lucide-react"
 import { useEffect, useState, useCallback } from "react"
 import ParamountLoader from "./Loader"
 
@@ -24,7 +24,6 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
     return `https://www.google.com/maps?q=${encoded}&z=15&hl=en-GB&output=embed`
   }, [])
 
-  // Fixed: Proper useEffect without expression and with correct dependencies
   useEffect(() => {
     if (isOpen) {
       const src = query ? buildIframeSrc(query) : locationURL
@@ -43,36 +42,35 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
     } else {
       document.body.style.overflow = 'unset'
+      document.body.style.position = 'static'
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
       document.body.style.overflow = 'unset'
+      document.body.style.position = 'static'
     }
   }, [isOpen, onClose])
 
-  // Mock search suggestions (in real app, use Google Places API or similar)
+  // Mock search suggestions
   const fetchSuggestions = useCallback(async (input: string) => {
     if (input.length < 2) {
       setSuggestions([])
       return
     }
 
-    // Mock data - replace with actual API call to Google Places Autocomplete
     const mockSuggestions = [
       `${input} - Dhaka, Bangladesh`,
       `${input} - Chittagong, Bangladesh`,
       `${input} - Sylhet, Bangladesh`,
       `${input} - Rajshahi, Bangladesh`,
-      `${input} - Khulna, Bangladesh`,
-      `${input} - Barisal, Bangladesh`,
-      `${input} - Rangpur, Bangladesh`,
-      `${input} - Mymensingh, Bangladesh`
-    ].filter((_, index) => index < 5) // Limit to 5 suggestions
+      `${input} - Khulna, Bangladesh`
+    ].filter((_, index) => index < 5)
 
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 300))
     setSuggestions(mockSuggestions)
   }, [])
@@ -104,7 +102,6 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
   const handleSuggestionClick = useCallback((suggestion: string) => {
     setModalQuery(suggestion)
     setShowSuggestions(false)
-    // Auto-apply when suggestion is clicked
     const newSrc = buildIframeSrc(suggestion)
     setIframeSrc(newSrc)
   }, [buildIframeSrc])
@@ -124,35 +121,35 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
   if (!isOpen) return null
 
   return (
-    <section className="z-40">
-      {/* Backdrop */}
+    <>
+      {/* High z-index backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-overlay-bg lg:hidden z-10"
+        className="fixed inset-0 bg-overlay-strong backdrop-blur-sm z-50"
+        onClick={onClose}
       />
-      <motion.div
-        className="fixed inset-0 flex items-center justify-center p-2 opacity-80 bg-primary backdrop-blur-lg"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        aria-modal="true"
-        role="dialog"
-        aria-label="Map fullscreen dialog"
-      >
+      
+      {/* Modal container with highest z-index */}
+      <div className="fixed inset-0 flex items-center justify-center p-4 z-50 pointer-events-none rounded-lg">
         <motion.div
-          className="relative w-full h-full max-w-6xl max-w-[95vw] max-h-[85vh] bg-secondary rounded-xl overflow-hidden shadow-2xl"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="relative w-full max-w-6xl max-h-[90vh] bg-secondary rounded-xl shadow-2xl pointer-events-auto rounded-lg"
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          transition={{ 
+            duration: 0.3, 
+            ease: "easeOut" 
+          }}
+          aria-modal="true"
+          role="dialog"
+          aria-label="Map fullscreen dialog"
         >
           {/* Header Controls */}
-          <div className="flex flex-row items-center gap-2 p-2 bg-primary/5 border-b border-primary/20 w-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 bg-primary border-b border-primary/20 rounded-lg">
             {/* Search Input with Suggestions */}
-            <div className="flex-1 relative">
+            <div className="flex-1 w-full relative">
               <div className="flex items-center glass-effect rounded-lg shadow-md">
                 <input
                   type="search"
@@ -165,30 +162,30 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
                   onBlur={handleInputBlur}
                   onKeyDown={handleKeyPress}
                   placeholder="Search location or address in Bangladesh..."
-                  className="flex-1 bg-transparent outline-none text-sm text-primary placeholder:text-tertiary px-2"
+                  className="flex-1 bg-transparent outline-none text-sm text-primary placeholder:text-tertiary px-3 py-2"
                   aria-label="Search maps"
                 />
                 <motion.button 
                   onClick={applyMapQuery}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn btn-sm ml-2"
+                  className="btn btn-primary btn-sm m-1"
                   aria-label="Search map"
                 >
-                  <Search/>
-                  <span className="hidden sm:inline">Search</span>
+                  <Search className="h-4 w-4"/>
+                  <span className="hidden sm:inline ml-1">Search</span>
                 </motion.button>
               </div>
 
               {/* Search Suggestions Dropdown */}
               {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-primary border border-tertiary/20 rounded-lg shadow-xl z-10 max-h-60 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-primary border border-primary/20 rounded-lg shadow-xl z-60 max-h-60 overflow-y-auto">
                   {suggestions.map((suggestion, index) => (
                     <button
                       key={index}
-                      className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-tertiary/20 hover:text-solar-accent transition-colors border-b border-tertiary/10 last:border-b-0"
+                      className="w-full px-4 py-3 text-left text-sm text-secondary hover:bg-solar-primary/20 hover:text-solar-accent transition-colors border-b border-primary/10 last:border-b-0"
                       onClick={() => handleSuggestionClick(suggestion)}
-                      onMouseDown={(e) => e.preventDefault()} // Prevent input blur
+                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <div className="flex items-center gap-2">
                         <Search className="h-4 w-4 text-solar-accent flex-shrink-0" />
@@ -205,22 +202,23 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
               onClick={onClose}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn btn-sm glass-effect p-2"
+              className="btn btn-sm btn-sm glass-effect px-3 py-2"
               aria-label="Close fullscreen map"
             >
-              <X className="h-4 w-4 text-tertiary" />
+              <X className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1">Close</span>
             </motion.button>
           </div>
 
           {/* Map Container */}
-          <div className="w-full h-full bg-tertiary/20">
+          <div className="w-full h-[calc(90vh-120px)] bg-tertiary/10">
             {iframeSrc ? (
               <iframe
-                key={`${iframeSrc}`} // Force re-render on source/theme change
+                key={iframeSrc}
                 loading="lazy"
                 src={iframeSrc}
                 title="Fullscreen Map"
-                className="w-full h-full border-0"
+                className="w-full h-full border-0 rounded-lg"
                 aria-label="Interactive fullscreen map"
                 allowFullScreen
               />
@@ -231,25 +229,28 @@ export default function MapModal({ isOpen, onClose, locationURL, query }: MapMod
             )}
           </div>
 
-          {/* Footer Info */}
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center text-xs text-tertiary">
-            <span>Interactive Map View</span>
-            <span>Use search to find specific locations in Bangladesh</span>
-          </div>
-
           {/* Search Tips */}
           {showSuggestions && (
-            <div className="absolute top-16 left-2 bg-solar-primary/80 backdrop-blur-sm rounded-lg p-3 text-xs text-secondary border border-tertiary">
-              <p className="font-medium text-solar-accent mb-1">Search Tips:</p>
+            <div className="absolute top-20 left-4 bg-solar-primary/90 backdrop-blur-sm rounded-lg p-3 text-xs text-primary border border-solar-accent/30 z-60">
+              <p className="font-bold text-solar-accent mb-1">Search Tips:</p>
               <ul className="space-y-1">
-                <li>• Type district names (Dhaka, Chittagong, Sylhet)</li>
-                <li>• Add city areas (Gulshan, Banani, Uttara)</li>
-                <li>• Search for landmarks or addresses</li>
+                <li className="flex items-center gap-1">
+                  <span className="text-solar-accent">•</span>
+                  <span>Type district names (Dhaka, Chittagong, Sylhet)</span>
+                </li>
+                <li className="flex items-center gap-1">
+                  <span className="text-solar-accent">•</span>
+                  <span>Add city areas (Gulshan, Banani, Uttara)</span>
+                </li>
+                <li className="flex items-center gap-1">
+                  <span className="text-solar-accent">•</span>
+                  <span>Search for landmarks or addresses</span>
+                </li>
               </ul>
             </div>
           )}
         </motion.div>
-      </motion.div>
-    </section>
+      </div>
+    </>
   )
 }

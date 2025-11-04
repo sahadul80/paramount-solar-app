@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback } from 'react'
 import MapModal from './MapModal'
 import { SolarPanelGrid } from './patterns/SolarPanelGrid'
 import { RenewableEnergy } from './patterns/RenewableEnergy'
+import Contact from './Contact'
 
 // Types for our project data
 export interface ProjectData {
@@ -50,6 +51,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isMapOpen, setIsMapOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isContactOpen, setIsContactOpen] = useState(false)
   const [windowWidth, setWindowWidth] = useState(0)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -223,6 +225,14 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
   const handleBack = useCallback(() => {
     router.back()
   }, [router])
+
+  const handleContact = useCallback(() => {
+    setIsContactOpen(true)
+  }, [isContactOpen])
+
+  const handleContactClose = useCallback(() => {
+    setIsContactOpen(false)
+  }, [])
 
   // Default data for missing fields
   const defaultTechnicalSpecs = {
@@ -813,46 +823,43 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   ))}
                 </div>
               </motion.div>
+              {/* Contact CTA */}
+              <motion.section
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="card card-glass p-2 sm:p-4 text-center relative overflow-auto"
+              >
+                <div className="relative">
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-primary mb-3 sm:mb-4">Interested in Learning More?</h2>
+                  <p className="text-tertiary mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
+                    Contact our project team for detailed technical specifications, investment opportunities, 
+                    or partnership inquiries about the {projectData.name}.
+                  </p>
+                  <div className="flex flex-row gap-2 sm:gap-4 justify-center">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-primary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download Project Brief
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-secondary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
+                      onClick={handleContact}
+                    >
+                      <Mail className="h-4 w-4" />
+                      Contact Project Team
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.section>
             </div>
           )}
         </div>
-
-        {/* Contact CTA */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-6 sm:mt-8 md:mt-12"
-        >
-          <div className="card card-glass p-2 sm:p-4 text-center relative overflow-auto">
-            <div className="absolute inset-0 gradient-energy opacity-20"></div>
-            <div className="relative">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-primary mb-3 sm:mb-4">Interested in Learning More?</h2>
-              <p className="text-tertiary mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
-                Contact our project team for detailed technical specifications, investment opportunities, 
-                or partnership inquiries about the {projectData.name}.
-              </p>
-              <div className="flex flex-row gap-2 sm:gap-4 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn btn-primary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
-                >
-                  <Download className="h-4 w-4" />
-                  Download Project Brief
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn btn-secondary p-2 sm:p-4 flex items-center gap-2 text-sm sm:text-base"
-                >
-                  <Mail className="h-4 w-4" />
-                  Contact Project Team
-                </motion.button>
-              </div>
-            </div>
-          </div>
-        </motion.section>
       </div>
 
       {/* Mobile Sidebar Drawer */}
@@ -1001,6 +1008,19 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
               onClose={closeMap}
               locationURL={projectData.map}
             />
+          </div>
+        )}
+      </AnimatePresence>
+      {/* Fullscreen contact */}
+      <AnimatePresence>
+        {isContactOpen && (
+          <div className="fixed inset-0 flex items-center justify-center p-2 bg-primary backdrop-blur-lg z-10">
+            <div className="relative w-full h-full rounded-xl overflow-auto shadow-2xl">
+              <Contact/>
+              <button onClick={handleContactClose} className="btn btn-sm fixed top-10 right-10 z-20">
+                <X/>
+              </button>
+            </div>
           </div>
         )}
       </AnimatePresence>

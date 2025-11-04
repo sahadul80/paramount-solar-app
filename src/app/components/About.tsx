@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { 
   Target, 
   Eye, 
@@ -391,14 +391,11 @@ const About = () => {
       <SolarPanelGrid/>
       <div className="container-responsive relative">
         {/* Enhanced Main Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="text-center m-2 sm:m-4"
-        >
+        <AnimatePresence>
+        <div className="text-center m-2 sm:m-4">
           <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
             className="inline-flex items-center gap-4"
           >
@@ -415,7 +412,8 @@ const About = () => {
           >
             Pioneering <span className="text-solar-primary font-semibold">renewable energy solutions</span> for a sustainable future in Bangladesh and beyond
           </motion.p>
-        </motion.div>
+        </div>
+        </AnimatePresence>
 
         {/* Main Sections Grid */}
         <div className="space-y-6">
@@ -486,7 +484,7 @@ const About = () => {
                     {expandedSections[section.id] ? 'Hide Details' : 'Show Details'}
                     <motion.div
                       animate={{ rotate: expandedSections[section.id] ? 180 : 0 }}
-                      transition={{ duration: 1.3 }}
+                      transition={{ duration: 0.3 }}
                     >
                       {expandedSections[section.id] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </motion.div>
@@ -498,7 +496,7 @@ const About = () => {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 1.5, ease: "easeInOut" }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
                       <motion.div

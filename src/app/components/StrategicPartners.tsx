@@ -24,16 +24,15 @@ const StrategicPartners = () => {
   ]
 
   const partnerImages: PartnerImage[] = [
-    { src: "/images/sp1.png", link: "/partners/siemens", name: "Siemens Energy" },
-    { src: "/images/sp2.png", link: "/partners/jinko", name: "Jinko Solar" },
-    { src: "/images/sp3.png", link: "/partners/first-solar", name: "First Solar" },
-    { src: "/images/sp4.png", link: "/partners/schneider", name: "Schneider Electric" },
-    { src: "/images/sp5.png", link: "/partners/abb", name: "ABB Group" },
-    { src: "/images/sp7.png", link: "/partners/longi", name: "LONGi Solar" },
-    { src: "/images/sp8.png", link: "/partners/sungrow", name: "Sungrow" },
-    { src: "/images/sp9.png", link: "/partners/sma", name: "SMA Solar" },
-    { src: "/images/sp10.png", link: "/partners/trina", name: "Trina Solar" },
-    { src: "/images/sp11.png", link: "/partners/huawei", name: "Huawei Solar" }
+    { src: "/images/spl1.png", link: "/partners/siemens", name: "Siemens Energy" },
+    { src: "/images/spl2.png", link: "/partners/jinko", name: "Jinko Solar" },
+    { src: "/images/spl3.png", link: "/partners/first-solar", name: "First Solar" },
+    { src: "/images/spl4.png", link: "/partners/schneider", name: "Schneider Electric" },
+    { src: "/images/spl5.png", link: "/partners/abb", name: "ABB Group" },
+    { src: "/images/spl7.png", link: "/partners/longi", name: "LONGi Solar" },
+    { src: "/images/spl8.png", link: "/partners/sungrow", name: "Sungrow" },
+    { src: "/images/spl9.png", link: "/partners/sma", name: "SMA Solar" },
+    { src: "/images/spl10.png", link: "/partners/trina", name: "Trina Solar" }
   ]
 
   // Use 2 sets for smoother looping
@@ -203,7 +202,7 @@ const StrategicPartners = () => {
           <p className="text-tertiary mb-6 max-w-2xl mx-auto text-sm">
             Join us in our mission to create a carbon-neutral future through innovative solar energy solutions.
           </p>
-          <Link href="/contact" className="btn btn-primary px-6 py-2 text-sm">
+          <Link href="#contact" className="btn btn-primary px-6 py-2 text-sm">
             Contact Our Partnership Team
           </Link>
         </motion.div>

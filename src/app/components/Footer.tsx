@@ -47,7 +47,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-primary text-text-primary relative overflow-show border-t border-border-primary">
+    <footer className="bg-primary text-text-primary relative overflow-show border-t border-border-primary z-20">
       {/* Stats Bar */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}

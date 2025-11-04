@@ -203,7 +203,7 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
   }, [isMobile]);
 
   return (
-    <div className="solar-banner-container mt-2">
+    <div className="solar-banner-container mt-2 z-50">
 
       {/* Reflections */}
       <AnimatePresence mode="wait">

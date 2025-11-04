@@ -18,35 +18,36 @@
   --border-secondary: #cbd5e1;
   --border-tertiary: #94a3b8;
   
-  /* Solar Brand Colors */
-  --solar-primary: #059669;      /* Emerald - Growth & Sustainability */
-  --solar-secondary: #0ea5e9;    /* Sky Blue - Clean Energy */
-  --solar-accent: #f59e0b;       /* Amber - Sun & Energy */
-  --solar-success: #10b981;      /* Green - Success & Growth */
-  --solar-warning: #f97316;      /* Orange - Warning/Construction */
-  --solar-error: #ef4444;        /* Red - Errors */
-  --solar-info: #3b82f6;         /* Blue - Information */
+  /* Updated Solar Brand Colors */
+  --solar-primary: #1e3a5f;       /* Deep Blue */
+  --solar-secondary: #6b7280;     /* Steel Gray */
+  --solar-accent: #b45309;        /* Solar Gold - reddish tone */
+  --solar-success: #059669;
+  --solar-warning: #d97706;
+  --solar-error: #dc2626;
+  --solar-info: #2563eb;
+  --solar-white: #f8fafc;         /* White shade */
   
-  /* Gradients */
+  /* Updated Gradients */
   --gradient-solar: linear-gradient(135deg, var(--solar-primary) 0%, var(--solar-accent) 100%);
   --gradient-energy: linear-gradient(135deg, var(--solar-secondary) 0%, var(--solar-primary) 100%);
-  --gradient-sunrise: linear-gradient(135deg, var(--solar-accent) 0%, var(--solar-warning) 100%);
+  --gradient-sunrise: linear-gradient(135deg, var(--solar-accent) 0%, var(--solar-white) 100%);
   
   /* Enhanced Shadows & Effects */
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
-  --shadow-xl: 0 24px 64px rgba(15, 23, 42, 0.16);
-  --shadow-strong: 0 8px 24px rgba(15, 23, 42, 0.18);
+  --shadow-sm: 0 1px 2px rgba(30, 58, 95, 0.05);
+  --shadow-md: 0 4px 12px rgba(30, 58, 95, 0.08);
+  --shadow-lg: 0 12px 32px rgba(30, 58, 95, 0.12);
+  --shadow-xl: 0 24px 64px rgba(30, 58, 95, 0.16);
+  --shadow-strong: 0 8px 24px rgba(30, 58, 95, 0.18);
   
   /* Enhanced Glass Morphism */
   --glass-bg: rgba(255, 255, 255, 0.92);
   --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.1);
+  --glass-shadow: 0 8px 32px rgba(30, 58, 95, 0.1);
   
   /* Enhanced Overlays */
-  --overlay-bg: rgba(15, 23, 42, 0.15);
-  --overlay-strong: rgba(15, 23, 42, 0.25);
+  --overlay-bg: rgba(30, 58, 95, 0.15);
+  --overlay-strong: rgba(30, 58, 95, 0.25);
   
   /* Spacing & Typography */
   --spacing-3xs: 0.125rem;
@@ -93,14 +94,15 @@
     --border-secondary: #475569;
     --border-tertiary: #64748b;
     
-    /* Solar Brand Colors - Dark Mode */
-    --solar-primary: #10b981;
-    --solar-secondary: #38bdf8;
-    --solar-accent: #fbbf24;
-    --solar-success: #34d399;
-    --solar-warning: #fb923c;
-    --solar-error: #f87171;
+    /* Updated Solar Brand Colors - Dark Mode */
+    --solar-primary: #3b82f6;     /* Lighter Deep Blue */
+    --solar-secondary: #9ca3af;   /* Lighter Steel Gray */
+    --solar-accent: #f59e0b;      /* Brighter Solar Gold */
+    --solar-success: #10b981;
+    --solar-warning: #f59e0b;
+    --solar-error: #ef4444;
     --solar-info: #60a5fa;
+    --solar-white: #f8fafc;
     
     /* Enhanced Dark Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -129,13 +131,13 @@
     box-sizing: border-box;
   }
 
+  /* Optimized transitions - only essential properties */
   *:not(.solar-panel):not(.letter-3d):not(.glass-overlay) {
     transition: 
-      background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease;
   }
 
   body {
@@ -145,13 +147,12 @@
     line-height: 1.6;
     overflow-x: hidden;
     
-    /* Subtle solar-themed background pattern */
+    /* Static background pattern - removed animation */
     background-image: 
       radial-gradient(circle at 15% 15%, var(--bg-secondary) 1px, transparent 1px),
       radial-gradient(circle at 85% 85%, var(--bg-secondary) 1px, transparent 1px);
     background-size: 50px 50px;
     background-position: 0 0, 25px 25px;
-    animation: backgroundShift 120s linear infinite;
   }
 
   /* Smooth scrolling */
@@ -176,7 +177,6 @@
     background: var(--border-primary);
     border-radius: var(--border-radius-sm);
     border: 2px solid var(--bg-secondary);
-    transition: background-color 0.3s ease;
   }
   
   ::-webkit-scrollbar-thumb:hover {
@@ -188,7 +188,6 @@
     outline: 3px solid var(--solar-primary);
     outline-offset: 2px;
     border-radius: var(--border-radius-sm);
-    transition: outline-color 0.2s ease;
   }
 
   /* ================= Solar Professional Button System ================= */
@@ -205,30 +204,18 @@
     text-decoration: none;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     user-select: none;
   }
 
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.6s ease;
-  }
-
-  .btn:hover::before {
-    left: 100%;
+  .btn:hover {
+    transform: translateY(-1px);
   }
 
   .btn:active {
-    transform: translateY(1px);
-    transition: transform 0.1s ease;
+    transform: translateY(0);
   }
 
   .btn-primary {
@@ -238,8 +225,7 @@
   }
 
   .btn-primary:hover {
-    background: #047857;
-    transform: translateY(-2px);
+    background: #1e40af;
     box-shadow: var(--shadow-lg);
   }
 
@@ -250,20 +236,29 @@
   }
 
   .btn-secondary:hover {
-    background: #0284c7;
-    transform: translateY(-2px);
+    background: #4b5563;
     box-shadow: var(--shadow-lg);
   }
 
   .btn-accent {
     background: var(--solar-accent);
-    color: #0f172a;
+    color: white;
     box-shadow: var(--shadow-md);
   }
 
   .btn-accent:hover {
-    background: #d97706;
-    transform: translateY(-2px);
+    background: #92400e;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-white {
+    background: var(--solar-white);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-white:hover {
+    background: #e2e8f0;
     box-shadow: var(--shadow-lg);
   }
 
@@ -276,64 +271,7 @@
 
   .btn-ghost:hover {
     background: var(--bg-tertiary);
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-  }
-
-  .btn-success {
-    background: var(--solar-success);
-    color: white;
-    box-shadow: var(--shadow-md);
-  }
-
-  .btn-success:hover {
-    background: #059669;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .btn-warning {
-    background: var(--solar-warning);
-    color: white;
-    box-shadow: var(--shadow-md);
-  }
-
-  .btn-warning:hover {
-    background: #ea580c;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .btn-error {
-    background: var(--solar-error);
-    color: white;
-    box-shadow: var(--shadow-md);
-  }
-
-  .btn-error:hover {
-    background: #dc2626;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .btn-sm {
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: var(--font-size-xs);
-  }
-
-  .btn-lg {
-    padding: var(--spacing-md) var(--spacing-xl);
-    font-size: var(--font-size-base);
-  }
-
-  .btn-full {
-    width: 100%;
-  }
-
-  .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
   }
 
   /* ================= Solar Professional Tag System ================= */
@@ -351,55 +289,27 @@
   }
 
   .tag-primary {
-    background: rgba(5, 150, 105, 0.15);
+    background: rgba(30, 58, 95, 0.15);
     color: var(--solar-primary);
-    border-color: rgba(5, 150, 105, 0.3);
+    border-color: rgba(30, 58, 95, 0.3);
   }
 
   .tag-secondary {
-    background: rgba(14, 165, 233, 0.15);
+    background: rgba(107, 114, 128, 0.15);
     color: var(--solar-secondary);
-    border-color: rgba(14, 165, 233, 0.3);
+    border-color: rgba(107, 114, 128, 0.3);
   }
 
   .tag-accent {
-    background: rgba(245, 158, 11, 0.15);
+    background: rgba(180, 83, 9, 0.15);
     color: var(--solar-accent);
-    border-color: rgba(245, 158, 11, 0.3);
+    border-color: rgba(180, 83, 9, 0.3);
   }
 
-  .tag-success {
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--solar-success);
-    border-color: rgba(16, 185, 129, 0.3);
-  }
-
-  .tag-warning {
-    background: rgba(249, 115, 22, 0.15);
-    color: var(--solar-warning);
-    border-color: rgba(249, 115, 22, 0.3);
-  }
-
-  .tag-error {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--solar-error);
-    border-color: rgba(239, 68, 68, 0.3);
-  }
-
-  .tag-info {
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--solar-info);
-    border-color: rgba(59, 130, 246, 0.3);
-  }
-
-  .tag-sm {
-    padding: var(--spacing-3xs) var(--spacing-xs);
-    font-size: 0.6875rem;
-  }
-
-  .tag-lg {
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: var(--font-size-sm);
+  .tag-white {
+    background: rgba(248, 250, 252, 0.15);
+    color: var(--solar-white);
+    border-color: rgba(248, 250, 252, 0.3);
   }
 
   /* ================= Enhanced Card System ================= */
@@ -409,6 +319,7 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-sm);
     overflow: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
   .card:hover {
@@ -432,21 +343,6 @@
 
   .card-interactive {
     cursor: pointer;
-    position: relative;
-  }
-
-  .card-interactive::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: var(--solar-primary);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .card-interactive:hover::after {
-    opacity: 0.05;
   }
 
   /* Solar Status Cards */
@@ -455,11 +351,11 @@
   }
 
   .card-status-construction {
-    border-left: 4px solid var(--solar-warning);
+    border-left: 4px solid var(--solar-accent);
   }
 
   .card-status-pipeline {
-    border-left: 4px solid var(--solar-info);
+    border-left: 4px solid var(--solar-primary);
   }
 
   .card-status-planning {
@@ -529,7 +425,7 @@
   .input:focus {
     outline: none;
     border-color: var(--solar-primary);
-    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
   }
 
   .input-error {
@@ -538,7 +434,7 @@
 
   .input-error:focus {
     border-color: var(--solar-error);
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
   }
 
   .label {
@@ -568,7 +464,7 @@
   }
 
   .nav-item.active {
-    background: rgba(5, 150, 105, 0.1);
+    background: rgba(30, 58, 95, 0.1);
     color: var(--solar-primary);
     font-weight: 600;
   }
@@ -596,11 +492,8 @@
   .text-pretty { text-wrap: pretty; }
 
   /* ================= Advanced Interaction Utilities ================= */
-
   .hover-glow:hover {
-    box-shadow: 
-      0 0 20px rgba(5, 150, 105, 0.15),
-      var(--shadow-lg);
+    box-shadow: var(--shadow-lg);
   }
 
   .focus-ring:focus-visible {
@@ -608,7 +501,6 @@
     outline-offset: 2px;
     border-radius: var(--border-radius-sm);
   }
-
 
   /* ================= Solar Professional Visual Utilities ================= */
   .gradient-solar {
@@ -644,9 +536,7 @@
   }
 
   .shadow-glow {
-    box-shadow: 
-      0 0 0 1px rgba(5, 150, 105, 0.1),
-      var(--shadow-lg);
+    box-shadow: var(--shadow-lg);
   }
 
   /* ================= Solar Color Utilities ================= */
@@ -661,6 +551,10 @@
   .text-solar-accent { color: var(--solar-accent); }
   .bg-solar-accent { background: var(--solar-accent); }
   .border-solar-accent { border-color: var(--solar-accent); }
+
+  .text-solar-white { color: var(--solar-white); }
+  .bg-solar-white { background: var(--solar-white); }
+  .border-solar-white { border-color: var(--solar-white); }
 
   .text-solar-success { color: var(--solar-success); }
   .bg-solar-success { background: var(--solar-success); }
@@ -737,7 +631,172 @@
   .border-tertiary { border-color: var(--border-tertiary); }
 }
 
+/* ================= Optimized Animations ================= */
 
+/* Smooth fade-in animation */
+@keyframes smoothFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stable scale animation */
+@keyframes stableScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth slide up for modals */
+@keyframes smoothSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Optimized glass sweep */
+@keyframes optimizedGlassSweep {
+  0%, 100% {
+    opacity: 0.1;
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+/* Stable hover lift */
+@keyframes stableHoverLift {
+  to {
+    transform: translateY(-2px);
+  }
+}
+
+/* Apply optimized animations */
+.smooth-fade-in {
+  animation: smoothFadeIn 0.6s ease-out forwards;
+}
+
+.stable-scale {
+  animation: stableScale 0.5s ease-out forwards;
+}
+
+.smooth-slide-up {
+  animation: smoothSlideUp 0.4s ease-out forwards;
+}
+
+/* Optimized component animations */
+.glass-overlay {
+  animation: optimizedGlassSweep 8s ease-in-out infinite;
+}
+
+.card-interactive:hover {
+  animation: stableHoverLift 0.3s ease-out forwards;
+}
+
+/* Remove problematic animations */
+.solar-banner-container {
+  perspective: 1600px;
+  transform-style: preserve-3d;
+  position: relative;
+  padding: var(--spacing-lg);
+}
+
+.solar-grid {
+  display: grid;
+  gap: 1px;
+  position: relative;
+  transform: rotateX(24deg) rotateY(24deg);
+  transform-origin: center;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+/* Optimized gallery animations */
+.gallery-card {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.gallery-card-active {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.gallery-card-inactive {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.gallery-card-inner {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gallery-card:hover .gallery-card-inner {
+  transform: translateY(-4px);
+}
+
+.gallery-card-bg {
+  transition: transform 1.2s ease;
+}
+
+.gallery-card:hover .gallery-card-bg {
+  transform: scale(1.05);
+}
+
+/* Optimized modal animations */
+.gallery-modal-overlay {
+  animation: smoothFadeIn 0.3s ease-out forwards;
+}
+
+.gallery-modal {
+  animation: smoothSlideUp 0.4s ease-out forwards;
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .solar-grid {
+    transform: none !important;
+  }
+  
+  .glass-overlay {
+    animation: none !important;
+  }
+}
+
+/* ================= Existing Component Styles ================= */
 
 /* Solar Banner (Enhanced) */
 .solar-banner-container {
@@ -753,7 +812,7 @@
   position: relative;
   transform: rotateX(24deg) rotateY(24deg);
   transform-origin: center;
-  transition: transform 0.2s ease-out;
+  transition: transform 0.3s ease-out;
   will-change: transform;
   --glare-angle: 120deg;
 }
@@ -764,7 +823,7 @@
   left: 50%;
   width: 80%;
   height: 50px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 80%);
+  background: radial-gradient(ellipse at center, rgba(30, 58, 95, 0.45) 0%, transparent 80%);
   filter: blur(20px);
   transform: translateX(-50%) rotateX(80deg);
 }
@@ -814,7 +873,7 @@
     transparent 70%
   );
   mix-blend-mode: screen;
-  animation: glassSweep 6s ease-in-out infinite;
+  animation: optimizedGlassSweep 8s ease-in-out infinite;
 }
 
 .letter-3d {
@@ -824,7 +883,7 @@
   color: var(--solar-accent);
   text-align: center;
   font-size: clamp(0.9rem, 4.5vw, 1.8rem);
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.8), 0 0 20px rgba(245, 158, 11, 0.6);
+  text-shadow: 0 0 10px rgba(180, 83, 9, 0.8), 0 0 20px rgba(180, 83, 9, 0.6);
 }
 
 /* Enhanced Gallery Styles */
@@ -860,190 +919,16 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-md);
-  animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: smoothFadeIn 0.3s ease-out forwards;
 }
 
-/* ====================================================== */
-/* ================= Advanced Responsive Design ========= */
-/* ====================================================== */
-
-@container (min-width: 640px) {
-  .card-responsive {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@container (min-width: 1024px) {
-  .card-responsive {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* ====================================================== */
-/* ================= Advanced Media Queries ============= */
-/* ====================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  .solar-grid {
-    transform: none !important;
-  }
-}
-
-@media (prefers-contrast: high) {
-  :root {
-    --border-primary: #000000;
-    --border-secondary: #333333;
-    --text-primary: #000000;
-    --text-secondary: #333333;
-    --text-tertiary: #666666;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --border-primary: #ffffff;
-      --border-secondary: #cccccc;
-      --text-primary: #ffffff;
-      --text-secondary: #cccccc;
-      --text-tertiary: #999999;
-    }
-  }
-}
-
-@media (orientation: portrait) {
-  .orientation-warning {
-    display: block;
-  }
-}
-
-@media (max-width: 768px) {
-  .mobile-stack {
-    flex-direction: column;
-  }
-  
-  .mobile-full {
-    width: 100%;
-  }
-}
-
-/* ====================================================== */
-/* ================= Print Optimizations ================ */
-/* ====================================================== */
-
-@media print {
-  .sidebar, .gallery-modal-close, .btn {
-    display: none !important;
-  }
-  
-  .main-content {
-    margin-left: 0 !important;
-  }
-  
-  .card {
-    break-inside: avoid;
-    box-shadow: none !important;
-    border: 1px solid #ccc !important;
-  }
-  
-  .text-gradient {
-    background: none !important;
-    color: black !important;
-  }
-}
-
-/* ====================================================== */
-/* ================= Advanced Selectors ================ */
-/* ====================================================== */
-
-/* Target modern browsers with feature support */
-@supports (backdrop-filter: blur(10px)) {
-  .glass-enhanced {
-    backdrop-filter: blur(40px);
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
-
-@supports (height: 100svh) {
-  .full-viewport {
-    height: 100svh;
-  }
-}
-
-/* ====================================================== */
-/* ================= Legacy Browser Support ============= */
-/* ====================================================== */
-
-@supports not (display: grid) {
-  .grid-fallback {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .grid-fallback > * {
-    flex: 1 1 300px;
-    margin: var(--spacing-md);
-  }
-}
-
-/* ================= Custom Scrollbar for Gallery ================= */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-primary) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border-primary);
-  border-radius: 3px;
-  transition: background-color 0.3s ease;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--border-secondary);
-}
-
-/* ================= Marquee Animation Fixes ================= */
-.marquee-container {
-  mask: linear-gradient(
-    90deg,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
-}
-
-/* ================= Performance Optimizations ================= */
-.will-change-transform {
-  will-change: transform;
-}
-
-.will-change-opacity {
-  will-change: opacity;
-}
-
-
-/* ================= Missing Gallery Card Styles ================= */
+/* Missing Gallery Card Styles */
 .gallery-card {
   flex-shrink: 0;
   width: min(90vw, 400px);
   cursor: pointer;
   position: relative;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s ease, opacity 0.4s ease;
   scroll-snap-align: start;
   border-radius: 1.5rem;
   overflow: hidden;
@@ -1057,13 +942,13 @@
 
 .gallery-card-active {
   opacity: 1;
-  transform: scale(1.05);
+  transform: scale(1.02);
   padding: 4px;
 }
 
 .gallery-card-inactive {
-  opacity: 0.5;
-  transform: scale(0.95);
+  opacity: 0.7;
+  transform: scale(0.98);
 }
 
 .gallery-card-inner {
@@ -1076,7 +961,7 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 40px var(--shadow-strong);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 @media (min-width: 640px) {
@@ -1086,7 +971,7 @@
 }
 
 .gallery-card:hover .gallery-card-inner {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
   box-shadow: 0 30px 60px var(--shadow-strong);
 }
 
@@ -1102,11 +987,11 @@
   background-color: var(--bg-tertiary);
   background-size: cover;
   background-position: center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 1.2s ease;
 }
 
 .gallery-card:hover .gallery-card-bg {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .gallery-card-category {
@@ -1146,7 +1031,7 @@
   letter-spacing: -0.01em;
 }
 
-/* ================= Missing Gallery Modal Styles ================= */
+/* Missing Gallery Modal Styles */
 .gallery-modal {
   position: relative;
   width: min(95vw, 1200px);
@@ -1159,7 +1044,7 @@
   flex-direction: column;
   border: 1px solid var(--glass-border);
   box-shadow: 0 40px 80px var(--shadow-strong);
-  animation: modalSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: smoothSlideUp 0.4s ease-out forwards;
 }
 
 @media (min-width: 1024px) {
@@ -1180,7 +1065,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(20px);
 }
@@ -1208,7 +1093,7 @@
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(20px);
 }
@@ -1257,7 +1142,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.8s ease;
 }
 
 .gallery-modal:hover .gallery-modal-img {
@@ -1356,7 +1241,7 @@
   gap: 1rem;
 }
 
-/* ================= Missing Map Styles ================= */
+/* Missing Map Styles */
 .map-responsive {
   position: relative;
   width: 100%;
@@ -1365,7 +1250,7 @@
   height: 0;
   overflow: hidden;
   border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 30px rgba(30, 58, 95, 0.12);
 }
 
 .map-responsive iframe {
@@ -1376,7 +1261,7 @@
   border: 0;
 }
 
-/* ================= Missing Loading States ================= */
+/* Missing Loading States */
 .gallery-loading {
   min-height: 75vh;
   display: flex;
@@ -1406,7 +1291,7 @@
   box-shadow: 0 8px 25px var(--shadow-color);
 }
 
-/* ================= Missing Gallery Cards Container ================= */
+/* Missing Gallery Cards Container */
 .gallery-cards-container {
   position: relative;
   width: 100%;
@@ -1442,7 +1327,7 @@
   background: var(--text-secondary);
 }
 
-/* ================= Missing Gallery Info ================= */
+/* Missing Gallery Info */
 .gallery-info {
   text-align: center;
   margin-top: 2rem;
@@ -1452,39 +1337,7 @@
   padding: 0 1rem;
 }
 
-/* ================= Missing Solar Grid Shadow ================= */
-.solar-grid-shadow {
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  width: 80%;
-  height: 50px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, transparent 80%);
-  filter: blur(20px);
-  transform: translateX(-50%) rotateX(80deg);
-}
-
-.panel-base-color {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.08) 0px,
-    rgba(255, 255, 255, 0.08) 2px,
-    transparent 2px,
-    transparent 40px
-  ),
-  repeating-linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.08) 0px,
-    rgba(255, 255, 255, 0.08) 2px,
-    transparent 2px,
-    transparent 40px
-  ),
-  linear-gradient(135deg, #0a1a2f, #102a44, #0d1b2a);
-}
-
-/* ================= Missing Custom Scrollbar ================= */
+/* Missing Custom Scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--border-primary) transparent;
@@ -1510,7 +1363,7 @@
   background: var(--border-secondary);
 }
 
-/* ================= Missing Marquee Styles ================= */
+/* Missing Marquee Styles */
 .marquee-container {
   mask: linear-gradient(
     90deg,
@@ -1539,7 +1392,7 @@
   animation-play-state: paused;
 }
 
-/* ================= Missing Utility Classes ================= */
+/* Missing Utility Classes */
 .will-change-transform {
   will-change: transform;
 }
@@ -1548,12 +1401,13 @@
   will-change: opacity;
 }
 
-/* ================= Missing Header Styles ================= */
+/* Missing Header Styles */
 .gallery-header {
   text-align: center;
   padding: 0 1rem;
 }
 
+/* Background Patterns */
 .bg-solar-panel-grid {
   background-color: var(--bg-primary);
   background-image: 
@@ -1692,6 +1546,7 @@
   background-position: 0 0, 100px 100px;
   opacity: 0.04;
 }
+
 .bg-circuit-board {
   background-color: var(--bg-secondary);
   background-image: 
@@ -1713,6 +1568,7 @@
   background-color: var(--bg-primary);
   opacity: 0.08;
 }
+
 .bg-battery-storage {
   background-color: var(--bg-secondary);
   background-image: 
@@ -1743,6 +1599,7 @@
   background-color: var(--bg-primary);
   opacity: 0.08;
 }
+
 .bg-green-energy {
   background-color: var(--bg-primary);
   background-image: 
@@ -1760,6 +1617,7 @@
   background-size: 400px 400px;
   opacity: 0.03;
 }
+
 .bg-solar-innovation {
   background-color: var(--bg-secondary);
   background-image: 
@@ -1780,6 +1638,7 @@
   background-color: var(--bg-primary);
   opacity: 0.08;
 }
+
 .bg-solar-installation {
   background-color: var(--bg-primary);
   background-image: 
@@ -1793,6 +1652,7 @@
   background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
   opacity: 0.1;
 }
+
 .bg-clean-energy {
   background: 
     radial-gradient(circle at 25% 25%, var(--solar-success) 0%, transparent 50%),
@@ -1811,6 +1671,7 @@
   background-size: 100px 100px;
   opacity: 0.08;
 }
+
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -1828,4 +1689,115 @@
 .marquee-paused {
   animation-play-state: paused;
   display: flex;
+}
+
+/* Advanced Responsive Design */
+@container (min-width: 640px) {
+  .card-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container (min-width: 1024px) {
+  .card-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Advanced Media Queries */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .solar-grid {
+    transform: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: #000000;
+    --border-secondary: #333333;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-tertiary: #666666;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --border-primary: #ffffff;
+      --border-secondary: #cccccc;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --text-tertiary: #999999;
+    }
+  }
+}
+
+@media (orientation: portrait) {
+  .orientation-warning {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-full {
+    width: 100%;
+  }
+}
+
+/* Print Optimizations */
+@media print {
+  .sidebar, .gallery-modal-close, .btn {
+    display: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+  }
+  
+  .card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  .text-gradient {
+    background: none !important;
+    color: black !important;
+  }
+}
+
+/* Advanced Selectors */
+@supports (backdrop-filter: blur(10px)) {
+  .glass-enhanced {
+    backdrop-filter: blur(40px);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@supports (height: 100svh) {
+  .full-viewport {
+    height: 100svh;
+  }
+}
+
+/* Legacy Browser Support */
+@supports not (display: grid) {
+  .grid-fallback {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .grid-fallback > * {
+    flex: 1 1 300px;
+    margin: var(--spacing-md);
+  }
 }

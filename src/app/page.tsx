@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Banner from './components/Banner'
 import Footer from './components/Footer'
 import ParamountLoader from './components/Loader'
+import SolarNews from './components/SolarNews'
 
 // Create a simple loading component for individual sections
 const SectionLoader = () => (
@@ -27,18 +28,6 @@ const SectionLoader = () => (
 
 // Individual component imports with proper loading states
 const StatsCTA = dynamic(() => import('./components/StatsCTA'), {
-  loading: () => <SectionLoader />
-})
-
-const About = dynamic(() => import('./components/About'), {
-  loading: () => <SectionLoader />
-})
-
-const History = dynamic(() => import('./components/History'), {
-  loading: () => <SectionLoader />
-})
-
-const CompanyBoard = dynamic(() => import('./components/CompanyBoard'), {
   loading: () => <SectionLoader />
 })
 
@@ -84,19 +73,11 @@ export default function Home() {
 
       <div className="space-y-0">
         <Suspense fallback={<SectionLoader />}>
-          <StatsCTA />
+          <SolarNews />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <About />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <History />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <CompanyBoard />
+          <NationalFootprint />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
@@ -108,11 +89,11 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <NationalFootprint />
+          <StrategicPartners />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <StrategicPartners />
+          <StatsCTA />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>

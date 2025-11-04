@@ -150,12 +150,12 @@ const Banner = () => {
       {/* Enhanced Solar Banner without Rotation */}
       <div className='flex flex-col items-center'>
         
-          <div className="items-center justify-center z-40 text-center m-8 mt-24">
+          <div className="items-center justify-center z-30 text-center m-8 mt-24">
             <SolarBanner/>
           </div>
 
         {/* Content Section */}
-        <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg z-10">
+        <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg z-30">
           <AnimatePresence mode="popLayout" custom={direction}>
             <motion.div
               key={currentSlide}
