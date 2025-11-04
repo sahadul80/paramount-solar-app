@@ -205,8 +205,8 @@ export default function SolarNews() {
 
         {/* Error State */}
         {error && (
-          <div className="card card-status-error p-6 text-center">
-            <div className="flex flex-col items-center gap-3">
+          <div className="card card-status-error p-2 sm:p-4 text-center">
+            <div className="flex flex-col items-center gap-2">
               <svg className="w-12 h-12 text-solar-error" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
@@ -239,7 +239,7 @@ export default function SolarNews() {
         {/* Articles Grid */}
         {!loading && !error && articles.length > 0 && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {articles.map((article) => (
                 <Link 
                   key={article.id} 

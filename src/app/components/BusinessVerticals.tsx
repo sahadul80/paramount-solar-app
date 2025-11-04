@@ -210,7 +210,7 @@ const BusinessVerticals: React.FC = () => {
 
       <div className="container mx-auto p-2 sm:p-4 relative z-10">
         {/* Mobile Gallery - Fixed at top with high z-index */}
-        <div className="block sm:hidden fixed top-14 left-0 right-0 z-40 bg-primary/95 backdrop-blur-sm border-b border-primary/20 shadow-lg">
+        <div className="block sm:hidden fixed top-10 left-0 right-0 z-40 bg-primary/95 backdrop-blur-sm border-b border-primary/20 shadow-lg">
           <div className="p-2">
             <h4 className="text-sm font-semibold text-primary text-center mb-2 truncate">
               {activeVertical.title}
