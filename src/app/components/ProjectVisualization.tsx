@@ -296,7 +296,7 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`fixed top-0 left-0 right-0 glass-effect border-b border-primary/20 p-1 z-10 ${
+        className={`fixed top-12 left-0 right-0 glass-effect border-b border-primary/20 p-1 z-10 ${
           isScrolled ? 'shadow-lg' : 'shadow-sm'
         }`}
       >

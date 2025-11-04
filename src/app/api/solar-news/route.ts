@@ -98,12 +98,40 @@ type UnsplashPhoto = {
 type CacheEntry = {
   ts: number;
   ttl: number;
-  data: any;
+  data: unknown;
 };
 
 type ScoredArticle = {
   item: RawArticle;
   score: number;
+};
+
+type FinalArticle = {
+  id: string;
+  title: string;
+  description?: string | null;
+  url: string;
+  source: string;
+  publishedAt?: string;
+  urlToImage?: string | null;
+  imageAttribution: ImageAttribution | null;
+};
+
+type ApiResponse = {
+  articles: FinalArticle[];
+  total: number;
+  cached?: boolean;
+  error?: string;
+};
+
+type GDELTResponse = {
+  articles?: unknown[];
+  results?: unknown[];
+  articles_list?: unknown[];
+  article?: unknown[];
+  docs?: unknown[];
+  feed?: { entries?: unknown[] } | unknown[];
+  [key: string]: unknown;
 };
 
 // ==================== CACHE MANAGEMENT ====================
@@ -314,9 +342,50 @@ async function fetchUnsplashImageWithAttribution(
   }
 }
 
+// ==================== GDELT RESPONSE HANDLER ====================
+
+function extractGDELTArticles(data: unknown): unknown[] {
+  if (!data || typeof data !== 'object') return [];
+
+  const dataObj = data as GDELTResponse;
+  
+  // Handle various possible response structures from GDELT
+  const candidates = [
+    dataObj.articles,
+    dataObj.results, 
+    dataObj.articles_list,
+    dataObj.article,
+    dataObj.docs,
+    (dataObj.feed as { entries?: unknown[] })?.entries,
+    dataObj.feed,
+  ];
+
+  let articles: unknown[] = [];
+  
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate) && candidate.length > 0) { 
+      articles = candidate; 
+      break; 
+    }
+  }
+  
+  // If no articles found in known structures, check all object properties
+  if (!articles.length) {
+    for (const key of Object.keys(dataObj)) {
+      const value = dataObj[key];
+      if (Array.isArray(value) && value.length > 0) { 
+        articles = value; 
+        break; 
+      }
+    }
+  }
+  
+  return articles;
+}
+
 // ==================== API RESPONSE HANDLER ====================
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q') ?? 'solar OR photovoltaic OR "solar energy" OR renewable';
@@ -326,7 +395,7 @@ export async function GET(request: Request) {
     const ttl = Math.max(60, Number(searchParams.get('ttl') ?? '120'));
 
     const cacheKey = `${query}|${country}|${page}|${pageSize}`;
-    const cached = getCache<{ articles: RawArticle[]; total: number }>(cacheKey);
+    const cached = getCache<{ articles: FinalArticle[]; total: number }>(cacheKey);
     if (cached) {
       return NextResponse.json({ ...cached, cached: true }, { status: 200 });
     }
@@ -394,39 +463,10 @@ export async function GET(request: Request) {
       try {
         const response = await fetch(url);
         if (!response.ok) return [];
-        const data = await response.json();
+        const data: unknown = await response.json();
         
-        // Handle various possible response structures from GDELT
-        const candidates = [
-          data?.articles,
-          data?.results, 
-          data?.articles_list,
-          data?.article,
-          data?.docs,
-          data?.feed?.entries,
-          data?.feed,
-          data
-        ];
-        
-        let articles: any[] = [];
-        for (const candidate of candidates) {
-          if (Array.isArray(candidate) && candidate.length > 0) { 
-            articles = candidate; 
-            break; 
-          }
-        }
-        
-        if (!articles.length && data && typeof data === 'object') {
-          for (const key of Object.keys(data)) {
-            const value = (data as any)[key];
-            if (Array.isArray(value) && value.length > 0) { 
-              articles = value; 
-              break; 
-            }
-          }
-        }
-        
-        return articles.map(normalizeFromGdelt);
+        const articlesData = extractGDELTArticles(data);
+        return articlesData.map((item: unknown) => normalizeFromGdelt(item as GDELTArticle));
       } catch (error) {
         console.warn('GDELT fetch failed:', error);
         return [];
@@ -498,7 +538,7 @@ export async function GET(request: Request) {
     const paginatedArticles = sortedArticles.slice(start, end);
 
     // Format final response
-    const articles = paginatedArticles.map((article) => ({
+    const articles: FinalArticle[] = paginatedArticles.map((article) => ({
       id: makeId(article),
       title: article.title || 'Untitled',
       description: article.description,
@@ -511,7 +551,7 @@ export async function GET(request: Request) {
       imageAttribution: article.imageAttribution ?? null,
     }));
 
-    const payload = { articles, total };
+    const payload: ApiResponse = { articles, total };
 
     setCache(cacheKey, payload, ttl);
 
@@ -521,8 +561,9 @@ export async function GET(request: Request) {
 
   } catch (error) {
     console.error('Solar news API error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
-      { error: 'Failed to fetch news articles', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Failed to fetch news articles', details: errorMessage },
       { status: 500 }
     );
   }
