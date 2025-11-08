@@ -6,7 +6,7 @@ export default function AboutPage() {
     return (
         <>
         <Header/>
-        <div className="p-2 sm:p-4 mx-auto m-4">
+        <div className="p-2 sm:p-4 mx-auto sm:m-4">
             <About/>
         </div>
         <Footer/>

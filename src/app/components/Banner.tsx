@@ -5,7 +5,6 @@ import { ArrowDown, Sun, Zap, Leaf, Play, Pause } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 import SolarBanner from './SolarBanner'
-import { CleanEnergy } from './patterns/CleanEnergy'
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -119,9 +118,7 @@ const Banner = () => {
       id="home"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-    >
-      <CleanEnergy />
-      
+    > 
       {/* Background Slides with Next.js Image */}
       <div className="absolute inset-0 overflow-hidden">
         <AnimatePresence>

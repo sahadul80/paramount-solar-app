@@ -23,7 +23,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   return (
     <div>
       <Header/>
-      <div className="p-2 sm:p-4 mx-auto m-4">
+      <div className="p-2 sm:p-4 mx-auto sm:m-4">
       <ProjectVisualization projectData={project} />
       </div>
       <Footer/>

@@ -16,9 +16,6 @@ import {
   LucideIcon
 } from 'lucide-react';
 import Link from 'next/link';
-import { SolarPanelGrid } from './patterns/SolarPanelGrid';
-import { SunRays } from './patterns/SunRays';
-import { EnergyFlow } from './patterns/EnergyFlow';
 import Image from "next/image";
 
 type Stat = { value: string; label: string };
@@ -201,13 +198,6 @@ const BusinessVerticals: React.FC = () => {
 
   return (
     <section id="business" className="relative min-h-screen py-8">
-      {/* Background Patterns - Lowest z-index */}
-      <div className="absolute inset-0 z-0">
-        <SolarPanelGrid />
-        <SunRays />
-        <EnergyFlow />
-      </div>
-
       <div className="container mx-auto p-2 sm:p-4 relative z-10">
         {/* Mobile Gallery - Fixed at top with high z-index */}
         <div className="block sm:hidden fixed top-10 left-0 right-0 z-40 bg-primary/95 backdrop-blur-sm border-b border-primary/20 shadow-lg">

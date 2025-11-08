@@ -2,8 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { Award, Globe, Building, User, Zap, Leaf, Target, TrendingUp } from 'lucide-react'
-import { SolarInstallation } from './patterns/SolarInstallation'
-import { RenewableEnergy } from './patterns/RenewableEnergy'
 
 const CompanyBoard = () => {
   const industries = [
@@ -14,8 +12,6 @@ const CompanyBoard = () => {
 
   return (
     <section id="board" className="p-2 sm:p-4 bg-primary relative overflow-hidden z-20">
-      <SolarInstallation/>
-      <RenewableEnergy/>
       <div className="container mx-auto m-4 relative z-10">
         {/* Header */}
         <motion.div

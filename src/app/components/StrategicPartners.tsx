@@ -5,7 +5,6 @@ import { Handshake, Users, Globe, ExternalLink } from 'lucide-react'
 import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { RenewableEnergy } from './patterns/RenewableEnergy'
 
 interface PartnerImage {
   src: string
@@ -54,7 +53,6 @@ const StrategicPartners = () => {
 
   return (
     <section id="strategic-partners" className="py-16 bg-primary relative overflow-hidden z-20">
-      <RenewableEnergy/>
       <div className="container mx-auto px-4">
         {/* Heading */}
         <motion.div 

@@ -6,8 +6,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import MapModal from './MapModal'
-import { SolarPanelGrid } from './patterns/SolarPanelGrid'
-import { RenewableEnergy } from './patterns/RenewableEnergy'
 import Contact from './Contact'
 
 // Types for our project data
@@ -320,7 +318,6 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                   transition={{ duration: 0.8 }}
                   className="text-center max-w-4xl"
                 >
-                  <SolarPanelGrid/>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -475,8 +472,6 @@ const ProjectVisualization = ({ projectData }: ProjectVisualizationProps) => {
                 </div>
               </div>
             </motion.section>
-
-            <RenewableEnergy/>
 
             {/* Image Carousel Section */}
             <motion.section

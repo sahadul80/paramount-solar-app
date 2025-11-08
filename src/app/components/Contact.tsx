@@ -19,7 +19,6 @@ import {
   LucideIcon
 } from 'lucide-react'
 import MapModal from './MapModal';
-import { SolarPanelGrid } from './patterns/SolarPanelGrid';
 
 interface ExpandedContent {
   description: string;
@@ -205,7 +204,6 @@ const Contact = () => {
 
   return (
     <section id="contact" className="p-2 sm:p-4 bg-primary relative overflow-hidden z-20 flex justify-center">
-      <SolarPanelGrid/>
       <div className="relative container m-2 p-2 sm:m-4 sm:p-4 space-y-8">
         {/* Header */}
         <motion.div

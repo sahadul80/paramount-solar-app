@@ -10,10 +10,6 @@ import { EnergyFlow } from "./patterns/EnergyFlow";
 export default function ParamountLoader() {
   return (
     <section id="loader" className="z-50">
-      <SolarFarm/>
-      <SolarPanelGrid/>
-      <SunRays/>
-      <EnergyFlow/>
       <div className="flex items-center justify-center w-screen h-screen">
       <motion.div
         initial={{ scale: 1 }}

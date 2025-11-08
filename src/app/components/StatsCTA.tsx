@@ -10,7 +10,6 @@ import {
   ArrowRight,
   Calendar
 } from 'lucide-react'
-import { SolarFarm } from './patterns/SolarFarm'
 
 const CountUp = ({ target, suffix = '', duration = 1200, isInView }: { target: number, suffix?: string, duration?: number, isInView: boolean }) => {
   const [value, setValue] = useState(0)
@@ -127,8 +126,6 @@ const StatsCTA = () => {
 
   return (
     <section id="stats" ref={sectionRef} className="section-padding bg-primary relative overflow-hidden z-20">
-      <SolarFarm/>
-
       <div className="container-responsive relative z-10">
         {/* Stats Grid */}
         <motion.div

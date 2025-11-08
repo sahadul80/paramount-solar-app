@@ -59,7 +59,6 @@ const ProjectsPortfolio = () => {
 
   return (
     <section id="projects" className="py-16 bg-primary relative overflow-hidden z-20">
-      <SolarInstallation/>
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <motion.div

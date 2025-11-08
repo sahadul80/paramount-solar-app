@@ -388,7 +388,6 @@ const About = () => {
 
   return (
     <section id="about" className="section-padding bg-secondary relative overflow-hidden z-20">
-      <SolarPanelGrid/>
       <div className="container-responsive relative">
         {/* Enhanced Main Header */}
         <AnimatePresence>

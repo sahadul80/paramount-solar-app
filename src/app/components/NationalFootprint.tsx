@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { useState, useRef, useCallback, useEffect } from 'react'
 import SolarBanner from './SolarBanner'
 import { BatteryStorage } from './patterns/BatteryStorage'
-import { CleanEnergy } from './patterns/CleanEnergy'
 
 type Location = {
   name: string
@@ -299,7 +298,6 @@ const NationalFootprint = () => {
 
   return (
     <section id="national-footprint" className="section-padding bg-primary relative overflow-hidden z-20">
-      <CleanEnergy/>
       <div className="container-responsive relative">
         {/* Enhanced Header Section */}
         <motion.div

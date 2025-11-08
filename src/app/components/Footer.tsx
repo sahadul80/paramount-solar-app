@@ -66,7 +66,7 @@ const Footer = () => {
                 className="text-center"
               >
                 <div className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-1">{stat.value}</div>
-                <div className="text-[var(--text-quaternary)] text-sm font-medium">{stat.label}</div>
+                <div className="text-[var(--text-secondary)] text-sm font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </div>

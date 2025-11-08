@@ -94,7 +94,6 @@ const History = () => {
 
   return (
     <section id="history" className="bg-primary relative overflow-hidden p-4 z-20">
-      <SolarInnovation/>
       <div className="container mx-auto p-2 sm:p-4 relative z-10">
         {/* Header Section */}
         <motion.div
