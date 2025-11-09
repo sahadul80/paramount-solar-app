@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 
 // Type definitions
-type NavItemType = 'route' | 'section';
+type NavItemType = 'route' | 'section' | 'both';
 
 interface NavItemBase {
   name: string;
@@ -32,11 +32,28 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [activeSection, setActiveSection] = useState('')
+  const [windowWidth, setWindowWidth] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const pathname = usePathname()
 
-  // Fixed: Properly typed navItems with NavItemType
+  // Track window width for responsive image sizing
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth)
+      window.addEventListener('resize', handleResize)
+    }
+    
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize)
+      }
+    }
+  }, [])
+
+  // Fixed: Properly typed navItems with 'both' type for items that work as both route and section
   const navItems: NavItem[] = useMemo(() => [
     {
       name: 'HOME',
@@ -54,9 +71,14 @@ export default function Header() {
       type: 'route'
     },
     {
+      name: 'NATIONAL FOOTPRINT',
+      href: '/pages/national-footprint',
+      type: 'both'
+    },
+    {
       name: 'BUSINESS',
-      href: '/#business',
-      type: 'section',
+      href: '/pages/business',
+      type: 'both', // Works as both route and section
       dropdown: [
         { name: 'IPP PROJECTS', href: '/#ipp-projects', type: 'section' },
         { name: 'SOLAR EPC', href: '/#solar-epc', type: 'section' },
@@ -65,14 +87,9 @@ export default function Header() {
       ]
     },
     {
-      name: 'NATIONAL FOOTPRINT',
-      href: '/pages/national-footprint',
-      type: 'route'
-    },
-    {
       name: 'PROJECTS',
-      href: '/#projects',
-      type: 'section',
+      href: '/pages/projects-portfolio',
+      type: 'both', // Works as both route and section
       dropdown: [
         { name: 'INTRACO SOLAR POWER LTD', href: '/#lalmonirhat-project', type: 'section' },
         { name: 'DYNAMIC SUN ENERGY POWER LTD', href: '/#pabna-project', type: 'section' },
@@ -82,7 +99,7 @@ export default function Header() {
     {
       name: 'CONTACT US',
       href: '/pages/contact',
-      type: 'route'
+      type: 'both' // Works as both route and section
     }
   ], [])
 
@@ -132,7 +149,7 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Handle navigation based on type (route or section)
+  // Handle navigation based on type (route, section, or both)
   const handleNavClick = (href: string, type: NavItemType) => {
     setIsMobileMenuOpen(false)
     setActiveDropdown(null)
@@ -140,11 +157,11 @@ export default function Header() {
     if (type === 'route') {
       // Regular page navigation
       router.push(href)
-    } else {
+    } else if (type === 'section') {
       // Section scrolling - only works on home page
       if (pathname !== '/') {
         // If not on home page, navigate to home page first with hash
-        router.push(href)
+        router.push(`/${href}`)
       } else {
         // Scroll to section on current page
         const element = document.querySelector(href.replace('/', ''))
@@ -152,19 +169,56 @@ export default function Header() {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
+    } else if (type === 'both') {
+      // Handle items that work as both route and section
+      if (href.startsWith('/#')) {
+        // This is a section link
+        if (pathname !== '/') {
+          router.push(`/${href}`)
+        } else {
+          const element = document.querySelector(href.replace('/', ''))
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        }
+      } else {
+        // This is a route link
+        if (pathname === href) {
+          // If we're already on the page, scroll to top
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        } else {
+          router.push(href)
+        }
+      }
     }
   }
 
-  const toggleDropdown = (itemName: string) => {
+  // Fixed mobile dropdown toggle - doesn't close the entire menu
+  const toggleMobileDropdown = (itemName: string) => {
     setActiveDropdown(activeDropdown === itemName ? null : itemName)
+  }
+
+  // Desktop dropdown handlers
+  const handleDesktopDropdownEnter = (itemName: string) => {
+    setActiveDropdown(itemName)
+  }
+
+  const handleDesktopDropdownLeave = () => {
+    setActiveDropdown(null)
   }
 
   const isActive = (href: string, type: NavItemType) => {
     if (type === 'route') {
       return pathname === href
-    } else {
+    } else if (type === 'section') {
       return activeSection === href && pathname === '/'
+    } else if (type === 'both') {
+      // For 'both' type, check if we're on the route OR if it's the active section on home page
+      if (pathname === href) return true
+      if (pathname === '/' && activeSection === href) return true
+      return false
     }
+    return false
   }
 
   // Check if a nav item has active children (for dropdown highlighting)
@@ -192,38 +246,38 @@ export default function Header() {
         <div className="flex-between">
           {/* Logo */}
           <Link href="/" className="flex-center hover-lift">
-            <div className="flex flex-row mr-3">
+            <div className="flex flex-row m-2">
               <Image
                 src="/p1.png"
                 alt="logo"
-                width={6}
+                width={windowWidth < 768 ? 4 : 6}
                 height={0}
                 className="object-contain"
               />
               <Image
                 src="/p2.png"
                 alt="logo"
-                width={6}
+                width={windowWidth < 768 ? 4 : 6}
                 height={0}
                 className="object-contain"
               />
               <Image
                 src="/p3.png"
                 alt="logo"
-                width={6}
+                width={windowWidth < 768 ? 4 : 6}
                 height={0}
                 className="object-contain"
               />
               <Image
                 src="/p4.png"
                 alt="logo"
-                width={6}
+                width={windowWidth < 768 ? 4 : 6}
                 height={0}
                 className="object-contain"
               />
             </div>
             <div>
-              <h1 className="text-lg md:text-xl font-extrabold text-primary tracking-tight">
+              <h1 className="text-lg md:text-xl font-extrabold text-text-primary tracking-tight">
                 PARAMOUNT <span className="text-solar-accent">SOLAR</span>
               </h1>
               <p className="text-solar-accent font-semibold text-xs hidden sm:flex items-center">
@@ -234,54 +288,54 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center gap-4">
             {navItems.map((item) => (
               <div key={item.name} className="relative">
                 {hasDropdown(item) ? (
-                  /* Dropdown Items */
+                  /* Dropdown Items with Enhanced Hover */
                   <div
                     className="relative"
-                    onMouseEnter={() => setActiveDropdown(item.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
+                    onMouseEnter={() => handleDesktopDropdownEnter(item.name)}
+                    onMouseLeave={handleDesktopDropdownLeave}
                   >
                     <button
-                      className={`flex items-center p-4 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift ${
+                      className={`flex items-center rounded-lg font-semibold text-sm transition-all duration-300 hover-lift hover:cursor-pointer group relative overflow-hidden ${
                         isActive(item.href, item.type) || hasActiveChild(item)
                           ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
-                          : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
+                          : 'text-secondary hover:text-solar-accent'
                       }`}
+                      onClick={() => handleNavClick(item.href, item.type)}
                     >
-                      <span className="relative">
+                      {/* Hover background effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-solar-accent/0 via-solar-accent/5 to-solar-accent/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                      
+                      <span className="relative flex items-center gap-1">
                         {item.name}
                         {(isActive(item.href, item.type) || hasActiveChild(item)) && (
                           <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
                         )}
                       </span>
-                      <ChevronDown className={`h-4 w-4 ml-1 transition-transform duration-300 ${
-                        activeDropdown === item.name ? 'rotate-180 text-solar-accent' : 'text-secondary'
+                      <ChevronDown className={`h-4 w-4 ml-1 transition-transform duration-300 relative ${
+                        activeDropdown === item.name ? 'rotate-180 text-solar-accent' : 'text-secondary group-hover:text-solar-accent'
                       }`} />
                     </button>
 
-                    {/* Dropdown Menu */}
-                    <AnimatePresence>
+                    {/* Dropdown Menu with Enhanced Animation */}
                       {activeDropdown === item.name && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 w-64 bg-primary rounded-xl shadow-2xl border border-tertiary py-2 z-50"
+                          className="absolute top-full left-0 w-80 bg-primary rounded-xl shadow-2xl border border-tertiary z-50"
                           transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                          {item.dropdown.map((subItem) => (
+                          {item.dropdown.map((subItem, index) => (
                             <button
                               key={subItem.name}
                               onClick={() => handleNavClick(subItem.href, subItem.type)}
-                              className={`block w-full text-left p-4 text-sm font-medium transition-all duration-300 hover-lift group relative ${
+                              className={`block w-full text-left p-2 text-sm font-medium transition-all duration-300 hover:cursor-pointer group relative overflow-hidden ${
                                 isActive(subItem.href, subItem.type)
                                   ? 'text-solar-accent bg-solar-accent/20'
                                   : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                               }`}
-                            >
+                            > 
                               <span className="relative">
                                 {subItem.name}
                                 {isActive(subItem.href, subItem.type) && (
@@ -292,18 +346,20 @@ export default function Header() {
                           ))}
                         </motion.div>
                       )}
-                    </AnimatePresence>
                   </div>
                 ) : (
-                  /* Regular Items */
+                  /* Regular Items with Enhanced Hover */
                   <button
                     onClick={() => handleNavClick(item.href, item.type)}
-                    className={`p-4 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift group relative ${
+                    className={`p-4 rounded-lg font-semibold text-sm transition-all duration-300 hover-lift hover:cursor-pointer group relative overflow-hidden ${
                       isActive(item.href, item.type)
                         ? 'text-solar-accent bg-solar-accent/10 shadow-inner'
                         : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                     }`}
                   >
+                    {/* Hover background effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-solar-accent/0 via-solar-accent/5 to-solar-accent/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                    
                     <span className="relative">
                       {item.name}
                       {isActive(item.href, item.type) && (
@@ -336,29 +392,32 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-primary mt-4 rounded-2xl shadow-2xl overflow-hidden"
+              className="lg:hidden bg-primary rounded-2xl shadow-2xl overflow-hidden mt-2"
             >
-              <div className="py-4 space-y-2">
+              <div className="p-2 space-y-1">
                 {navItems.map((item) => (
                   <div key={item.name}>
                     {hasDropdown(item) ? (
-                      /* Mobile Dropdown Items */
+                      /* Mobile Dropdown Items - Fixed Toggle */
                       <div>
                         <button
-                          onClick={() => toggleDropdown(item.name)}
-                          className={`flex-between w-full px-6 py-4 text-left font-semibold transition-all duration-300 hover-lift group ${
+                          onClick={() => toggleMobileDropdown(item.name)}
+                          className={`flex-between w-full p-4 text-left font-semibold transition-all duration-300 hover-lift group relative overflow-hidden ${
                             isActive(item.href, item.type) || hasActiveChild(item)
                               ? 'text-solar-accent bg-solar-accent/10'
                               : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                           }`}
                         >
+                          {/* Mobile hover effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-solar-accent/0 via-solar-accent/5 to-solar-accent/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                          
                           <span className="relative">
                             {item.name}
                             {(isActive(item.href, item.type) || hasActiveChild(item)) && (
                               <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-solar-accent rounded-full"></span>
                             )}
                           </span>
-                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 relative ${
                             activeDropdown === item.name ? 'rotate-180 text-solar-accent' : 'text-secondary'
                           }`} />
                         </button>
@@ -371,25 +430,31 @@ export default function Header() {
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.3, ease: "easeOut" }}
-                              className="bg-tertiary/30"
+                              className="bg-tertiary/30 overflow-hidden"
                             >
-                              {item.dropdown.map((subItem) => (
-                                <button
+                              {item.dropdown.map((subItem, index) => (
+                                <motion.button
                                   key={subItem.name}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.2, delay: index * 0.05 }}
                                   onClick={() => handleNavClick(subItem.href, subItem.type)}
-                                  className={`block w-full text-left px-10 py-3 text-sm font-medium transition-all duration-300 hover-lift group relative ${
+                                  className={`block w-full text-left p-4 pl-8 text-sm font-medium transition-all duration-300 hover-lift group relative overflow-hidden ${
                                     isActive(subItem.href, subItem.type)
-                                      ? 'text-solar-accent bg-solar-accent/10'
+                                      ? 'text-solar-accent bg-solar-accent/20'
                                       : 'text-secondary hover:text-solar-accent hover:bg-tertiary/50'
                                   }`}
                                 >
+                                  {/* Mobile submenu hover effect */}
+                                  <div className="absolute inset-0 bg-gradient-to-r from-solar-accent/0 via-solar-accent/5 to-solar-accent/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                                  
                                   <span className="relative">
                                     {subItem.name}
                                     {isActive(subItem.href, subItem.type) && (
                                       <span className="absolute -bottom-1 left-0 w-3/4 h-0.5 bg-solar-accent rounded-full"></span>
                                     )}
                                   </span>
-                                </button>
+                                </motion.button>
                               ))}
                             </motion.div>
                           )}
@@ -399,12 +464,15 @@ export default function Header() {
                       /* Mobile Regular Items */
                       <button
                         onClick={() => handleNavClick(item.href, item.type)}
-                        className={`block w-full text-left px-6 py-4 font-semibold transition-all duration-300 hover-lift group relative ${
+                        className={`block w-full text-left p-4 font-semibold transition-all duration-300 hover-lift group relative overflow-hidden ${
                           isActive(item.href, item.type)
                             ? 'text-solar-accent bg-solar-accent/10'
                             : 'text-secondary hover:text-solar-accent hover:bg-tertiary'
                         }`}
                       >
+                        {/* Mobile hover effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-solar-accent/0 via-solar-accent/5 to-solar-accent/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                        
                         <span className="relative">
                           {item.name}
                           {isActive(item.href, item.type) && (
@@ -420,8 +488,8 @@ export default function Header() {
               {/* Mobile Contact CTA */}
               <div className="border-t border-tertiary p-4 bg-secondary">
                 <button
-                  onClick={() => handleNavClick('/pages/contact', 'route')}
-                  className="block w-full btn-accent text-center font-bold py-3 px-4 rounded-lg hover-glow"
+                  onClick={() => handleNavClick('/pages/contact', 'both')}
+                  className="block w-full btn-accent text-center font-bold py-3 px-4 rounded-lg hover-glow transition-all duration-300"
                 >
                   GET IN TOUCH
                 </button>

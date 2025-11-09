@@ -52,46 +52,45 @@ const StrategicPartners = () => {
   }, [])
 
   return (
-    <section id="strategic-partners" className="py-16 bg-primary relative overflow-hidden z-20">
-      <div className="container mx-auto px-4">
+    <section id="strategic-partners" className="bg-primary relative overflow-hidden p-2 sm;p-4 z-20">
+      <div className="container mx-auto">
         {/* Heading */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center p-2 sm:p-4"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
+          <h2 className="sm:text-4xl lg:text-5xl font-extrabold text-primary p-2">
             OUR <span className="gradient-text-solar">STRATEGIC PARTNERS</span>
           </h2>
-          <div className="w-20 h-1 bg-solar-accent mx-auto mb-4"></div>
-          <p className="text-tertiary max-w-2xl mx-auto">
+          <p className="text-tertiary max-w-2xl mx-auto p-2">
             Building strong relationships with key stakeholders to drive renewable energy adoption
           </p>
         </motion.div>
 
         {/* Marquee Container */}
-        <div className="mb-12">
+        <div className="m-2 sm:m-4">
           <div 
-            className="relative overflow-show py-4"
+            className="relative overflow-show space-y-10"
             onMouseEnter={() => handleContainerHover(true)}
             onMouseLeave={() => handleContainerHover(false)}
           >
             {/* Tooltip */}
             {hoveredImage && (
-              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-secondary border border-primary/20 rounded-lg shadow-lg z-30 px-3 py-2">
-                <div className="flex items-center gap-2 text-sm">
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-secondary border border-primary/20 rounded-lg shadow-lg z-30 p-2">
+                <div className="flex items-center gap-2 text-xs">
                   <span className="text-primary font-semibold whitespace-nowrap">{hoveredImage}</span>
                   <ExternalLink className="h-3 w-3 text-solar-accent flex-shrink-0" />
                 </div>
-                <div className="text-xs text-tertiary text-center mt-1">Click to visit partner</div>
+                <div className="text-xs text-tertiary text-center">Click to visit partner</div>
               </div>
             )}
 
             {/* Pause Indicator */}
             {isPaused && (
-              <div className="absolute -bottom-4 right-4 bg-solar-accent/10 text-solar-accent text-xs px-2 py-1 rounded-full border border-solar-accent/20 z-20">
+              <div className="absolute -bottom-8 right-2 bg-solar-accent/10 text-solar-accent text-xs p-1 rounded-full border border-solar-accent/20 z-20">
                 Paused
               </div>
             )}
@@ -99,7 +98,7 @@ const StrategicPartners = () => {
             {/* Marquee */}
             <div className="relative overflow-hidden">
               <div 
-                className={`flex gap-6 sm:gap-8 items-center ${
+                className={`flex gap-4 sm:gap-6 items-center py-10 ${
                   isPaused ? 'marquee-paused' : 'marquee-animate'
                 }`}
               >
@@ -112,27 +111,27 @@ const StrategicPartners = () => {
                   >
                     <Link 
                       href={partner.link} 
-                      className="block bg-primary/80 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-primary/10 p-2 group"
+                      className="block rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group hover:cursor-pointer"
                     >
-                      <div className="w-24 h-12 sm:w-32 sm:h-16 flex items-center justify-center overflow-hidden rounded">
+                      <div
+                        className="w-30 h-15 sm:w-50 sm:h-25 flex items-center justify-center overflow-hidden bg-white/10 backdrop-blur-2xl rounded-lg p-2"
+                        style={{ 
+                          filter: 'grayscale(0)',
+                          opacity: 1
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.filter = 'grayscale(1)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.filter = 'grayscale(0)'
+                        }}
+                      >
                         <Image 
                           src={partner.src} 
                           alt={partner.name} 
-                          width={80}
-                          height={40}
-                          className="object-contain transition-all duration-200 group-hover:scale-105"
-                          style={{ 
-                            filter: 'grayscale(1)',
-                            opacity: 0.8
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.filter = 'grayscale(0)'
-                            e.currentTarget.style.opacity = '1'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.filter = 'grayscale(1)'
-                            e.currentTarget.style.opacity = '0.8'
-                          }}
+                          width={window.innerWidth < 768 ? 60: 100}
+                          height={window.innerWidth < 768 ?30 : 50}
+                          className="object-contain transition-all duration-300"
                         />
                       </div>
                     </Link>
@@ -144,7 +143,7 @@ const StrategicPartners = () => {
         </div>
 
         {/* Partner Types */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {partnerTypes.map((type, index) => (
             <motion.div 
               key={type.title} 

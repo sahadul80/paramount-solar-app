@@ -22,11 +22,6 @@ type ApiResponse = {
   error?: string;
 };
 
-type FetchError = {
-  message: string;
-  status?: number;
-};
-
 export default function SolarNews() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,11 +29,31 @@ export default function SolarNews() {
   const [refreshing, setRefreshing] = useState(false);
 
   // Controls
-  const [query, setQuery] = useState('solar energy power plant');
-  const [country, setCountry] = useState('bd');
+  const query = 'solar plant';
+  const country = 'bd';
   const [page, setPage] = useState(1);
+  
+  // Responsive page size - 4 for mobile, 8 for larger screens
   const [pageSize, setPageSize] = useState(8);
   const [total, setTotal] = useState<number | null>(null);
+
+  // Effect to handle responsive page size
+  useEffect(() => {
+    const handleResize = () => {
+      // Set pageSize to 4 for mobile screens (width < 768px), 8 for larger
+      const newPageSize = window.innerWidth < 768 ? 4 : 8;
+      setPageSize(newPageSize);
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const buildUrl = useCallback((q: string = query, c: string = country, p: number = page, ps: number = pageSize): string => {
     const params = new URLSearchParams();
@@ -55,6 +70,7 @@ export default function SolarNews() {
     try {
       const url = buildUrl();
       const res = await fetch(url);
+      console.log('Fetching news from URL:', url);
       
       if (!res.ok) {
         const errorText = await res.text();
@@ -82,14 +98,6 @@ export default function SolarNews() {
     fetchNews();
   }, [fetchNews]);
 
-  const handleSearch = async (e?: FormEvent): Promise<void> => {
-    e?.preventDefault();
-    setPage(1);
-    setRefreshing(true);
-    await fetchNews();
-    setRefreshing(false);
-  };
-
   const handleRefresh = async (): Promise<void> => {
     setRefreshing(true);
     await fetchNews();
@@ -116,13 +124,6 @@ export default function SolarNews() {
     }
   };
 
-  // Handle page size change
-  const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const newSize = Number(e.target.value);
-    setPageSize(newSize);
-    setPage(1);
-  };
-
   // Handle page navigation
   const handlePageChange = (newPage: number): void => {
     setPage(newPage);
@@ -132,7 +133,7 @@ export default function SolarNews() {
   const getPageNumbers = (): number[] => {
     if (!totalPages) return [];
     
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 5; // Show max 5 page numbers
     const currentPage = page;
     const pages: number[] = [];
     
@@ -141,8 +142,13 @@ export default function SolarNews() {
         pages.push(i);
       }
     } else {
-      const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+      let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
       const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+      
+      // Adjust start page if we're near the end
+      if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
       
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
@@ -153,14 +159,14 @@ export default function SolarNews() {
   };
 
   return (
-    <section className="relative flex flex-col justify-center overflow-hidden w-full h-full bg-primary z-20 backdrop-blur-sm sm:p-4">
+    <section className="relative flex flex-col justify-center overflow-hidden w-full h-full bg-primary z-20 backdrop-blur-sm">
       <div className="container-responsive">
         {/* Header Section */}
-        <div className="flex-between flex-row gap-4 m-2 sm:m-4">
-          <div className="text-left">
-            <h2 className="text-2xl sm:text-4xl font-bold gradient-text-solar">
-              Solar Energy News
-            </h2>
+        <div className="flex-between flex-row">
+          <div className="text-left p-2 sm:p-4">
+            <h1 className="sm:text-4xl font-bold gradient-text-solar">
+              What&apos;s new?
+            </h1>
             <p className="text-tertiary text-xs sm:text-sm">
               Latest updates from the solar energy industry
             </p>
@@ -170,7 +176,7 @@ export default function SolarNews() {
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="btn btn-ghost btn-sm flex items-center gap-2"
+              className="btn btn-sm flex items-center gap-2"
               aria-label="Refresh news"
             >
               <svg 
@@ -186,13 +192,15 @@ export default function SolarNews() {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" 
                 />
               </svg>
-              {refreshing ? 'Refreshing...' : 'Refresh'}
+              <span className="hidden sm:inline">
+                  {refreshing ? 'Refreshing...' : 'Refresh'}
+              </span>
             </button>
           </div>
         </div>
 
         {/* Pagination Controls - Top */}
-        <div className="text-sm text-tertiary flex justify-end">
+        <div className="text-xs sm:text-sm text-tertiary flex justify-end items-center gap-4 m-2">
             Page {page}{totalPages ? ` of ${totalPages}` : ''}
             {total && <span className="ml-2">({total} total)</span>}
         </div>
@@ -206,7 +214,7 @@ export default function SolarNews() {
 
         {/* Error State */}
         {error && (
-          <div className="card card-status-error p-6 text-center">
+          <div className="card card-status-error p-2 sm:p-4 text-center">
             <div className="flex flex-col items-center gap-3">
               <svg className="w-12 h-12 text-solar-error" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -224,7 +232,7 @@ export default function SolarNews() {
 
         {/* Empty State */}
         {!loading && !error && articles.length === 0 && (
-          <div className="card p-12 text-center">
+          <div className="card p-2 sm:p-4 text-center">
             <div className="flex flex-col items-center gap-4">
               <svg className="w-16 h-16 text-tertiary" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -240,14 +248,14 @@ export default function SolarNews() {
         {/* Articles Grid */}
         {!loading && !error && articles.length > 0 && (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
               {articles.map((article) => (
                 <Link 
                   key={article.id} 
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block h-full"
+                  className="block h-full w-full"
                 >
                   <article className="card card-interactive group h-full flex flex-col overflow-hidden hover-lift">
                     {/* Image Container - Fixed Aspect Ratio */}
@@ -311,12 +319,12 @@ export default function SolarNews() {
             </div>
 
             {/* Bottom Pagination */}
-            <div className="flex-center mt-8">
-              <div className="flex items-center gap-4">
+            <div className="flex-center m-2 sm:m-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <button
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page <= 1}
-                  className="btn btn-ghost btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn btn-sm disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
                 >
                   Previous
                 </button>
@@ -326,7 +334,7 @@ export default function SolarNews() {
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded text-xs sm:text-sm font-medium transition-colors ${
                         page === pageNum
                           ? 'bg-solar-primary text-white'
                           : 'bg-secondary text-primary hover:bg-tertiary'
@@ -335,15 +343,12 @@ export default function SolarNews() {
                       {pageNum}
                     </button>
                   ))}
-                  {totalPages && totalPages > 5 && page < totalPages - 2 && (
-                    <span className="text-tertiary mx-1">...</span>
-                  )}
                 </div>
                 
                 <button
                   onClick={() => handlePageChange(page + 1)}
                   disabled={!!totalPages && page >= totalPages}
-                  className="btn btn-ghost btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn btn-sm disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
                 >
                   Next
                 </button>

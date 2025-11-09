@@ -5,7 +5,6 @@ import { MapPin, Navigation, ZoomIn, ZoomOut, Compass, Search, Info, Target, Zap
 import { useRouter } from 'next/navigation'
 import { useState, useRef, useCallback, useEffect } from 'react'
 import SolarBanner from './SolarBanner'
-import { BatteryStorage } from './patterns/BatteryStorage'
 
 type Location = {
   name: string
@@ -14,7 +13,7 @@ type Location = {
   coordinates: { lat: number; lng: number }
   capacity: string
   slug: string
-  position?: { top: string; left: string }
+  position: { top: string; left: string }
 }
 
 const NationalFootprint = () => {
@@ -100,55 +99,16 @@ const NationalFootprint = () => {
     }
   ]
 
-  // Animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.95, y: 20 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    },
-    hover: {
-      scale: 1.02,
-      y: -4,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const shineTransition = {
-    duration: 1.5,
-    ease: "easeInOut" as const
-  }
+  // Calculate maximum panning boundaries based on zoom level
+  const getBoundaries = () => {
+    const maxPan = (zoom - 1) * 150; // Increased multiplier for better panning
+    return {
+      minX: -maxPan,
+      maxX: maxPan,
+      minY: -maxPan,
+      maxY: maxPan
+    };
+  };
 
   // Mouse/Touch event handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -164,13 +124,13 @@ const NationalFootprint = () => {
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || zoom <= 1) return
     
+    const boundaries = getBoundaries()
     const newX = e.clientX - dragStart.x
     const newY = e.clientY - dragStart.y
     
-    const maxMove = 100 * (zoom - 1)
     setPosition({
-      x: Math.max(Math.min(newX, maxMove), -maxMove),
-      y: Math.max(Math.min(newY, maxMove), -maxMove)
+      x: Math.max(boundaries.minX, Math.min(boundaries.maxX, newX)),
+      y: Math.max(boundaries.minY, Math.min(boundaries.maxY, newY))
     })
   }, [isDragging, dragStart, zoom])
 
@@ -192,14 +152,14 @@ const NationalFootprint = () => {
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging || zoom <= 1) return
     
+    const boundaries = getBoundaries()
     const touch = e.touches[0]
     const newX = touch.clientX - dragStart.x
     const newY = touch.clientY - dragStart.y
     
-    const maxMove = 100 * (zoom - 1)
     setPosition({
-      x: Math.max(Math.min(newX, maxMove), -maxMove),
-      y: Math.max(Math.min(newY, maxMove), -maxMove)
+      x: Math.max(boundaries.minX, Math.min(boundaries.maxX, newX)),
+      y: Math.max(boundaries.minY, Math.min(boundaries.maxY, newY))
     })
   }, [isDragging, dragStart, zoom])
 
@@ -265,12 +225,42 @@ const NationalFootprint = () => {
     setActiveLocation(null)
   }
 
-  // Smart zoom functions
-  const zoomIn = () => setZoom(prev => Math.min(prev + 0.25, 2))
-  const zoomOut = () => {
-    setZoom(prev => Math.max(prev - 0.25, 0.75))
-    if (zoom - 0.25 <= 1) setPosition({ x: 0, y: 0 })
+  // Fixed zoom functions with boundary handling
+  const zoomIn = () => {
+    setZoom(prev => {
+      const newZoom = Math.min(prev + 0.25, 3)
+      const boundaries = getBoundaries()
+      
+      // Adjust position to stay within boundaries
+      setPosition(prevPos => ({
+        x: Math.max(boundaries.minX, Math.min(boundaries.maxX, prevPos.x)),
+        y: Math.max(boundaries.minY, Math.min(boundaries.maxY, prevPos.y))
+      }))
+      
+      return newZoom
+    })
   }
+
+  const zoomOut = () => {
+    setZoom(prev => {
+      const newZoom = Math.max(prev - 0.25, 1)
+      const boundaries = getBoundaries()
+      
+      // Adjust position to stay within boundaries
+      setPosition(prevPos => ({
+        x: Math.max(boundaries.minX, Math.min(boundaries.maxX, prevPos.x)),
+        y: Math.max(boundaries.minY, Math.min(boundaries.maxY, prevPos.y))
+      }))
+      
+      // Reset to center when fully zoomed out
+      if (newZoom <= 1) {
+        setPosition({ x: 0, y: 0 })
+      }
+      
+      return newZoom
+    })
+  }
+
   const resetView = () => {
     setZoom(1)
     setPosition({ x: 0, y: 0 })
@@ -279,7 +269,8 @@ const NationalFootprint = () => {
 
   const zoomToLocation = (location: Location) => {
     setActiveLocation(location.name)
-    setZoom(1.5)
+    setZoom(2)
+    setPosition({ x: parseInt(location.position.top), y: parseInt(location.position.left) })
   }
 
   const operationalCapacity = locations
@@ -297,54 +288,47 @@ const NationalFootprint = () => {
   const totalCapacity = operationalCapacity + underConstructionCapacity + pipelineCapacity
 
   return (
-    <section id="national-footprint" className="section-padding bg-primary relative overflow-hidden z-20">
+    <section id="national-footprint" className="section-padding bg-primary relative overflow-auto z-20">
       <div className="container-responsive relative">
         {/* Enhanced Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16"
+          className="text-center m-2 sm:m-4"
         >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary">
+            <h2 className="sm:text-4xl font-bold text-primary p-2">
               NATIONAL <span className="gradient-text-solar">FOOTPRINT</span>
             </h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="text-lg text-tertiary max-w-3xl mx-auto px-4 leading-relaxed"
-          >
+          <p className="text-sm sm:text-lg text-tertiary mx-auto p-2 leading-relaxed">
             Explore our <span className="text-solar-primary font-semibold">solar power projects</span> across Bangladesh, 
             powering the nation with <span className="text-solar-accent font-semibold">clean, renewable energy</span>
-          </motion.p>
+          </p>
         </motion.div>
 
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="flex flex-col lg:flex-row gap-8"
+          className="flex flex-col lg:flex-row gap-2 sm:gap-4"
         >
           {/* Map Visualization */}
           <motion.div
-            variants={itemVariants}
             className="flex-1"
           >
-            <div className="card card-glass card-interactive p-6 relative overflow-hidden">
+            <div className="card card-glass card-interactive p-2 sm:p-4 relative">
 
               {/* Map Container */}
               <div 
                 ref={mapRef}
-                className={`z-20 relative rounded-xl overflow-hidden bg-gradient-to-br from-solar-primary/5 to-solar-secondary/10 ${
+                className={`relative rounded-xl overflow-auto bg-gradient-to-br from-solar-primary/5 to-solar-secondary/10 ${
                   zoom > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-auto'
                 }`}
                 style={{
                   transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
                   transformOrigin: 'center center',
-                  transition: isDragging ? 'none' : 'transform 0.3s ease-in-out',
+                  transition: isDragging ? 'none' : 'transform 0.2s ease-out',
                   touchAction: zoom > 1 ? 'none' : 'auto',
                   minHeight: '480px'
                 }}
@@ -357,7 +341,6 @@ const NationalFootprint = () => {
                 onTouchEnd={handleTouchEnd}
               >
                 {/* Bangladesh Map Background */}
-                <BatteryStorage/>
                 <div className="w-full h-full max-w-4xl flex items-center justify-center relative">
                   <div className="text-center relative">
                     
@@ -369,7 +352,7 @@ const NationalFootprint = () => {
                         width="100%"
                         height="100%"
                         viewBox="-10 0 450 600"
-                        className="min-h-[480px] sm:min-h-[600px] w-full pointer-events-none" // Added pointer-events-none
+                        className="min-h-[480px] sm:min-h-[600px] w-full pointer-events-none"
                         preserveAspectRatio="xMidYMid meet"
                       >
                         <path
@@ -451,11 +434,11 @@ const NationalFootprint = () => {
                           whileHover={{ scale: 1.2 }}
                           whileTap={{ scale: 0.9 }}
                           animate={isActive ? { 
-                            scale: 1.3,
+                            scale: 1.1,
                             transition: { type: "spring", stiffness: 300 }
                           } : {}}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className={`z-20 absolute w-4 h-4 rounded-full border-2 border-primary cursor-pointer flex items-center justify-center group ${
+                          className={`absolute w-4 h-4 rounded-full border-2 border-primary cursor-pointer flex items-center justify-center group ${
                             isActive ? 'ring-2 ring-solar-accent ring-offset-2' : ''
                           } ${getMarkerColor(location.status)}`}
                           style={{
@@ -470,7 +453,7 @@ const NationalFootprint = () => {
                         >
                           {/* Pulsing animation */}
                           <motion.div
-                            className="z-20 absolute inset-0 rounded-full border-2 border-current opacity-60"
+                            className="absolute inset-0 rounded-full border-2 border-current opacity-60"
                             animate={{
                               scale: [1, 2],
                               opacity: [0.6, 0]
@@ -486,11 +469,10 @@ const NationalFootprint = () => {
                           <div className="w-1.5 h-1.5 rounded-full bg-primary pointer-events-none" />
 
                           {/* Tooltip */}
-                          <div className="z-20 absolute -top-16 left-1/2 transform -translate-x-1/2 bg-primary text-primary text-xs p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg border border-solar-primary/20">
+                          <div className="z-40 absolute bg-primary text-primary text-xs p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
                             <div className="font-semibold">{location.name}</div>
                             <div className="text-tertiary">{location.capacity} • {location.status}</div>
                             <div className="text-solar-accent text-xs mt-1">Click for details →</div>
-                            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-primary rotate-45"></div>
                           </div>
                         </motion.button>
                       )
@@ -529,7 +511,7 @@ const NationalFootprint = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-0 right-0 card card-glass p-2 max-w-xs shadow-lg border border-solar-accent/20 z-10"
+                  className="absolute top-0 right-0 card card-glass p-2 max-w-xs shadow-lg border border-solar-accent/20"
                 >
                   <div className="flex items-start gap-3">
                     <Info className="h-4 w-4 text-solar-accent mt-0.5 flex-shrink-0" />
@@ -557,11 +539,11 @@ const NationalFootprint = () => {
                 </motion.div>
               )}
               {/* Enhanced Zoom Controls */}
-              <div className="absolute bottom-0 right-0 flex flex-col gap-2 z-20">
-                <div className="card card-glass shadow-lg border border-solar-primary/20 overflow-hidden">
+              <div className="absolute bottom-0 right-0 flex flex-col gap-2">
+                <div className="card card-glass shadow-lg border border-solar-primary/20 overflow-auto">
                   <button
                     onClick={zoomIn}
-                    className="p-3 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
+                    className="p-2 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
                     title="Zoom In"
                   >
                     <ZoomIn className="h-5 w-5 text-solar-accent" />
@@ -569,7 +551,7 @@ const NationalFootprint = () => {
                   <div className="border-t border-solar-primary/20">
                     <button
                       onClick={zoomOut}
-                      className="p-3 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
+                      className="p-2 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
                       title="Zoom Out"
                     >
                       <ZoomOut className="h-5 w-5 text-solar-accent" />
@@ -578,7 +560,7 @@ const NationalFootprint = () => {
                   <div className="border-t border-solar-primary/20">
                     <button
                       onClick={resetView}
-                      className="p-3 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
+                      className="p-2 hover:bg-solar-primary/10 transition-colors w-12 h-12 flex items-center justify-center"
                       title="Reset View"
                     >
                       <Compass className="h-5 w-5 text-solar-accent" />
@@ -600,22 +582,13 @@ const NationalFootprint = () => {
                 )}
               </motion.div>
             </div>
-            <div className="items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                className="items-center"
-              >
-                <SolarBanner/>
-              </motion.div>
-              {/* Content Section */}
+            <div className="flex items-center justify-center">
+              <SolarBanner/>
             </div>
           </motion.div>
 
           {/* Locations List */}
           <motion.div
-            variants={itemVariants}
             className="flex-1 space-y-6"
           >
             {/* Search Bar */}
@@ -647,7 +620,7 @@ const NationalFootprint = () => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-sm text-tertiary mt-2"
+                  className="text-sm text-tertiary"
                 >
                   Found {filteredLocations.length} project{filteredLocations.length !== 1 ? 's' : ''}
                 </motion.p>
@@ -656,19 +629,17 @@ const NationalFootprint = () => {
 
             {/* Projects List */}
             <motion.div
-              variants={containerVariants}
-              className="max-h-[600px] overflow-y-auto space-y-4 custom-scrollbar p-2"
+              className="max-h-[600px] overflow-y-auto custom-scrollbar p-2"
             >
               {(searchQuery ? filteredLocations : locations).map((location, index) => (
                 <motion.div
                   key={location.name + index}
-                  variants={cardVariants}
                   whileHover="hover"
                   animate={activeLocation === location.name ? { 
                     backgroundColor: "var(--bg-tertiary)",
                     borderColor: "var(--solar-accent)",
                   } : {}}
-                  className="card card-glass card-interactive p-4 group relative overflow-hidden"
+                  className="card card-glass card-interactive p-4 group relative overflow-auto"
                   onClick={() => {
                     handleLocationClick(location.slug, location.name)
                     zoomToLocation(location)
@@ -716,7 +687,6 @@ const NationalFootprint = () => {
                     initial={{ x: "-100%" }}
                     whileHover={{ 
                       x: "200%",
-                      transition: shineTransition
                     }}
                   />
                 </motion.div>
@@ -741,7 +711,6 @@ const NationalFootprint = () => {
 
             {/* Statistics */}
             <motion.div
-              variants={containerVariants}
               className="grid grid-cols-3 gap-2"
             >
               {[
@@ -769,7 +738,6 @@ const NationalFootprint = () => {
               ].map((stat, index) => (
                 <motion.div
                   key={index}
-                  variants={cardVariants}
                   whileHover="hover"
                   className={`card card-glass card-interactive p-4 text-center cursor-pointer bg-${stat.color}/10 border-${stat.color}/20`}
                   onClick={resetView}
@@ -786,12 +754,8 @@ const NationalFootprint = () => {
 
             {/* Total Capacity */}
             <motion.div
-              variants={itemVariants}
-              className="card card-glass p-6 text-center relative overflow-hidden"
-            >
-              {/* Background Gradient */}
-              <div className="absolute inset-0 gradient-solar opacity-20"></div>
-              
+              className="card card-glass p-4 text-center relative overflow-auto"
+            > 
               <motion.h3
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -819,8 +783,7 @@ const NationalFootprint = () => {
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-solar-accent/5 to-transparent -skew-x-12"
                 initial={{ x: "-100%" }}
                 whileHover={{ 
-                  x: "200%",
-                  transition: shineTransition
+                  x: "200%"
                 }}
               />
             </motion.div>

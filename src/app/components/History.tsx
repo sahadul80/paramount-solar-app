@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { Calendar, Zap, TrendingUp, Sun, Battery } from 'lucide-react'
 import SolarBanner from './SolarBanner'
 import Link from 'next/link'
-import { SolarInnovation } from './patterns/SolarInnovation'
 
 const History = () => {
   const milestones = [

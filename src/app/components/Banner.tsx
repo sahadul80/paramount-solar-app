@@ -114,132 +114,95 @@ const Banner = () => {
 
   return (
     <section
-      className="relative flex flex-col justify-center overflow-hidden w-full max-h-screen min-h-screen bg-primary p-4 z-20 backdrop-blur-sm"
+      className="relative flex flex-col justify-center overflow-hidden w-full h-screen bg-primary p-2 sm:p-4 z-20"
       id="home"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     > 
-      {/* Background Slides with Next.js Image */}
-      <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence>
+      {/* Background Image */}
+      <motion.div
+        key={currentSlide}
+        initial={{ opacity: 0.2 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 5 }}
+      >
+        <Image
+          src={slides[currentSlide].bgImage}
+          alt={slides[currentSlide].title}
+          fill
+          className="object-cover opacity-50 pointer-events-none select-none"
+          priority={currentSlide === 0}
+          quality={100}
+          sizes="100vw"
+        />
+      </motion.div>
+
+      {/* Content Section */}
+      <div className="flex flex-col items-center justify-center w-full h-full rounded-lg">
+        <div className="flex items-center justify-center">
+          <SolarBanner/>
+        </div>
+        <div key={currentSlide} className="flex flex-col sm:flex-row items-center justify-center m-2 sm:m-4 w-full">
+          {/* Icon */}
           <motion.div 
-            className="flex flex-col justify-between flex-1 m-2"
-            initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 5, ease: "easeInOut"  }}
+            className="text-6xl md:text-8xl lg:text-9xl p-2 sm:p-4 flex items-center justify-center"
+            animate={{ rotate: 360}}
+            transition={{ duration: 5 }}
           >
-            {/* Background Image */}
-            <div key={currentSlide} className="absolute inset-0 z-10 opacity-75 ">
-              <Image
-                src={slides[currentSlide].bgImage}
-                alt={slides[currentSlide].title}
-                fill
-                className="object-cover"
-                priority={currentSlide === 0}
-                quality={100}
-                sizes="100vw"
-              />
-            </div>
-            </motion.div>
-        </AnimatePresence>
-      </div>
+              {slides[currentSlide].image}
+          </motion.div>
 
-      {/* Enhanced Solar Banner without Rotation */}
-      <div className='flex flex-col items-center'>
-        
-          <div className="items-center justify-center z-30 text-center m-8 mt-24">
-            <SolarBanner/>
-          </div>
+          <div className="flex flex-col z-20">
+            {/* Title */}
+            <h1 className="text-4xl font-bold gradient-text-solar text-center">
+              {slides[currentSlide].title}
+            </h1>
 
-        {/* Content Section */}
-        <div className="flex justify-center w-full md:max-w-xl lg:max-w-3xl h-full max-h-xl rounded-lg z-30">
-          <AnimatePresence mode="popLayout" custom={direction}>
+            {/* Subtitle */}
+            <p className="text-md text-text-secondary text-center">
+              {slides[currentSlide].subtitle}
+            </p>
+
+            {/* Stats */}
             <motion.div
-              key={currentSlide}
-              custom={direction}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="flex flex-col sm:flex-row items-center justify-between text-center m-4 w-full"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.1, type: "tween" }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -2,
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={scrollToProjects}
+              className="glass-effect border border-primary/20 p-2 rounded-xl inline-block cursor-pointer hover-glow self-center"
             >
-              {/* Icon */}
-              <motion.div 
-                className="text-6xl md:text-8xl lg:text-9xl text-center"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.1,  }}
+              <motion.p 
+                className="text-base sm:text-lg font-bold text-solar-accent"
+                animate={{
+                  color: ["#f59e0b", "#10b981", "#0ea5e9", "#f59e0b"]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
               >
-                  {slides[currentSlide].image}
-              </motion.div>
-
-              <motion.div 
-                className="flex flex-col justify-between flex-1 m-2"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.1,  }}
-              >
-                {/* Title */}
-                <motion.h1 
-                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-tight p-2"
-                  initial={{ y: -10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.1,  }}
-                >
-                  {slides[currentSlide].title}
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.p 
-                  className="text-md sm:text-lg lg:text-xl text-secondary leading-relaxed max-w-3xl my-4"
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.1,  }}
-                >
-                  {slides[currentSlide].subtitle}
-                </motion.p>
-
-                {/* Stats */}
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.1, type: "tween" }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    y: -2,
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={scrollToProjects}
-                  className="glass-effect border border-primary/20 p-2 rounded-xl inline-block cursor-pointer hover-glow self-center"
-                >
-                  <motion.p 
-                    className="text-base sm:text-lg font-bold text-solar-accent"
-                    animate={{
-                      color: ["#f59e0b", "#10b981", "#0ea5e9", "#f59e0b"]
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    {slides[currentSlide].stats}
-                  </motion.p>
-                </motion.div>
-              </motion.div>
+                {slides[currentSlide].stats}
+              </motion.p>
             </motion.div>
-          </AnimatePresence>
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col justify-center items-center w-full max-w-6xl mx-auto p-4">
+      <div className="relative flex flex-col justify-center items-center w-full max-w-6xl mx-auto p-2 sm:p-4">
 
         {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.1, ease: "easeOut" }}
-          className="flex flex-row gap-4 justify-center items-center w-full max-w-md m-4"
+          className="flex flex-row gap-4 justify-center items-center w-full max-w-md m-2 sm:m-4"
         >
           <motion.button 
             whileHover={{ scale: 1.05, y: -2 }}

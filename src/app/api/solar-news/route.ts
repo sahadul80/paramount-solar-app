@@ -388,7 +388,7 @@ function extractGDELTArticles(data: unknown): unknown[] {
 export async function GET(request: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q') ?? 'solar OR photovoltaic OR "solar energy" OR renewable';
+    const query = searchParams.get('q') ?? 'solar OR photovoltaic OR "solar energy" OR "solar plant" OR "solar power" OR renewable';
     const country = searchParams.get('country') ?? 'bd';
     const page = Math.max(1, Number(searchParams.get('page') ?? '1'));
     const pageSize = Math.max(1, Number(searchParams.get('pageSize') ?? '5'));
@@ -418,6 +418,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         const response = await fetch(url);
         if (!response.ok) return [];
         const data = await response.json() as NewsAPIResponse;
+        console.log('NewsAPI response data:', data);
         return (data.articles ?? []).map(normalizeFromNewsAPI);
       } catch (error) {
         console.warn('NewsAPI fetch failed:', error);
@@ -442,7 +443,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         const response = await fetch(url);
         if (!response.ok) return [];
         const data = await response.json() as NewsDataResponse;
-        
+        console.log('NewsData:', data);
         const articles = (data.results ?? []).map((item: NewsDataArticle) => {
           const normalized = normalizeFromNewsData(item);
           if (country === 'bd') normalized._fetchedWithCountryBD = true;

@@ -2,10 +2,6 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { SolarFarm } from "./patterns/SolarFarm";
-import { SolarPanelGrid } from "./patterns/SolarPanelGrid";
-import { SunRays } from "./patterns/SunRays";
-import { EnergyFlow } from "./patterns/EnergyFlow";
 
 export default function ParamountLoader() {
   return (

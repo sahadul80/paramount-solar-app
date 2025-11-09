@@ -85,11 +85,11 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <ProjectsPortfolio />
+          <StrategicPartners />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-          <StrategicPartners />
+          <ProjectsPortfolio />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>

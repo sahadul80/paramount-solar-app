@@ -1,13 +1,13 @@
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
-import NationalFootprint from "@/app/components/NationalFootprint";
+import ProjectsPortfolio from "@/app/components/ProjectsPortfolio";
 
-export default function NationalFootprintPage() {
+export default function ProjectsPortfolioPage() {
     return (
         <>
         <Header/>
         <div className="p-2 sm:p-4 mx-auto sm:m-4">
-            <NationalFootprint/>
+            <ProjectsPortfolio/>
         </div>
         <Footer/>
         </>

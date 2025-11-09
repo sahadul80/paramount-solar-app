@@ -31,7 +31,7 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
   // Define the modes to cycle through
   const modes: DisplayMode[] = useMemo(() => 
     ['dawn', 'day', 'dusk', 'night', 'sun', 'moon'], 
-    []
+    ['dawn', 'day', 'dusk', 'night', 'sun', 'moon']
   );
 
   const modeConfigs: Record<DisplayMode, ModeConfig> = useMemo(() => ({
@@ -126,7 +126,7 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
       currentRotate.current.y += (targetRotate.current.y - currentRotate.current.y) * 0.1;
 
       // Apply smooth transform
-      grid.style.transform = `rotateX(${currentRotate.current.x}deg) rotateY(${currentRotate.current.y}deg) scale(1.02)`;
+      grid.style.transform = `rotateX(${currentRotate.current.x}deg) rotateY(${currentRotate.current.y}deg)`;
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -203,39 +203,37 @@ export default function SolarBanner({ onModeChange }: SolarBannerProps) {
   }, [isMobile]);
 
   return (
-    <div className="solar-banner-container mt-2 z-50">
+    <div className="solar-banner-container">
 
       {/* Reflections */}
-      <AnimatePresence mode="wait">
-        {modeConfig.hasSun && (
-          <motion.div
-            key={`sun-${currentMode}`}
-            className="sun-reflection-track"
-            initial={{ x: "-100%" }}
-            animate={{ x: "100%" }}
-            exit={{ x: "100%" }}
-            transition={{ duration: modeConfig.duration, repeat: Infinity, ease: "linear" }}
-            style={{
-              background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
-              opacity: modeConfig.sunIntensity
-            }}
-          />
-        )}
-        {modeConfig.hasMoon && (
-          <motion.div
-            key={`moon-${currentMode}`}
-            className="moon-reflection-track"
-            initial={{ x: "-100%" }}
-            animate={{ x: "100%" }}
-            exit={{ x: "100%" }}
-            transition={{ duration: modeConfig.duration + 5, repeat: Infinity, ease: "linear" }}
-            style={{
-              background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
-              opacity: modeConfig.moonIntensity
-            }}
-          />
-        )}
-      </AnimatePresence>
+      {modeConfig.hasSun && (
+        <motion.div
+          key={`sun-${currentMode}`}
+          className="sun-reflection-track"
+          initial={{ x: "-100%" }}
+          animate={{ x: "100%" }}
+          exit={{ x: "100%" }}
+          transition={{ duration: modeConfig.duration, repeat: Infinity, ease: "linear" }}
+          style={{
+            background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
+            opacity: modeConfig.sunIntensity
+          }}
+        />
+      )}
+      {modeConfig.hasMoon && (
+        <motion.div
+          key={`moon-${currentMode}`}
+          className="moon-reflection-track"
+          initial={{ x: "-100%" }}
+          animate={{ x: "100%" }}
+          exit={{ x: "100%" }}
+          transition={{ duration: modeConfig.duration + 5, repeat: Infinity, ease: "linear" }}
+          style={{
+            background: `linear-gradient(var(--glare-angle, 120deg), transparent, ${modeConfig.reflectionColor}, transparent)`,
+            opacity: modeConfig.moonIntensity
+          }}
+        />
+      )}
 
       {/* Grid */}
       <motion.div
