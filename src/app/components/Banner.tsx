@@ -146,7 +146,6 @@ const Banner = () => {
           {/* Icon */}
           <motion.div 
             className="text-6xl md:text-8xl lg:text-9xl p-2 sm:p-4 flex items-center justify-center"
-            animate={{ rotate: 360}}
             transition={{ duration: 5 }}
           >
               {slides[currentSlide].image}

@@ -1,9 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Sun, Mail, Phone, MapPin, ArrowUp, Zap, Leaf, Users, Building2, FacebookIcon, TwitterIcon, LinkedinIcon, InstagramIcon } from 'lucide-react'
+import { Mail, Phone, MapPin, ArrowUp, Zap, Leaf, Users, Building2, FacebookIcon, TwitterIcon, LinkedinIcon, InstagramIcon } from 'lucide-react'
 import { useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const Footer = () => {
   const scrollToTop = useCallback(() => {
@@ -84,8 +85,11 @@ const Footer = () => {
             className="lg:col-span-2"
           >
             <div className="flex items-center mb-6">
-              <div className="bg-gradient-to-r from-[var(--solar-primary)] to-[var(--solar-accent)] p-3 rounded-xl mr-4">
-                <Sun className="h-8 w-8 text-[var(--text-primary)]" />
+              <div className="flex flex-row p-3 rounded-xl mr-4">
+                <Image src="/p1.png" alt="logo" width={8} height={32}/>
+                <Image src="/p2.png" alt="logo" width={8} height={32}/>
+                <Image src="/p3.png" alt="logo" width={8} height={32}/>
+                <Image src="/p4.png" alt="logo" width={8} height={32}/>
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-[var(--text-primary)]">PARAMOUNT SOLAR LTD.</h3>
