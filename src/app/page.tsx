@@ -73,10 +73,6 @@ export default function Home() {
 
       <div className="space-y-0">
         <Suspense fallback={<SectionLoader />}>
-          <SolarNews />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
           <NationalFootprint />
         </Suspense>
 
