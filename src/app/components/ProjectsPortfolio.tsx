@@ -422,7 +422,7 @@ const ProjectsPortfolio = () => {
                 <Construction className="h-5 w-5 text-solar-warning" />
               </div>
               <p className="text-xl font-bold text-solar-warning mb-1">10MW</p>
-              <p className="text-solar-warning/80 text-xs">Under Construction</p>
+              <p className="text-solar-warning/80 text-xs">Operational</p>
             </div>
 
             <div className="bg-solar-accent/10 rounded-lg p-4 text-center border border-solar-accent/20">

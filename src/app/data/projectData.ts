@@ -47,7 +47,7 @@ export const projects: { [key: string]: ProjectData } = {
     ]
   },
   'pabna-project': {
-    name: "DYNAMIC SUN ENERGY POWER LTD",
+    name: "Dynamic Sun Energy Private Limited",
     type: "100MW Solar Park",
     status: "Operational",
     capacity: "100MW",
