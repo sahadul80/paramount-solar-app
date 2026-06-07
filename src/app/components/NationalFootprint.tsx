@@ -73,7 +73,7 @@ const NationalFootprint = () => {
     {
       name: "MOULVIBAZAR 1",
       type: "10MW Solar Power Plant",
-      status: "Under Construction",
+      status: "Operational",
       coordinates: { lat: 24.4937, lng: 91.6333 },
       capacity: "10MW",
       slug: "moulvibazar-project",

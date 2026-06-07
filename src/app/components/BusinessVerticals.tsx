@@ -50,7 +50,7 @@ const BusinessVerticals: React.FC = () => {
         "200MW HSD Power Plant, Baghabari, Sirajganj",
         "30MW Solar Power Plant, Votmari, Kaliganj, Lalmonirhat",
         "100MW Solar Park, Hemayetpur, Pabna",
-        "10MW Solar Power Plant at Moulvibazar (Under Construction)"
+        "10MW Solar Power Plant at Moulvibazar"
       ],
       methods: [
         "IPP Project Development through MPPP",
