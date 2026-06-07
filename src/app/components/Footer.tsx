@@ -93,7 +93,7 @@ const Footer = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-[var(--text-primary)]">PARAMOUNT SOLAR LTD.</h3>
-                <p className="text-[var(--solar-accent)] text-sm">Powering a Sustainable Future</p>
+                <p className="text-[var(--solar-accent)] text-sm">CARBON NEUTRAL FUTURE</p>
               </div>
             </div>
             
