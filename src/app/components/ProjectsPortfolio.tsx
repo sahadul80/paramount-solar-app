@@ -86,7 +86,7 @@ const ProjectsPortfolio = () => {
     {
       name: "10MW SOLAR POWER PLANT",
       location: "Moulvibazar",
-      status: "Under Construction",
+      status: "Operational",
       capacity: "10MW",
       type: "Solar IPP",
       coordinates: { lat: 24.4937, lng: 91.6333 },
