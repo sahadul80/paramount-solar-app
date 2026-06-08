@@ -91,7 +91,7 @@ const ProjectsPortfolio = () => {
       type: "Solar IPP",
       coordinates: { lat: 24.4937, lng: 91.6333 },
       slug: "bibiana-project",
-      commissioningDate: "2025",
+      commissioningDate: "2026",
       co2Reduction: "12,000+ tons annually",
       developer: "Paramount Solar",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3599.123456789014!2d91.6333!3d24.4937",
