@@ -90,7 +90,7 @@ const ProjectsPortfolio = () => {
       capacity: "10MW",
       type: "Solar IPP",
       coordinates: { lat: 24.4937, lng: 91.6333 },
-      slug: "bibiana-project",
+      slug: "moulvibazar-project",
       commissioningDate: "2026",
       co2Reduction: "12,000+ tons annually",
       developer: "Paramount Solar",

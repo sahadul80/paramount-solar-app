@@ -118,20 +118,68 @@ export const projects: { [key: string]: ProjectData } = {
     ]
   },
   'moulvibazar-project': {
+    name: "PARAMOUNT SOLAR - 10MW IPP",
+    type: "10MW Solar Power Plant",
+    status: "Operational",
+    capacity: "10MW",
+    location: "Moulvibazar District, Sylhet Division",
+    coordinates: { lat: 24.4937, lng: 91.6333 },
+    slug: "moulvibazar-project",
+    commissioningDate: "2026",
+    investment: "$8 Million",
+    developer: "Paramount Solar Ltd.",
+    annualGeneration: "16,000 MWh",
+    co2Reduction: "12,000+ tons annually",
+    householdsPowered: "40,000+",
+    landArea: "30 Acres",
+    map: "https://www.google.com/maps?q=24.49807,91.6304196&z=14&hl=en-GB&output=embed",
+    technicalSpecs: {
+      panels: "High-efficiency Monocrystalline PERC or Bifacial Modules",
+      inverters: "String Inverters with MPPT",
+      tracking: "Fixed-tilt structures",
+      transmission: "33kV grid connection",
+      monitoring: "Real-time SCADA remote monitoring and control",
+      maintenance: "Weather stations, cleaning systems and security fencing"
+    },
+    milestones: [
+      { date: "2023", event: "Project Planning & Feasibility Study" },
+      { date: "2024", event: "Land Acquisition & Environmental Clearance" },
+      { date: "2025", event: "Construction Commencement" },
+      { date: "2025", event: "Panel Installation Completed" },
+      { date: "2026", event: "Grid Integration & Commissioning" },
+      { date: "2026", event: "Commercial Operations Date" }
+    ],
+    environmentalImpact: [
+      { metric: "CO₂ Offset", value: "12,000+ tons/year", description: "Equivalent to planting 500,000 trees annually" },
+      { metric: "Water Usage", value: "Mostly Rain Water", description: "Minimal water footprint through rainwater harvesting" },
+      { metric: "Air Pollution", value: "Zero Emissions", description: "No SO₂, NOₓ or particulate matter released" },
+      { metric: "Jobs Created", value: "100+ Construction", description: "~25 permanent O&M roles created locally" }
+    ],
+    images: [
+      { src: "mun.png" },
+      { src: "mun1.png" },
+      { src: "mun2.png" },
+      { src: "mun3.png" },
+      { src: "mun4.png" },
+      { src: "mun7.png" },
+      { src: "mun9.png" }
+    ]
+  },
+  'moulvibazar-project2': {
     name: "PARAMOUNT SOLAR - 25MW IPP",
     type: "25MW Grid-Tied Solar Photovoltaic",
     status: "Planning",
     capacity: "25MW",
     location: "Athangiri, Kagabala, Moulvibazar",
-    coordinates: { lat: 24.4900, lng: 91.7750 },
-    slug: "moulvibazar-project",
+    coordinates: { lat: 24.4920, lng: 91.7780 },
+    slug: "moulvibazar-project2",
     investment: "22.3 Million USD",
     developer: "Paramount Solar Ltd.",
     annualGeneration: "48,300 MWh",
     co2Reduction: "23,377 tons annually",
     householdsPowered: "120,000+",
     landArea: "70 Acres",
-    map: "https://www.google.com/maps?q=24.4900,91.7750&z=14&hl=en-GB&output=embed",
+    map: "https://www.google.com/maps?q=24.4920,91.7780&z=14&hl=en-GB&output=embed",
     technicalSpecs: {
       panels: "High-efficiency Monocrystalline PERC or Bifacial Modules (35 MWp DC)",
       inverters: "String Inverters with MPPT",
@@ -153,53 +201,6 @@ export const projects: { [key: string]: ProjectData } = {
       { metric: "Water Usage", value: "Mostly Rain Water", description: "Minimal water footprint through rainwater harvesting" },
       { metric: "Air Pollution", value: "Zero Emissions", description: "No SO₂, NOₓ or particulate matter released" },
       { metric: "Jobs Created", value: "250+ Construction", description: "~50 permanent O&M roles created locally" }
-    ],
-    images: [
-      { src: "mun.png" },
-      { src: "mun1.png" },
-      { src: "mun2.png" },
-      { src: "mun3.png" },
-      { src: "mun4.png" },
-      { src: "mun7.png" },
-      { src: "mun9.png" }
-    ]
-  },
-  'moulvibazar-project2': {
-    name: "PARAMOUNT SOLAR - 50MW IPP",
-    type: "50MW Grid-Tied Solar Photovoltaic",
-    status: "Planning",
-    capacity: "50MW",
-    location: "Athangiri, Kagabala, Moulvibazar",
-    coordinates: { lat: 24.4920, lng: 91.7780 },
-    slug: "moulvibazar-project2",
-    investment: "50.3 Million USD",
-    developer: "Paramount Solar Ltd.",
-    annualGeneration: "96,400 MWh",
-    co2Reduction: "46,658 tons annually",
-    householdsPowered: "241,000+",
-    landArea: "140 Acres",
-    map: "https://www.google.com/maps?q=24.4920,91.7780&z=14&hl=en-GB&output=embed",
-    technicalSpecs: {
-      panels: "High-efficiency Monocrystalline PERC or Bifacial Modules (70 MWp DC)",
-      inverters: "String Inverters with MPPT",
-      tracking: "Fixed-tilt structures",
-      transmission: "Step-up transformer to 132kV (10km line to Bibiyana 132/230kV Grid Substation, Nobiganj, Hobiganj)",
-      monitoring: "Real-time SCADA remote monitoring and control",
-      maintenance: "Weather stations, cleaning systems and security fencing"
-    },
-    milestones: [
-      { date: "2025", event: "Notice of Award (NOA) Received" },
-      { date: "28 days from NOA", event: "Contract Signing" },
-      { date: "2025–2026", event: "Land Acquisition (50% complete) & NOC Clearances" },
-      { date: "2026", event: "Construction Commencement" },
-      { date: "2026–2027", event: "Panel Installation & Grid Integration" },
-      { date: "2027", event: "Commercial Operations Date" }
-    ],
-    environmentalImpact: [
-      { metric: "CO₂ Offset", value: "46,658 MTon/year", description: "Significant annual carbon reduction" },
-      { metric: "Water Usage", value: "Mostly Rain Water", description: "Minimal water footprint through rainwater harvesting" },
-      { metric: "Air Pollution", value: "Zero Emissions", description: "No SO₂, NOₓ or particulate matter released" },
-      { metric: "Jobs Created", value: "500+ Construction", description: "~100 permanent O&M roles created locally" }
     ],
     images: [
       { src: "mun.png" },
