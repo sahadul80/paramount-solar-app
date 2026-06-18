@@ -118,42 +118,41 @@ export const projects: { [key: string]: ProjectData } = {
     ]
   },
   'moulvibazar-project': {
-    name: "PARAMOUNT SOLAR - 10MW IPP",
-    type: "10MW Solar Power Plant",
+    name: "MOULVIBAZAR SOLAR POWER LIMITED",
+    type: "10 MW (AC) Grid-Tied Solar Power Plant",
     status: "Operational",
-    capacity: "10MW",
-    location: "Moulvibazar District, Sylhet Division",
+    capacity: "10MW AC / 14 MWp DC",
+    location: "Athangiri, Kagabola, Moulvibazar Sadar",
     coordinates: { lat: 24.4937, lng: 91.6333 },
     slug: "moulvibazar-project",
-    commissioningDate: "2026",
-    investment: "$8 Million",
+    commissioningDate: "12 January 2026",
+    investment: "Funded by IDCOL · PPA No. 10710 · 20-year contract",
     developer: "Paramount Solar Ltd.",
-    annualGeneration: "16,000 MWh",
-    co2Reduction: "12,000+ tons annually",
-    householdsPowered: "40,000+",
-    landArea: "30 Acres",
+    annualGeneration: "21.2 GWh / year",
+    co2Reduction: "13,183 MT CO₂ / year",
+    householdsPowered: "53,000+",
+    landArea: "36 Acres",
     map: "https://www.google.com/maps?q=24.49807,91.6304196&z=14&hl=en-GB&output=embed",
     technicalSpecs: {
-      panels: "High-efficiency Monocrystalline PERC or Bifacial Modules",
-      inverters: "String Inverters with MPPT",
-      tracking: "Fixed-tilt structures",
-      transmission: "33kV grid connection",
-      monitoring: "Real-time SCADA remote monitoring and control",
-      maintenance: "Weather stations, cleaning systems and security fencing"
+      panels: "23,544 pcs LONGi Hi-MO 7 @ 600–605 W · 22.4% efficiency · 27 modules/string · 54 modules/table · 436 tables total",
+      inverters: "50 × Huawei 300 kW string inverters · 1300 Vdc → 800 Vac · 6 MPPT · 99% efficiency · THD 1%",
+      tracking: "Fixed shed, south-faced @ 18° tilt · POWERWAY structure · PHC piles 7 m (4 m depth) · 6.65 m pitch-to-pitch",
+      transmission: "16 km, 33 kV overhead OPGW line · Main S/S: 33 kV 17 MVA AIS · Power evacuation: 33/11 kV Bejbari Substation",
+      monitoring: "24 × 7 real-time SCADA monitoring · 2 weather stations · Huawei smart management system",
+      maintenance: "Own EPC & O&M team · 38 staff post-COD (14 electrical, 10 PV cleaning, 9 security) · dedicated cleaning & security"
     },
     milestones: [
-      { date: "2023", event: "Project Planning & Feasibility Study" },
-      { date: "2024", event: "Land Acquisition & Environmental Clearance" },
-      { date: "2025", event: "Construction Commencement" },
-      { date: "2025", event: "Panel Installation Completed" },
-      { date: "2026", event: "Grid Integration & Commissioning" },
-      { date: "2026", event: "Commercial Operations Date" }
+      { date: "Jun 2024", event: "PPA contract signed with BPDB (PPA No. 10710)" },
+      { date: "Sep 2024", event: "First pile drive & land acquisition commenced" },
+      { date: "Sep 2025", event: "MMS, PV module & transformer installation + testing" },
+      { date: "Nov 2025", event: "33 kV line energised & back-feed from grid (27 Nov 2025)" },
+      { date: "Jan 2026", event: "Commercial Operation Date declared by PDB (12 Jan 2026)" }
     ],
     environmentalImpact: [
-      { metric: "CO₂ Offset", value: "12,000+ tons/year", description: "Equivalent to planting 500,000 trees annually" },
-      { metric: "Water Usage", value: "Mostly Rain Water", description: "Minimal water footprint through rainwater harvesting" },
-      { metric: "Air Pollution", value: "Zero Emissions", description: "No SO₂, NOₓ or particulate matter released" },
-      { metric: "Jobs Created", value: "100+ Construction", description: "~25 permanent O&M roles created locally" }
+      { metric: "CO₂ Saved", value: "13,183 MT / year", description: "Project-basis carbon saving per year" },
+      { metric: "CO₂e Saved", value: "14,246 tonnes / year", description: "GHG displacement vs. diesel-based generation" },
+      { metric: "Diesel Displaced", value: "6.4 M litres / year", description: "Equivalent diesel fuel displaced annually" },
+      { metric: "Fuel Cost Saving", value: "USD 5.00 M / year", description: "Annual fuel cost saving at USD 0.94/L diesel" }
     ],
     images: [
       { src: "mun.png" },

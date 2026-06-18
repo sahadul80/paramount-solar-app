@@ -91,8 +91,8 @@ const ProjectsPortfolio = () => {
       type: "Solar IPP",
       coordinates: { lat: 24.4937, lng: 91.6333 },
       slug: "moulvibazar-project",
-      commissioningDate: "2026",
-      co2Reduction: "12,000+ tons annually",
+      commissioningDate: "12 January 2026",
+      co2Reduction: "13,183 MT CO₂ annually",
       developer: "Paramount Solar",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3599.123456789014!2d91.6333!3d24.4937",
       images: [
