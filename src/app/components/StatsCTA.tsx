@@ -58,7 +58,7 @@ const StatsCTA = () => {
   const stats = [
     {
       icon: Sun,
-      target: 130,
+      target: 140,
       suffix: 'MW',
       label: 'Solar Capacity',
       description: 'Total commissioned solar power capacity',
