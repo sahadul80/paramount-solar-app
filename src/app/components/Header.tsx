@@ -92,7 +92,7 @@ export default function Header() {
       type: 'both', // Works as both route and section
       dropdown: [
         { name: 'INTRACO SOLAR POWER LTD', href: '/#lalmonirhat-project', type: 'section' },
-        { name: 'Dynamic Sun Energy Private Limited', href: '/#pabna-project', type: 'section' },
+        { name: 'DYNAMIC SUN ENERGY PRIVATE LIMITED', href: '/#pabna-project', type: 'section' },
         { name: 'MOULVIBAZAR SOLAR POWER LTD', href: '/#bibiana-project', type: 'section' }
       ]
     },
