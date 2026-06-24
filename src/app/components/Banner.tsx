@@ -19,7 +19,7 @@ const Banner = () => {
       icon: Sun,
       bg: "from-solar-primary/10 via-solar-accent/5 to-solar-secondary/10",
       image: "☀️",
-      stats: "130MW Solar Power",
+      stats: "140MW Solar Power",
       particles: 8,
       color: "text-solar-accent/30",
       bgImage: "/images/b5.png"

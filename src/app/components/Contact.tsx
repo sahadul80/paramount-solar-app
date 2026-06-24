@@ -335,7 +335,7 @@ const Contact = () => {
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>
-                      130MW+ of Commissioned Solar Projects
+                      140MW+ of Commissioned Solar Projects
                     </li>
                     <li className="flex items-center">
                       <div className="w-1.5 h-1.5 bg-solar-success rounded-full mr-2"></div>

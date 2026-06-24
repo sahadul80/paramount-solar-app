@@ -58,7 +58,7 @@ const BusinessVerticals: React.FC = () => {
         "IPP Project Development through Open Tender Method"
       ],
       stats: [
-        { value: "130MW", label: "Total Capacity" },
+        { value: "140MW", label: "Total Capacity" },
         { value: "3", label: "Major Projects" },
         { value: "20+ Years", label: "PPA Duration" }
       ],

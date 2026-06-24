@@ -94,7 +94,7 @@ const About = () => {
         data: [
           { label: "Founded", value: "2017", icon: History },
           { label: "Projects", value: "3+", icon: Zap },
-          { label: "Capacity", value: "130MW", icon: TrendingUp }
+          { label: "Capacity", value: "140MW", icon: TrendingUp }
         ]
       },
       subsections: [
@@ -114,7 +114,7 @@ const About = () => {
       icon: History,
       title: "COMPANY BACKGROUND",
       id: "company-background",
-      content: "Established in 2017, PSL has successfully commissioned 130MW of solar IPPs in Bangladesh with a strong track record of project delivery.",
+      content: "Established in 2017, PSL has successfully commissioned 140MW of solar IPPs in Bangladesh with a strong track record of project delivery.",
       visualization: {
         type: "timeline",
         data: [
@@ -127,12 +127,12 @@ const About = () => {
       subsections: [
         {
           title: "Project Portfolio",
-          content: "Successfully commissioned 130MW of solar IPPs including 30MW in Lalmonirhat and 100MW in Pabna with 20-year Power Purchase Agreements.",
+          content: "Successfully commissioned 140MW of solar IPPs including 30MW in Lalmonirhat, 100MW in Pabna, and 10MW in Moulvibazar with 20-year Power Purchase Agreements.",
           icon: Zap
         },
         {
           title: "Expansion",
-          content: "Continuing to expand with a 10MW solar plant in Moulvibazar nearing commissioning phase.",
+          content: "Continuing to expand with pipeline projects including 25MW in Moulvibazar and 50MW in Bibiana.",
           icon: Globe
         }
       ]
@@ -578,7 +578,7 @@ const About = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl sm:p-4 mx-auto">
                   {[
                     { value: "145,000+", label: "Tons CO₂ Offset Annually", icon: Leaf },
-                    { value: "130MW", label: "Solar Power Commissioned", icon: Zap },
+                    { value: "140MW", label: "Solar Power Commissioned", icon: Zap },
                     { value: "20 Years", label: "Power Purchase Agreement", icon: Target },
                     { value: "3", label: "Major Projects", icon: Building2 }
                   ].map((stat, index) => (

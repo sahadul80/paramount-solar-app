@@ -413,7 +413,7 @@ const ProjectsPortfolio = () => {
               <div className="flex justify-center mb-2">
                 <Zap className="h-5 w-5 text-solar-success" />
               </div>
-              <p className="text-xl font-bold text-solar-success mb-1">130MW</p>
+              <p className="text-xl font-bold text-solar-success mb-1">140MW</p>
               <p className="text-solar-success/80 text-xs">Commissioned Solar Capacity</p>
             </div>
 
