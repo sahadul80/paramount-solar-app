@@ -112,9 +112,9 @@ const Footer = () => {
                 </a>
               </div>
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
-                <a href="tel:+880 1722 191757" className="flex flex-row">
+                <a href="tel:+8801799989544" className="flex flex-row">
                   <Phone className="h-5 w-5 mr-3 text-[var(--text-tertiary)]" />
-                  <span>+880 1722 191757</span>
+                  <span>+880 1799 989544</span>
                 </a>
               </div>
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
