@@ -101,7 +101,7 @@ const Contact = () => {
 
       Contact Details:
       Email: info@paramountsolar.com
-      Phone: +880 1722 191757
+      Phone: +880 1799 989544
 
       Business Hours:
       Sunday - Thursday: 9:00 AM - 6:00 PM
@@ -143,7 +143,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Call Us',
-      details: '+880 1722 191757',
+      details: '+880 1799 989544',
       subtitle: 'Mon to Fri, 9am to 6pm',
       color: 'from-green-500 to-emerald-500',
       expandedContent: {
@@ -154,7 +154,7 @@ const Contact = () => {
           'Emergency line: +880 XXXX-XXXXXX'
         ],
         hours: 'Sunday - Thursday: 9:00 AM - 6:00 PM',
-        phone: '+880 1722 191757'
+        phone: '+880 1799 989544'
       }
     },
     {

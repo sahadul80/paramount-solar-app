@@ -14,7 +14,7 @@ const companyInfo = {
   description: 'Leading renewable energy company dedicated to harnessing solar power for a sustainable, carbon-neutral future in Bangladesh',
   url: 'https://paramount-solar-app.vercel.app',
   logo: '/images/logo.png',
-  phone: '+880 1722 191757',
+  phone: '+880 1799 989544',
   email: 'info@paramountsolar.com',
   address: {
     street: 'Road-113/A',
