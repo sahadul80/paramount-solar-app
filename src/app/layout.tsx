@@ -15,7 +15,7 @@ const companyInfo = {
   url: 'https://paramount-solar-app.vercel.app',
   logo: '/images/logo.png',
   phone: '+880 1799 989544',
-  email: 'info@paramountsolar.com',
+  email: 'info@paramountsolar.net',
   address: {
     street: 'Road-113/A',
     city: 'Gulshan-2',

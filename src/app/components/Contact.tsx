@@ -100,7 +100,7 @@ const Contact = () => {
       Dhaka-1212, Dhaka, Bangladesh
 
       Contact Details:
-      Email: info@paramountsolar.com
+      Email: info@paramountsolar.net
       Phone: +880 1799 989544
 
       Business Hours:
@@ -127,7 +127,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      details: 'info@paramountsolar.com',
+      details: 'info@paramountsolar.net',
       subtitle: 'Send us an email anytime',
       color: 'from-blue-500 to-cyan-500',
       expandedContent: {
@@ -137,7 +137,7 @@ const Contact = () => {
           'Project inquiries: projects@paramountsolar.com',
           'Career opportunities: careers@paramountsolar.com'
         ],
-        email: 'info@paramountsolar.com'
+        email: 'info@paramountsolar.net'
       }
     },
     {

@@ -106,9 +106,9 @@ const Footer = () => {
             {/* Contact Info */}
             <div className="space-y-3 mb-6">
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
-                <a href="mailto:info@paramountsolar.com" className="flex flex-row">
+                <a href="mailto:info@paramountsolar.net" className="flex flex-row">
                   <Mail className="h-5 w-5 mr-3 text-[var(--text-tertiary)]" />
-                  <span>info@paramountsolar.com</span>
+                  <span>info@paramountsolar.net</span>
                 </a>
               </div>
               <div className="flex items-center text-[var(--text-secondary)] hover:text-[var(--solar-primary)] transition-colors">
